@@ -1,0 +1,29 @@
+{
+    "name": "lucidarch/lucid",
+    "description": "An architecture for scalable software.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["architecture", "lucid", "laravel"],
+    "homepage": "https://lucidarch.dev",
+    "support": {
+        "source": "https://github.com/lucidarch/lucid",
+        "issues": "https://github.com/lucidarch/lucid/issues"
+    },
+    "authors": [
+        {
+            "name": "Abed Halawi",
+            "email": "halawi.abed@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^5.1",
+        "symfony/process": "^5.1",
+        "symfony/finder": "^5.1",
+        "symfony/filesystem": "^5.1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
