@@ -57,6 +57,7 @@ jobs:
 
       - name: Require Lucid
         run: |
+          cd laravel-${{ matrix.laravel }}
           composer config repositories.lucid '{"type": "path", "url": "$GITHUB_WORKSPACE", "options": {"symlink": true}}'
           composer require lucidarch/lucid
 
