@@ -40,7 +40,7 @@ jobs:
             php: 7.2
 
     name: L${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
-    
+
     steps:
       - uses: actions/checkout@v2
 
@@ -52,10 +52,14 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      # Runs a set of commands using the runners shell
       - name: Install Laravel ${{ matrix.laravel }}
         run: composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }}
-      
+
+      - name: Require Lucid
+        run: |
+          composer config repositories.lucid '{"type": "path", "url": "$GITHUB_WORKSPACE", "options": {"symlink": true}}'
+          composer require lucidarch/lucid
+
       - name: Run Tests
         run: |
           chmod +x $GITHUB_WORKSPACE/bin/test-micro-commands.sh
