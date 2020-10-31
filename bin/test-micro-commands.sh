@@ -3,7 +3,7 @@
 set -e
 
 # Check if file or directory exists. Exit if it doesn't.
-function examine() {
+examine() {
     if [ ! -f $1 ] && [ ! -d $1 ]; then
         echo "\n-- ERROR -- $1 could not be found!\n"
         exit 1
@@ -11,7 +11,7 @@ function examine() {
 }
 
 # Lint a PHP file for syntax errors. Exit on error.
-function lint() {
+lint() {
     # echo "\n -- MISSING -- Lint file $1"
     RESULT=$(php -l $1)
     if [ ! $? -eq 0 ] ; then
