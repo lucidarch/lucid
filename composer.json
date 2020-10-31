@@ -5,6 +5,7 @@
     "license": "MIT",
     "keywords": ["architecture", "lucid", "laravel"],
     "homepage": "https://lucidarch.dev",
+    "bin": ["lucid"],
     "support": {
         "source": "https://github.com/lucidarch/lucid",
         "issues": "https://github.com/lucidarch/lucid/issues"
@@ -16,10 +17,15 @@
         }
     ],
     "require": {
-        "symfony/console": "^5.1",
-        "symfony/process": "^5.1",
-        "symfony/finder": "^5.1",
-        "symfony/filesystem": "^5.1"
+        "symfony/console": "*",
+        "symfony/filesystem": "*",
+        "symfony/finder": "*",
+        "symfony/process": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lucid\\": "src/"
+        }
     },
     "config": {
         "sort-packages": true

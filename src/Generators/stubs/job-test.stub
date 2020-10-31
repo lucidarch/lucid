@@ -1,0 +1,14 @@
+<?php
+
+namespace {{namespace}};
+
+use {{job_namespace}};
+use Tests\TestCase;
+
+class {{testclass}} extends TestCase
+{
+    public function test_{{job}}()
+    {
+        $this->markTestIncomplete();
+    }
+}

@@ -1,0 +1,28 @@
+<?php
+
+namespace {{namespace}};
+
+use {{unit_namespace}}\Operation;
+{{use_jobs}}
+class {{operation}} extends Operation
+{
+    /**
+     * Create a new operation instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the operation.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+{{run_jobs}}
+    }
+}
