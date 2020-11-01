@@ -65,4 +65,11 @@ trait Filesystem
 
         $filesystem->remove($path);
     }
+
+    public function rename($path, $name)
+    {
+        $filesystem = new SymfonyFilesystem();
+
+        $filesystem->rename($path, $name);
+    }
 }

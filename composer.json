@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "ext-dom": "*",
         "symfony/console": "*",
         "symfony/filesystem": "*",
         "symfony/finder": "*",
