@@ -3,7 +3,7 @@
 namespace {{namespace}};
 
 use Illuminate\Routing\Router;
-use {{unit_namespace}}\Providers\RouteServiceProvider as ServiceProvider;
+use Lucid\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {

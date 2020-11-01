@@ -5,9 +5,19 @@ namespace Lucid\Console;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 trait Command
 {
+    /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
 
     /**
      * Configure the command options.
@@ -145,28 +155,13 @@ trait Command
      *
      * @return string
      */
-    public function ask($question)
+    public function ask($question, $default = false)
     {
         $question = '<comment>'.$question.'</comment> ';
 
-        return $this->getHelperSet()->get('dialog')->ask($this->output, $question);
-    }
+        $confirmation = new ConfirmationQuestion($question, false);
 
-    /**
-     * Confirm the operation with the user.
-     *
-     * @param string $task
-     * @param string $question
-     *
-     * @return bool
-     */
-    public function confirmTaskWithUser($task, $question)
-    {
-        $question = $question === true ? 'Are you sure you want to run the ['.$task.'] task?' : (string) $question;
-
-        $question = '<comment>'.$question.' [y/N]:</comment> ';
-
-        return  $this->getHelperSet()->get('dialog')->askConfirmation($this->output, $question, false);
+        return $this->getHelperSet()->get('question')->ask($this->input, $this->output, $confirmation);
     }
 
     /**

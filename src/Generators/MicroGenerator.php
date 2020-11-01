@@ -8,6 +8,8 @@ use Lucid\Generators\Generator as GeneratorAlias;
 
 class MicroGenerator extends GeneratorAlias
 {
+    use DirectoriesGeneratorTrait;
+
     /**
      * The directories to be created.
      *
@@ -34,6 +36,8 @@ class MicroGenerator extends GeneratorAlias
     public function generate()
     {
         $created = $this->generateDirectories();
+
+        $created = array_merge($created, $this->generateCustomDirectories());
 
         $this->updatePHPUnitXML();
 
@@ -91,25 +95,11 @@ XMLSUITE;
     /**
      * @return array
      */
-    private function generateDirectories()
+    private function generateCustomDirectories()
     {
         $root = base_path();
 
-        // create directories
         $created = [];
-        foreach ($this->directories as $parent => $children) {
-            $paths = array_map(function($child) use ($root, $parent) {
-                return "$root/$parent/$child";
-            }, $children);
-
-            foreach ($paths as $path) {
-                $this->createDirectory($path);
-                $this->createFile("$path/.gitkeep");
-                // collect path without root
-                $created[] = str_replace($root, '', $path);
-            }
-        }
-
         // rename or create tests/Features directory
         if ($this->exists("$root/tests/Feature")) {
             $this->rename("$root/tests/Feature", "$root/tests/Features");

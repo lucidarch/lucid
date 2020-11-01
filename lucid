@@ -17,6 +17,7 @@ if (file_exists('./bootstrap/app.php')) {
 
 $commands = [
     new Lucid\Console\Commands\InitMicroCommand(),
+    new Lucid\Console\Commands\InitMonolithCommand(),
     new Lucid\Console\Commands\ChangeSourceNamespaceCommand(),
     new Lucid\Console\Commands\JobMakeCommand(),
     new Lucid\Console\Commands\JobDeleteCommand(),

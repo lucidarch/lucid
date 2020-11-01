@@ -127,19 +127,29 @@ trait Finder
      *
      * @throws \Exception
      */
-    public function findRootNamespace()
+    public function findNamespace(string $dir)
     {
         // read composer.json file contents to determine the namespace
         $composer = json_decode(file_get_contents(base_path().'/composer.json'), true);
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
-            if ($directory === $this->getSourceDirectoryName().'/') {
+            if ($directory === $dir.'/') {
                 return trim($namespace, '\\');
             }
         }
 
         throw new Exception('App namespace not set in composer.json');
+    }
+
+    public function findRootNamespace()
+    {
+        return $this->findNamespace($this->getSourceDirectoryName());
+    }
+
+    public function findAppNamespace()
+    {
+        return $this->findNamespace('app');
     }
 
     /**

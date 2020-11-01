@@ -1,16 +1,16 @@
 <?php
 
-namespace Lucid\Foundation\Providers;
+namespace Lucid\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseServiceProvider;
 
 abstract class RouteServiceProvider extends BaseServiceProvider
 {
     /**
      * Read the routes from the "api.php" and "web.php" files of this Service
      *
-     * @param \Illuminate\Routing\Router $router
+     * @param Router $router
      */
     abstract public function map(Router $router);
 

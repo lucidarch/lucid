@@ -80,7 +80,8 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
     protected function setAppDirectoryNamespace()
     {
         $files = SymfonyFinder::create()
-                            ->in($this->findSourceRoot())
+                            ->in(base_path())
+                            ->exclude('vendor')
                             ->contains($this->findRootNamespace())
                             ->name('*.php');
 
