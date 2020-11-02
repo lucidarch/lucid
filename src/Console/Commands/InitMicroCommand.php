@@ -36,7 +36,8 @@ class InitMicroCommand extends SymfonyCommand
      */
     public function handle()
     {
-        $this->info("Initializing Lucid Micro...\n");
+        $version = app()->version();
+        $this->info("Initializing Lucid Micro for Laravel $version\n");
 
         $generator = new MicroGenerator();
         $paths = $generator->generate();

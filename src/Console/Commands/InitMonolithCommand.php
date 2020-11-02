@@ -64,7 +64,8 @@ class InitMonolithCommand extends SymfonyCommand
      */
     public function handle()
     {
-        $this->info("Initializing Lucid Monolith...\n");
+        $version = app()->version();
+        $this->info("Initializing Lucid Monolith for Laravel $version\n");
 
         $current = $this->findAppNamespace();
         if ($current == 'Framework' || $this->exists(base_path().'/src')) {
