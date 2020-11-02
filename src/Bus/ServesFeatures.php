@@ -3,13 +3,12 @@
 namespace Lucid\Bus;
 
 use Illuminate\Support\Collection;
-use Lucid\Bus\MarshalTrait;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Lucid\Events\FeatureStarted;
 
-trait ServesFeaturesTrait
+trait ServesFeatures
 {
-    use MarshalTrait;
+    use Marshal;
     use DispatchesJobs;
 
     /**

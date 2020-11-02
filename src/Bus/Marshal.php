@@ -7,7 +7,7 @@ use ArrayAccess;
 use ReflectionClass;
 use ReflectionParameter;
 
-trait MarshalTrait
+trait Marshal
 {
     /**
      * Marshal a command from the given array accessible object.

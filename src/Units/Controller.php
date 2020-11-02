@@ -2,7 +2,7 @@
 
 namespace Lucid\Units;
 
-use Lucid\Bus\ServesFeaturesTrait;
+use Lucid\Bus\ServesFeatures;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
@@ -12,5 +12,5 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 class Controller extends BaseController
 {
     use ValidatesRequests;
-    use ServesFeaturesTrait;
+    use ServesFeatures;
 }

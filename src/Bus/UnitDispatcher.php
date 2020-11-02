@@ -7,12 +7,16 @@ use Lucid\Units\Job;
 use ReflectionException;
 use Lucid\Units\Operation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Lucid\Events\JobStarted;
+use Illuminate\Support\Collection;
 use Lucid\Events\OperationStarted;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
-trait UnitDispatcherTrait
+trait UnitDispatcher
 {
+    use Marshal;
+    use DispatchesJobs;
+
     /**
      * decorator function to be called instead of the
      * laravel function dispatchFromArray.

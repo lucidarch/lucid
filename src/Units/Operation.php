@@ -2,13 +2,9 @@
 
 namespace Lucid\Units;
 
-use Lucid\Bus\MarshalTrait;
-use Lucid\Bus\UnitDispatcherTrait;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use Lucid\Bus\UnitDispatcher;
 
 abstract class Operation
 {
-    use MarshalTrait;
-    use DispatchesJobs;
-    use UnitDispatcherTrait;
+    use UnitDispatcher;
 }
