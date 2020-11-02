@@ -82,7 +82,7 @@ class OperationGenerator extends Generator
     {
         $stubName;
         if ($isQueueable) {
-            $stubName = '/stubs/queueable-operation.stub';
+            $stubName = '/stubs/operation-queueable.stub';
         } else {
             $stubName = '/stubs/operation.stub';
         }

@@ -93,7 +93,7 @@ class JobGenerator extends Generator
     {
         $stubName;
         if ($isQueueable) {
-            $stubName = '/stubs/queueable-job.stub';
+            $stubName = '/stubs/job-queueable.stub';
         } else {
             $stubName = '/stubs/job.stub';
         }

@@ -33,7 +33,6 @@ class ServiceGenerator extends Generator
         'Tests/Features/',
     ];
 
-
     public function generate($name)
     {
         $name = Str::service($name);
@@ -154,16 +153,23 @@ class ServiceGenerator extends Generator
     {
         $controllers = 'src/Services/' . $name . '/Http/Controllers';
 
-        $contentApi = file_get_contents(__DIR__ . '/stubs/routes-api.stub');
-        $contentApi = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $contentApi);
+        $api = file_get_contents(__DIR__ . '/stubs/routes-api.stub');
+        $api = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $api);
 
-        $contentWeb = file_get_contents(__DIR__ . '/stubs/routes-web.stub');
-        $contentWeb = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $contentWeb);
+        $web = file_get_contents(__DIR__ . '/stubs/routes-web.stub');
+        $web = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $web);
 
-        $this->createFile($path . '/routes/api.php', $contentApi);
-        $this->createFile($path . '/routes/web.php', $contentWeb);
+        $channels = file_get_contents(__DIR__ . '/stubs/routes-channels.stub');
+        $channels = str_replace(['{{namespace}}'], [$this->findServiceNamespace($name)], $channels);
 
-        unset($contentApi, $contentWeb);
+        $console = file_get_contents(__DIR__ . '/stubs/routes-console.stub');
+
+        $this->createFile($path . '/routes/api.php', $api);
+        $this->createFile($path . '/routes/web.php', $web);
+        $this->createFile($path . '/routes/channels.php', $channels);
+        $this->createFile($path . '/routes/console.php', $console);
+
+        unset($api, $web, $channels, $console);
     }
 
     /**

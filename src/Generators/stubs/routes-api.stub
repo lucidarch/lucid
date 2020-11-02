@@ -14,13 +14,12 @@
 // Prefix: /api/{{slug}}
 Route::group(['prefix' => '{{slug}}'], function() {
 
-    // The controllers live in {{controllers_path}}
-    // Route::get('/', 'UserController@index');
+    // Controllers live in {{controllers_path}}
 
     Route::get('/', function() {
         return response()->json(['path' => '/api/{{slug}}']);
     });
-    
+
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
