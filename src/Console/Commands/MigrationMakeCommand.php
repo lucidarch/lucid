@@ -2,6 +2,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Str;
 use Illuminate\Support\Facades\Artisan;
 use Lucid\Console\Command;
 use Lucid\Finder;
@@ -35,7 +36,7 @@ class MigrationMakeCommand extends SymfonyCommand
         $service = $this->argument('service');
         $migration = $this->argument('migration');
 
-        $path = $this->relativeFromReal($this->findServicePath($service) . "/database/migrations");
+        $path = $this->relativeFromReal($this->findServicePath(Str::service($service)) . "/database/migrations");
 
         $output = shell_exec('php artisan make:migration '.$migration.' --path='.$path);
 
