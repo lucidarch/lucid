@@ -29,9 +29,6 @@ class {{name}}ServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom([
             realpath(__DIR__ . '/../database/migrations')
         ]);
-
-        $this->app->make(EloquentFactory::class)
-            ->load(realpath(__DIR__ . '/../database/factories'));
     }
 
     /**

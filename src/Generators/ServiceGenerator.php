@@ -58,8 +58,6 @@ class ServiceGenerator extends Generator
 
         $this->addWelcomeViewFile($path);
 
-        $this->addModelFactory($path);
-
         return new Service(
             $name,
             $slug,
@@ -98,6 +96,28 @@ class ServiceGenerator extends Generator
         $this->createRegistrationServiceProvider($name, $path, $slug, $namespace);
 
         $this->createRouteServiceProvider($name, $path, $slug, $namespace);
+
+        $this->createBroadcastServiceProvider($name, $path, $slug, $namespace);
+    }
+
+    /**
+     * Create the service provider that registers broadcast channels.
+     *
+     * @param $name
+     * @param $path
+     * @param $slug
+     * @param $namespace
+     */
+    public function createBroadcastServiceProvider($name, $path, $slug, $namespace)
+    {
+        $content = file_get_contents(__DIR__ . "/stubs/broadcastserviceprovider.stub");
+        $content = str_replace(
+            ['{{name}}', '{{slug}}', '{{namespace}}'],
+            [$name, $slug, $namespace],
+            $content
+        );
+
+        $this->createFile($path.'/Providers/BroadcastServiceProvider.php', $content);
     }
 
     /**
@@ -108,7 +128,12 @@ class ServiceGenerator extends Generator
      */
     public function createRegistrationServiceProvider($name, $path, $slug, $namespace)
     {
-        $content = file_get_contents(__DIR__ . '/stubs/serviceprovider.stub');
+        $stub = 'serviceprovider.stub';
+        if ((int) $this->laravelVersion() > 7) {
+            $stub = 'serviceprovider-8.stub';
+        }
+
+        $content = file_get_contents(__DIR__ . "/stubs/$stub");
         $content = str_replace(
             ['{{name}}', '{{slug}}', '{{namespace}}'],
             [$name, $slug, $namespace],
@@ -170,6 +195,8 @@ class ServiceGenerator extends Generator
         $this->createFile($path . '/routes/console.php', $console);
 
         unset($api, $web, $channels, $console);
+
+        $this->delete($path . '/routes/.gitkeep');
     }
 
     /**
@@ -193,18 +220,5 @@ class ServiceGenerator extends Generator
     protected function getStub()
     {
         return __DIR__.'/stubs/service.stub';
-    }
-
-    /**
-     * Add the ModelFactory file.
-     *
-     * @param string $path
-     */
-    public function addModelFactory($path)
-    {
-        $modelFactory = file_get_contents(__DIR__ . '/stubs/model-factory.stub');
-        $this->createFile($path . '/database/factories/ModelFactory.php', $modelFactory);
-
-        unset($modelFactory);
     }
 }
