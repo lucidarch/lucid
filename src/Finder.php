@@ -3,7 +3,6 @@
 namespace Lucid;
 
 use Exception;
-use Lucid\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Lucid\Entities\Feature;
