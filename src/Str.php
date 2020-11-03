@@ -166,6 +166,6 @@ class Str
      */
     public static function request($name)
     {
-        return self::studly(preg_replace('/Request(\.php)?$/', '', $name) . 'Request');
+        return self::studly($name);
     }
 }

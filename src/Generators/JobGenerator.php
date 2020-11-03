@@ -16,8 +16,6 @@ class JobGenerator extends Generator
 
         if ($this->exists($path)) {
             throw new Exception('Job already exists');
-
-            return false;
         }
 
         // Make sure the domain directory exists

@@ -28,7 +28,7 @@ class RequestMakeCommand extends SymfonyCommand
      *
      * @var string
      */
-    protected $description = 'Create a Request in a specific service.';
+    protected $description = 'Create a Request in a domain.';
 
     /**
      * The type of class being generated
@@ -45,8 +45,8 @@ class RequestMakeCommand extends SymfonyCommand
     {
         $generator = new RequestGenerator();
 
-        $name = $this->argument('request');
-        $service = $this->argument('service');
+        $name = $this->argument('name');
+        $service = $this->argument('domain');
 
         try {
             $request = $generator->generate($name, $service);
@@ -69,8 +69,8 @@ class RequestMakeCommand extends SymfonyCommand
     public function getArguments()
     {
         return [
-            ['request', InputArgument::REQUIRED, 'The Request\'s name.'],
-            ['service', InputArgument::REQUIRED, 'The Service\'s name.'],
+            ['name', InputArgument::REQUIRED, 'The name of the class.'],
+            ['domain', InputArgument::REQUIRED, 'The Domain in which this request should be generated.'],
         ];
     }
 
