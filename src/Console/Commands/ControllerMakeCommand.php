@@ -51,7 +51,7 @@ class ControllerMakeCommand extends SymfonyCommand
         $name = $this->argument('controller');
 
         try {
-            $controller = $generator->generate($name, $service, $this->option('plain'));
+            $controller = $generator->generate($name, $service, $this->option('resource'));
 
             $this->info('Controller class created successfully.'.
                 "\n".
@@ -84,7 +84,7 @@ class ControllerMakeCommand extends SymfonyCommand
     protected function getOptions()
     {
         return [
-            ['plain', null, InputOption::VALUE_NONE, 'Generate an empty controller class.'],
+            ['resource', null, InputOption::VALUE_NONE, 'Generate a resource controller class.'],
         ];
     }
 
@@ -113,6 +113,6 @@ class ControllerMakeCommand extends SymfonyCommand
             return __DIR__ . '/../Generators/stubs/controller.plain.stub';
         }
 
-        return __DIR__ . '/../Generators/stubs/controller.stub';
+        return __DIR__ . '/../Generators/stubs/controller.resource.stub';
     }
 }
