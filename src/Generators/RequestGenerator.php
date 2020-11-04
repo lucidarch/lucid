@@ -42,7 +42,7 @@ class RequestGenerator extends Generator
 
         return new Request(
             $request,
-            $service,
+            $domain,
             $namespace,
             basename($path),
             $path,
