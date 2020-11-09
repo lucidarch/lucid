@@ -2,10 +2,14 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Str;
+
 trait InitCommandTrait
 {
-    private function welcome()
+    private function welcome($service = null)
     {
+        $service = Str::service($service);
+
         $this->info('');
         $this->info("You're all set to build something awesome that scales!");
         $this->info('');
@@ -13,8 +17,12 @@ trait InitCommandTrait
         $this->info('');
 
         $this->info('You may wish to start with a feature');
-        $this->comment("lucid make:feature LoginUser");
-        $this->info("will generate <fg=cyan>app/Features/LoginUserFeature.php</>");
+        $this->comment("lucid make:feature LoginUser $service");
+        if ($service) {
+            $this->info("will generate <fg=cyan>app/Services/$service/Features/LoginUserFeature.php</>");
+        } else {
+            $this->info("will generate <fg=cyan>app/Features/LoginUserFeature.php</>");
+        }
 
         $this->info('');
 
@@ -35,8 +43,13 @@ trait InitCommandTrait
         $this->info('');
 
         $this->info('Finally you can group multiple jobs in an operation');
-        $this->comment('lucid make:operation ProcessUserLogin');
-        $this->info('will generate <fg=cyan>app/Operations/ProcessUserLoginOperation.php</>');
+        $this->comment("lucid make:operation ProcessUserLogin $service");
+
+        if ($service) {
+            $this->info("will generate <fg=cyan>app/Services/$service/Operations/ProcessUserLoginOperation.php</>");
+        } else {
+            $this->info('will generate <fg=cyan>app/Operations/ProcessUserLoginOperation.php</>');
+        }
 
         $this->info('');
 

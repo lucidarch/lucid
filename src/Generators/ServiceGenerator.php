@@ -22,15 +22,16 @@ class ServiceGenerator extends Generator
         'Http/',
         'Http/Controllers/',
         'Http/Middleware/',
-        'Http/Requests/',
         'Providers/',
         'Features/',
+        'Operations/',
         'resources/',
         'resources/lang/',
         'resources/views/',
         'routes',
         'Tests/',
         'Tests/Features/',
+        'Tests/Operations/',
     ];
 
     public function generate($name)

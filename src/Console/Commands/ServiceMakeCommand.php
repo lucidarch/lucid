@@ -73,15 +73,11 @@ class ServiceMakeCommand extends SymfonyCommand
 
             $serviceProvider = $serviceNamespace.'\\Providers\\'.$service->name.'ServiceProvider';
 
-            $this->info('Activate it by registering '.
-                '<comment>'.$serviceProvider.'</comment> '.
-                "\n".
-                'in <comment>'.$rootNamespace.'\Foundation\Providers\ServiceProvider@register</comment> '.
-                'with the following:'.
+            $this->info('Activate it by adding '.
+                '<comment>'.$serviceProvider.'::class</comment> '.
+                "\nto <comment>'providers' in config/app.php</comment>".
                 "\n"
             );
-
-            $this->info('<comment>$this->app->register(\''.$serviceProvider.'\');</comment>'."\n");
         } catch (\Exception $e) {
             $this->error($e->getMessage()."\n".$e->getFile().' at '.$e->getLine());
         }

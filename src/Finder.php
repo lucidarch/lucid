@@ -195,7 +195,7 @@ trait Finder
      */
     public function findSourceRoot()
     {
-        return ($this->isMicroservice()) ? app_path() : base_path(). DS .$this->srcDirectoryName;
+        return app_path();
     }
 
     /**
@@ -508,10 +508,6 @@ trait Finder
      */
     public function findDomainTestsPath($domain)
     {
-        if ($this->isMicroservice()) {
-            return base_path().DS.'tests'.DS.'Domains'.DS.$domain;
-        }
-
         return $this->findDomainPath($domain).DS.'Tests';
     }
 

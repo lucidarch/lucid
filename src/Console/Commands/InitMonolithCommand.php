@@ -49,14 +49,6 @@ class InitMonolithCommand extends SymfonyCommand
      */
     protected $files;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->files = new IlluminateFilesystem();
-        $this->composer = new Composer($this->files);
-    }
-
     /**
      * Execute the console command.
      *
@@ -67,23 +59,9 @@ class InitMonolithCommand extends SymfonyCommand
         $version = app()->version();
         $this->info("Initializing Lucid Monolith for Laravel $version\n");
 
-        $current = $this->findAppNamespace();
-        if ($current == 'Framework' || $this->exists(base_path().'/src')) {
-            $sure = $this->ask('This project may have already been initialized, it is not advised to initialize again. Are you sure you want to proceed? [y/n]');
-            if (!$sure) {
-                $this->info('');
-                $this->info('Aborting initialization as requested.');
-                return 0;
-            }
-        }
-
         $service = $this->argument('service');
-        $namespace = $this->option('namespace') ?: $this->findAppNamespace();
 
-        // rename namespace
-        $this->replacePSRNamespace($namespace);
-
-        $directories = (new MonolithGenerator())->generate($namespace);
+        $directories = (new MonolithGenerator())->generate();
         $this->comment('Created directories:');
         $this->comment(join("\n", $directories));
 
@@ -92,44 +70,13 @@ class InitMonolithCommand extends SymfonyCommand
             $this->getApplication()
                 ->find('make:service')
                 ->run(new ArrayInput(['name' => $service]), $this->output);
+
+            $this->ask('Once done, press Enter/Return to continue...');
         }
 
-        $this->info('');
-        $this->info('Please do the following to complete initialization:');
-        $this->comment("- Add $namespace\Foundation\ServiceProvider::class to 'providers' in config/app.php");
-
-        if ($service) {
-            $formatted = Str::service($service);
-            $this->comment("- Register {$formatted}ServiceProvider::class in $namespace\Foundation\ServiceProvider::register");
-        }
-
-        $this->info('');
-        $this->ask('Once done, press Enter/Return to continue...');
-
-        $this->welcome();
+        $this->welcome($service);
 
         return 0;
-    }
-
-    private function replacePSRNamespace($namespace)
-    {
-        $current = $this->findAppNamespace();
-
-        if ($current == 'Framework') {
-            $this->error('Refrained from updating composer, it seems that it will cause a conflict.');
-            return;
-        }
-
-        // change current namespace to Framework
-        $this->getApplication()
-            ->find('src:name')
-            ->run(new ArrayInput(['name' => 'Framework']), $this->output);
-
-        $composer = json_decode($this->files->get($this->getComposerPath()), true);
-        $composer['autoload']['psr-4']["$namespace\\"] = 'src/';
-        $this->files->put($this->getComposerPath(), json_encode($composer, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
-
-        $this->composer->dumpAutoloads();
     }
 
     /**
@@ -152,7 +99,6 @@ class InitMonolithCommand extends SymfonyCommand
     protected function getOptions()
     {
         return [
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Set the namespace for the application (starting at src/).'],
         ];
     }
 }
