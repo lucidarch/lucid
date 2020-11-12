@@ -49,14 +49,14 @@ lint "tests/Features/TradeFeatureTest.php"
 ./vendor/bin/lucid make:job submitTradeRequest shipping
 examine "app/Domains/Shipping/Jobs/SubmitTradeRequestJob.php"
 lint "app/Domains/Shipping/Jobs/SubmitTradeRequestJob.php"
-examine "tests/Domains/Shipping/Jobs/SubmitTradeRequestJobTest.php"
-lint "tests/Domains/Shipping/Jobs/SubmitTradeRequestJobTest.php"
+examine "app/Domains/Shipping/Tests/Jobs/SubmitTradeRequestJobTest.php"
+lint "app/Domains/Shipping/Tests/Jobs/SubmitTradeRequestJobTest.php"
 
 ./vendor/bin/lucid make:job sail boat --queue
 examine "app/Domains/Boat/Jobs/SailJob.php"
 lint "app/Domains/Boat/Jobs/SailJob.php"
-examine "tests/Domains/Boat/Jobs/SailJobTest.php"
-lint "tests/Domains/Boat/Jobs/SailJobTest.php"
+examine "app/Domains/Boat/Tests/Jobs/SailJobTest.php"
+lint "app/Domains/Boat/Tests/Jobs/SailJobTest.php"
 
 # Model
 ./vendor/bin/lucid make:model bridge
