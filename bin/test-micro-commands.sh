@@ -84,6 +84,14 @@ lint "app/Policies/FlyPolicy.php"
 ./vendor/bin/lucid list:features
 ./vendor/bin/lucid list:services
 
+# Run PHPUnit tests
+if [ ! -f ".env" ]; then
+    echo 'APP_KEY=' > .env
+    php artisan key:generate
+fi
+
+./vendor/bin/phpunit
+
 ./vendor/bin/lucid delete:feature trade
 ./vendor/bin/lucid delete:job submitTradeRequest shipping
 ./vendor/bin/lucid delete:job sail boat
@@ -93,13 +101,6 @@ lint "app/Policies/FlyPolicy.php"
 ./vendor/bin/lucid delete:policy fly
 rm app/Http/Controllers/TradeController.php
 
-# Run PHPUnit tests
-if [ ! -f ".env" ]; then
-    echo 'APP_KEY=' > .env
-    php artisan key:generate
-fi
-
-./vendor/bin/phpunit
 
 echo "\nPASSED!\n"
 
