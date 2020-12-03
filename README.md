@@ -36,6 +36,14 @@ This architecture is in an amalgamation of best practices, design patterns and p
 - **Domain Driven Design**: to organize the units of work by categorizing them according to the topic they belong to.
 - **Service Oriented Architecture**: to encapsulate and manage functionalities of the same purpose with their required resources (routes, controllers, views, datatbase migrations etc.)
 
+If you prefer a video, watch the announcement at Laracon EU 2016:
+
+<p align="center">
+    <a href="http://www.youtube.com/watch?v=wSnM4JkyxPw">
+        <img src="http://img.youtube.com/vi/wSnM4JkyxPw/0.jpg">
+    </a>
+</p>
+
 ---
 
 ### Table of Contents
