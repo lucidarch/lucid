@@ -98,16 +98,11 @@ trait Finder
 
     /**
      * Get the source directory name.
-     * In a microservice installation this will be `app`. `src` otherwise.
      *
      * @return string
      */
     public function getSourceDirectoryName()
     {
-        if (file_exists(base_path(). DS .$this->srcDirectoryName)) {
-            return $this->srcDirectoryName;
-        }
-
         return 'app';
     }
 
@@ -118,7 +113,7 @@ trait Finder
      */
     public function isMicroservice()
     {
-        return !($this->getSourceDirectoryName() === $this->srcDirectoryName);
+        return !file_exists(base_path().DS.$this->getSourceDirectoryName().DS.'Services');
     }
 
     /**
@@ -126,7 +121,7 @@ trait Finder
      *
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function findNamespace(string $dir)
     {
@@ -135,6 +130,7 @@ trait Finder
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
+            $directory = str_replace(['/', '\\'], DS, $directory);
             if ($directory === $dir.DS) {
                 return trim($namespace, '\\');
             }
