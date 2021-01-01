@@ -65,7 +65,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          chmod +x $GITHUB_WORKSPACE/bin/test-micro-commands.sh
-          cp $GITHUB_WORKSPACE/bin/test-micro-commands.sh laravel-${{ matrix.laravel }}
+          chmod +x $GITHUB_WORKSPACE/bin/test-commands.sh
+          cp $GITHUB_WORKSPACE/bin/test-commands.sh laravel-${{ matrix.laravel }}
           cd laravel-${{ matrix.laravel }}
-          ./test-micro-commands.sh
+          ./test-commands.sh
