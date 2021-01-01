@@ -170,7 +170,7 @@ trait Finder
      * @return string
      * @throws Exception
      */
-    public function findServiceNamespace($service)
+    public function findServiceNamespace($service = null)
     {
         $root = $this->findRootNamespace();
 
@@ -274,9 +274,15 @@ trait Finder
      *
      * @return string
      */
-    public function findFeatureTestNamespace($service)
+    public function findFeatureTestNamespace($service = null)
     {
-        return $this->findServiceNamespace($service).'\\Tests\\Features';
+        $namespace = $this->findFeatureTestsRootNamespace();
+
+        if ($service) {
+            $namespace .= "\\Services\\$service";
+        }
+
+        return $namespace;
     }
 
     /**
@@ -344,9 +350,15 @@ trait Finder
      * @return string
      * @throws Exception
      */
-    public function findOperationTestNamespace($service)
+    public function findOperationTestNamespace($service = null)
     {
-        return $this->findServiceNamespace($service).'\\Tests\\Operations';
+        $namespace = $this->findUnitTestsRootNamespace();
+
+        if ($service) {
+            $namespace .= "\\Services\\$service";
+        }
+
+        return $namespace . '\\Operations';
     }
 
     /**
@@ -493,7 +505,7 @@ trait Finder
      */
     public function findDomainJobsTestsNamespace($domain)
     {
-        return $this->findDomainNamespace($domain).'\Tests\Jobs';
+        return $this->findUnitTestsRootNamespace() . "\\Domains\\$domain\\Jobs";
     }
 
     /**
@@ -862,7 +874,7 @@ trait Finder
     }
 
     /**
-     * Get the path to unit tests directory
+     * Get the root path to unit tests directory.
      *
      * @return string
      */
@@ -872,12 +884,27 @@ trait Finder
     }
 
     /**
-     * Get the path to feature tests directory
+     * Get the root path to feature tests directory.
      *
      * @return string
      */
     protected function findFeatureTestsRootPath()
     {
         return base_path(). DS . 'tests' . DS . 'Feature';
+    }
+
+    /**
+     * Get the root namespace for unit tests
+     *
+     * @return string
+     */
+    protected function findUnitTestsRootNamespace()
+    {
+        return 'Tests\\Unit';
+    }
+
+    protected function findFeatureTestsRootNamespace()
+    {
+        return 'Tests\\Feature';
     }
 }
