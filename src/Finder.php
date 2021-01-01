@@ -17,13 +17,6 @@ if (!defined('DS')) {
 
 trait Finder
 {
-    /**
-     * The name of the source directory.
-     *
-     * @var string
-     */
-    protected $srcDirectoryName = 'src';
-
     public function fuzzyFind($query)
     {
         $finder = new SymfonyFinder();
@@ -252,9 +245,13 @@ trait Finder
      */
     public function findFeatureTestPath($service, $test)
     {
-        $root = ($service) ? $this->findServicePath($service). DS . 'Tests' : base_path(). DS . 'tests';
+        $root = $this->findFeatureTestsRootPath();
 
-        return join(DS, [$root, 'Features', "$test.php"]);
+        if ($service) {
+            $root .= DS . 'Services'. DS . $service;
+        }
+
+        return join(DS, [$root, "$test.php"]);
     }
 
     /**
@@ -317,7 +314,11 @@ trait Finder
      */
     public function findOperationTestPath($service, $test)
     {
-        $root = ($service) ? $this->findServicePath($service). DS .'Tests' : base_path(). DS .'tests';
+        $root = $this->findUnitTestsRootPath();
+
+        if ($service) {
+            $root .= DS . 'Services'. DS . $service;
+        }
 
         return join(DS, [$root, 'Operations', "$test.php"]);
     }
@@ -504,7 +505,7 @@ trait Finder
      */
     public function findDomainTestsPath($domain)
     {
-        return $this->findDomainPath($domain).DS.'Tests';
+        return $this->findUnitTestsRootPath() . DS . 'Domains' . DS . $domain;
     }
 
     /**
@@ -517,7 +518,7 @@ trait Finder
      */
     public function findJobTestPath($domain, $jobTest)
     {
-        return $this->findDomainTestsPath($domain).DS.'Jobs'.DS.$jobTest.'.php';
+        return $this->findDomainTestsPath($domain) . DS . 'Jobs' . DS . "$jobTest.php";
     }
 
     /**
@@ -858,5 +859,25 @@ trait Finder
     protected function getConfigPath($name)
     {
         return app()['path.config']. DS ."$name.php";
+    }
+
+    /**
+     * Get the path to unit tests directory
+     *
+     * @return string
+     */
+    protected function findUnitTestsRootPath()
+    {
+        return base_path(). DS . 'tests' . DS . 'Unit';
+    }
+
+    /**
+     * Get the path to feature tests directory
+     *
+     * @return string
+     */
+    protected function findFeatureTestsRootPath()
+    {
+        return base_path(). DS . 'tests' . DS . 'Feature';
     }
 }
