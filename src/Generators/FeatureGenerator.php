@@ -75,7 +75,7 @@ class FeatureGenerator extends Generator
 
     	$content = str_replace(
     		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, mb_strtolower($feature), $featureNamespace],
+    		[$namespace, $testClass, Str::snake($feature), $featureNamespace],
     		$content
     	);
 

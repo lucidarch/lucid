@@ -64,7 +64,7 @@ class OperationGenerator extends Generator
 
         $content = str_replace(
             ['{{namespace}}', '{{testclass}}', '{{operation}}', '{{operation_namespace}}'],
-            [$namespace, $testClass, mb_strtolower($operation), $operationNamespace],
+            [$namespace, $testClass, Str::snake($operation), $operationNamespace],
             $content
         );
 
