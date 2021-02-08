@@ -4,7 +4,6 @@ namespace Lucid\Bus;
 
 use Exception;
 use ArrayAccess;
-use ReflectionClass;
 use ReflectionParameter;
 
 trait Marshal
@@ -20,17 +19,15 @@ trait Marshal
      */
     protected function marshal($command, ArrayAccess $source, array $extras = [])
     {
-        $injected = [];
-
-        $reflection = new ReflectionClass($command);
-
-        if ($constructor = $reflection->getConstructor()) {
-            $injected = array_map(function ($parameter) use ($command, $source, $extras) {
-                return $this->getParameterValueForCommand($command, $source, $parameter, $extras);
-            }, $constructor->getParameters());
+        $parameters = [];
+        
+        foreach ($source as $name => $parameter) {
+            $parameters[$name] = $parameter;
         }
 
-        return $reflection->newInstanceArgs($injected);
+        $parameters = array_merge($parameters, $extras);
+
+        return app($command, $parameters);
     }
 
     /**
