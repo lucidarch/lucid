@@ -49,8 +49,8 @@ lint "app/Http/Controllers/TradeController.php"
 ./vendor/bin/lucid make:feature trade
 examine "app/Features/TradeFeature.php"
 lint "app/Features/TradeFeature.php"
-examine "tests/Feature/TradeFeatureTest.php"
-lint "tests/Feature/TradeFeatureTest.php"
+examine "tests/Features/TradeFeatureTest.php"
+lint "tests/Features/TradeFeatureTest.php"
 
 # Job
 ./vendor/bin/lucid make:job submitTradeRequest shipping
@@ -108,8 +108,8 @@ lint "app/Services/Harbour/Http/Controllers/TradeController.php"
 ./vendor/bin/lucid make:feature trade harbour
 examine "app/Services/Harbour/Features/TradeFeature.php"
 lint "app/Services/Harbour/Features/TradeFeature.php"
-examine "tests/Feature/Services/Harbour/TradeFeatureTest.php"
-lint "tests/Feature/Services/Harbour/TradeFeatureTest.php"
+examine "tests/Features/Services/Harbour/TradeFeatureTest.php"
+lint "tests/Features/Services/Harbour/TradeFeatureTest.php"
 
 ## Operation
 ./vendor/bin/lucid make:operation spin harbour
