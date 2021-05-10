@@ -36,7 +36,7 @@ class MigrationMakeCommand extends SymfonyCommand
         $service = $this->argument('service');
         $migration = $this->argument('migration');
 
-        $path = $this->relativeFromReal($this->findServicePath(Str::service($service)) . "/database/migrations");
+        $path = $this->findMigrationPath(Str::service($service));
 
         $output = shell_exec('php artisan make:migration '.$migration.' --path='.$path);
 
@@ -53,7 +53,7 @@ class MigrationMakeCommand extends SymfonyCommand
     {
         return [
             ['migration', InputArgument::REQUIRED, 'The migration\'s name.'],
-            ['service', InputArgument::REQUIRED, 'The service in which the migration should be generated.'],
+            ['service', InputArgument::OPTIONAL, 'The service in which the migration should be generated.'],
         ];
     }
 }

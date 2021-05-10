@@ -211,6 +211,21 @@ trait Finder
     }
 
     /**
+     * Find the path to the directory of the given service name.
+     * In the case of a microservice service installation this will be app path.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findMigrationPath($service)
+    {
+        return (!$service) ?
+            'database/migrations' :
+            $this->relativeFromReal($this->findServicesRootPath(). DS . $service . "/database/migrations");
+    }
+
+    /**
      * Find the features root path in the given service.
      *
      * @param string $service
