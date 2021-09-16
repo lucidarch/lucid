@@ -920,6 +920,6 @@ trait Finder
 
     protected function findFeatureTestsRootNamespace()
     {
-        return 'Tests\\Feature';
+        return 'Tests\\Features';
     }
 }
