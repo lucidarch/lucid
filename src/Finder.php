@@ -905,7 +905,7 @@ trait Finder
      */
     protected function findFeatureTestsRootPath()
     {
-        return base_path(). DS . 'tests' . DS . 'Features';
+        return base_path(). DS . 'tests' . DS . 'Feature';
     }
 
     /**
