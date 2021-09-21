@@ -18,7 +18,7 @@ class ServiceGenerator extends Generator
         'database/',
         'database/factories/',
         'database/migrations/',
-        'database/seeds/',
+        'database/seeders/',
         'Http/',
         'Http/Controllers/',
         'Http/Middleware/',
