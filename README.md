@@ -13,9 +13,9 @@
 - Website: https://lucidarch.dev
 - Documentation: https://docs.lucidarch.dev
 
----
+
 ## Table of Contents
----
+
   * [About Lucid](#about-lucid)
   * [Concept](#concept)
     * [Table of Contents](#table-of-contents)
@@ -43,7 +43,6 @@
     * [PHPDoc](#phpdoc)
   * [Code of Conduct](#code-of-conduct)
 
-----
 
 ## About Lucid
 Lucid is a software architecture to build scalable Laravel projects. It incorporates **Command Bus** and **Domain Driven Design**
