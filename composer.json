@@ -19,7 +19,7 @@
     ],
     "require": {
         "ext-dom": "*",
-        "mockery/mockery": "^1.0",
+        "mockery/mockery": "*",
         "symfony/console": "*",
         "symfony/filesystem": "*",
         "symfony/finder": "*",
