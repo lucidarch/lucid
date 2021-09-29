@@ -38,6 +38,7 @@
   * [Support Questions](#support-questions)
   * [Core Development Discussion](#core-development-discussion)
   * [Which Branch? And How To Contribute](#which-branch-and-how-to-contribute)
+    * [Setup for Development](#setup-for-development)
   * [Security Vulnerabilities](#security-vulnerabilities)
   * [Coding Style](#coding-style)
     * [PHPDoc](#phpdoc)
@@ -353,15 +354,46 @@ Abed Halawi, the maintainer of Lucid, is typically present in the channel on wee
 
 The `main` branch is what contains the latest live version and is the one that gets released.
 
-To apply changes:
 - Fork this repository
 - Clone the forked repository to where you'll edit your code
-- Create a branch for your edits (e.g. `feature/queueable-units`)
+- Create a branch for your edits (e.g. `feature/queueable-units`, `fix/issue-31`)
 - Commit your changes and their tests (if applicable) with meaningful short messages
 - Push your branch `git push origin feature/queueable-units`
 - Open a [PR](https://github.com/lucidarch/lucid/compare) to the `main` branch, which will run tests for your edits
 
 ⏱ PRs and issues are usually checked about three times a week.
+
+
+### Setup for Development
+
+Following are the steps to setup for development on Lucid:
+
+> Assuming we're in `~/dev` directory...
+
+- Clone the forked repository `[your username]/lucid` which will create a `lucid` folder at `~/dev/lucid`
+- Create a Laravel project to test your implementation in it `composer create-project laravel/laravel myproject`
+- Connect the created Laravel project to the local Lucid installation; in the Laravel project's `composer.json`
+    ```json
+    "require": {
+        "...": "",
+        "lucidarch/lucid": "@dev"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/dev/lucid",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    ```
+> Make sure you change the `url` to the absolute path of your directory
+
+- Run `composer update` to create the symlink
+
+Now all your changes in the lucid directory will take effect automatically in the project.
 
 ## Security Vulnerabilities
 
