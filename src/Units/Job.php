@@ -2,6 +2,8 @@
 
 namespace Lucid\Units;
 
+use Lucid\Testing\MockMe;
+
 /**
  * An abstract Job to be extended by every job.
  * Note that this job is self-handling which
@@ -11,4 +13,5 @@ namespace Lucid\Units;
  */
 abstract class Job
 {
+    use MockMe;
 }
