@@ -93,25 +93,19 @@ class UnitMock
         $this->currentMock = Mockery::mock("{$this->unit}[handle]", $this->getCurrentConstructorArgs());
         $this->mocks[] = $this->currentMock;
 
-        app()->beforeResolving($this->unit, function ($app, $args) {
-
+        // $args will be what the developer passed to the unit in actual execution
+        app()->bind($this->unit, function ($app, $args) {
             foreach ($this->constructorExpectations as $key => $expectations) {
                 if ($args == $expectations) {
-                    app()->bind($this->unit, function () use ($key) {
-                        return $this->mocks[$key];
-                    });
-                    $bound = true;
-                    break;
+                    return $this->mocks[$key];
                 }
             }
 
-            if (!isset($bound) && empty($args)) {
-                throw new Mockery\Exception\NoMatchingExpectationException(
-                    "\n\nExpected one of the following arguments sets for {$this->unit}::__construct(): " .
-                    print_r($this->constructorExpectations, true) . "\nGot: " .
-                    print_r($args, true)
-                );
-            }
+            throw new Mockery\Exception\NoMatchingExpectationException(
+                "\n\nExpected one of the following arguments sets for {$this->unit}::__construct(): " .
+                print_r($this->constructorExpectations, true) . "\nGot: " .
+                print_r($args, true)
+            );
         });
 
         return $this;
