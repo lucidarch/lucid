@@ -52,6 +52,13 @@ lint "app/Features/TradeFeature.php"
 examine "tests/Feature/TradeFeatureTest.php"
 lint "tests/Feature/TradeFeatureTest.php"
 
+## Feature in Subdirectory
+./vendor/bin/lucid make:feature finance/wallet/pay
+examine "app/Features/Finance/Wallet/PayFeature.php"
+lint "app/Features/Finance/Wallet/PayFeature.php"
+examine "tests/Feature/Finance/Wallet/PayFeatureTest.php"
+lint "tests/Feature/Finance/Wallet/PayFeatureTest.php"
+
 # Job
 ./vendor/bin/lucid make:job submitTradeRequest shipping
 examine "app/Domains/Shipping/Jobs/SubmitTradeRequestJob.php"
@@ -110,6 +117,13 @@ examine "app/Services/Harbour/Features/TradeFeature.php"
 lint "app/Services/Harbour/Features/TradeFeature.php"
 examine "tests/Feature/Services/Harbour/TradeFeatureTest.php"
 lint "tests/Feature/Services/Harbour/TradeFeatureTest.php"
+
+## Feature in Subdirectory
+./vendor/bin/lucid make:feature port/yacht/park harbour
+examine "app/Services/Harbour/Features/Port/Yacht/ParkFeature.php"
+lint "app/Services/Harbour/Features/Port/Yacht/ParkFeature.php"
+examine "tests/Feature/Services/Harbour/Port/Yacht/ParkFeatureTest.php"
+lint "tests/Feature/Services/Harbour/Port/Yacht/ParkFeatureTest.php"
 
 ## Operation
 ./vendor/bin/lucid make:operation spin harbour

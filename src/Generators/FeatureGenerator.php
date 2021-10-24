@@ -14,6 +14,7 @@ class FeatureGenerator extends Generator
         $service = Str::service($service);
 
         $path = $this->findFeaturePath($service, $feature);
+        $classname = $this->classname($feature);
 
         if ($this->exists($path)) {
             throw new Exception('Feature already exists!');
@@ -21,7 +22,7 @@ class FeatureGenerator extends Generator
             return false;
         }
 
-        $namespace = $this->findFeatureNamespace($service);
+        $namespace = $this->findFeatureNamespace($service, $feature);
 
         $content = file_get_contents($this->getStub());
 
@@ -40,7 +41,7 @@ class FeatureGenerator extends Generator
 
         $content = str_replace(
             ['{{feature}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
-            [$feature, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
+            [$classname, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
             $content
         );
 
@@ -59,6 +60,13 @@ class FeatureGenerator extends Generator
         );
     }
 
+    private function classname($feature)
+    {
+        $parts = explode(DS, $feature);
+
+        return array_pop($parts);
+    }
+
     /**
      * Generate the test file.
      *
@@ -70,16 +78,17 @@ class FeatureGenerator extends Generator
     	$content = file_get_contents($this->getTestStub());
 
     	$namespace = $this->findFeatureTestNamespace($service);
-        $featureNamespace = $this->findFeatureNamespace($service)."\\$feature";
-        $testClass = $feature.'Test';
+    	$featureClass = $this->classname($feature);
+        $featureNamespace = $this->findFeatureNamespace($service, $feature)."\\".$featureClass;
+        $testClass = $featureClass.'Test';
 
     	$content = str_replace(
     		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, Str::snake($feature), $featureNamespace],
+    		[$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
     		$content
     	);
 
-    	$path = $this->findFeatureTestPath($service, $testClass);
+    	$path = $this->findFeatureTestPath($service, $feature.'Test');
 
     	$this->createFile($path, $content);
     }

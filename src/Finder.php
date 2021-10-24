@@ -277,9 +277,18 @@ trait Finder
      * @return string
      * @throws Exception
      */
-    public function findFeatureNamespace($service)
+    public function findFeatureNamespace($service, $feature)
     {
-        return $this->findServiceNamespace($service).'\\Features';
+        $dirs = join('\\', explode(DS, dirname($feature)));
+
+        $base = $this->findServiceNamespace($service).'\\Features';
+
+        // greater than 1 because when there aren't subdirectories it will be "."
+        if (strlen($dirs) > 1) {
+            return $base.'\\'.$dirs;
+        }
+
+        return $base;
     }
 
     /**

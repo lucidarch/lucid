@@ -60,7 +60,12 @@ class Str
      */
     public static function feature($name)
     {
-        return self::studly(preg_replace('/Feature(\.php)?$/', '', $name).'Feature');
+        $parts = array_map(function($part) { return self::studly($part); }, explode("/", $name));
+        $feature  = self::studly(preg_replace('/Feature(\.php)?$/', '', array_pop($parts)).'Feature');
+
+        $parts[] = $feature;
+
+        return join(DS, $parts);
     }
 
     /**
