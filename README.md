@@ -12,7 +12,9 @@
 
 - Website: https://lucidarch.dev
 - Documentation: https://docs.lucidarch.dev
-
+- Social: we share updates & interesting content from the web
+    - Twitter: [@lucid_arch](https://twitter.com/lucid_arch) & [#lucidarch](https://twitter.com/search?q=%23lucidarch)
+    - Reddit: [/r/lucidarch](https://www.reddit.com/r/lucidarch/)
 
 ## Table of Contents
 
