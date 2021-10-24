@@ -7,22 +7,36 @@ class UnitMockRegistry
     /**
      * @var array
      */
-    private static $mocks = [];
+    private $mocks = [];
 
-    public static function has(string $unit): bool
+    public function __construct()
     {
-        return isset(self::$mocks[$unit]);
+        // there should only be one instance of the registry,
+        // so we register ourselves onto the application to be reused.
+        // this is necessary in order to have a clean registry at the beginning of each test method run,
+        // otherwise, with a singleton mocks will be carried on across test runs within the same class.
+        app()->instance(static::class, $this);
     }
 
-    public static function get(string $unit): ?UnitMock
+    public function has(string $unit): bool
     {
-        if (!self::has($unit)) return null;
-
-        return self::$mocks[$unit];
+        return isset($this->mocks[$unit]);
     }
 
-    public static function register(string $unit, UnitMock $mock)
+    public function get(string $unit): ?UnitMock
     {
-        self::$mocks[$unit] = $mock;
+        if (!$this->has($unit)) return null;
+
+        return $this->mocks[$unit];
+    }
+
+    public function register(string $unit, UnitMock $mock)
+    {
+        $this->mocks[$unit] = $mock;
+    }
+
+    public function count()
+    {
+        return count($this->mocks);
     }
 }
