@@ -13,6 +13,7 @@ class MonolithGenerator extends Generator
             'Services',
             'Foundation',
             'Policies',
+            'Data/Models',
         ]
     ];
 

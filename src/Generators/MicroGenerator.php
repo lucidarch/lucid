@@ -21,6 +21,7 @@ class MicroGenerator extends GeneratorAlias
             'Domains',
             'Features',
             'Operations',
+            'Data/Models',
         ],
         'tests' => [
             'Domains',

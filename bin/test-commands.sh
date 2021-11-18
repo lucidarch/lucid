@@ -74,8 +74,8 @@ lint "tests/Unit/Domains/Boat/Jobs/SailJobTest.php"
 
 # Model
 ./vendor/bin/lucid make:model bridge
-examine "app/Data/Bridge.php"
-lint "app/Data/Bridge.php"
+examine "app/Data/Models/Bridge.php"
+lint "app/Data/Models/Bridge.php"
 
 # Operation
 ./vendor/bin/lucid make:operation spin

@@ -54,6 +54,10 @@ class ModelGenerator extends Generator
      */
     public function getStub()
     {
+        if ($this->laravelVersion() > 7) {
+            return __DIR__ . '/../Generators/stubs/model-8.stub';
+        }
+
         return __DIR__ . '/../Generators/stubs/model.stub';
     }
 }

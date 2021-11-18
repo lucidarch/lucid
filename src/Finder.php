@@ -773,7 +773,7 @@ trait Finder
      */
     public function findModelPath($model)
     {
-        return $this->getSourceDirectoryName(). DS .'Data'. DS ."$model.php";
+        return $this->getSourceDirectoryName(). DS .'Data'. DS . 'Models' . DS . "$model.php";
     }
 
     /**
@@ -831,7 +831,7 @@ trait Finder
      */
     public function findModelNamespace()
     {
-        return $this->findRootNamespace().'\\Data';
+        return $this->findRootNamespace().'\\Data\\Models';
     }
 
     /**
