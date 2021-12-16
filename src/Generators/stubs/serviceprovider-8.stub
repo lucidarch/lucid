@@ -2,11 +2,9 @@
 
 namespace {{namespace}};
 
-use Lang;
-use View;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use {{namespace}}\RouteServiceProvider;
-use {{namespace}}\BroadcastServiceProvider;
 use Illuminate\Translation\TranslationServiceProvider;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
