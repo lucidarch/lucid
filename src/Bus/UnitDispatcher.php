@@ -29,7 +29,7 @@ trait UnitDispatcher
      *
      * @return mixed
      */
-    public function run(mixed $unit, $arguments = [], $extra = [])
+    public function run($unit, $arguments = [], $extra = [])
     {
         if ($arguments instanceof Request) {
             $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
