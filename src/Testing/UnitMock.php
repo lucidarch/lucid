@@ -56,6 +56,42 @@ class UnitMock
         $this->constructorExpectations[] = $this->currentConstructorExpectations;
     }
 
+    public function getConstructorExpectations()
+    {
+        return $this->constructorExpectations;
+    }
+
+    /**
+     * Returns constructor expectations array that matches the given $unit.
+     * Empty array otherwise.
+     *
+     * @param $unit
+     * @return array|mixed|void
+     * @throws ReflectionException
+     */
+    public function getConstructorExpectationsForInstance($unit)
+    {
+        foreach ($this->constructorExpectations as $index => $args) {
+            $expected = new $unit(...$args);
+
+            $ref = new ReflectionClass($unit);
+
+            // we start by assuming that the unit instance and the $expected one are equal
+            // until proven otherwise when we find differences between properties.
+            $isEqual = true;
+            foreach ($ref->getProperties() as $property) {
+                if ($property->getValue($unit) !== $property->getValue($expected)) {
+                    $isEqual = false;
+                    break;
+                }
+            }
+
+            if ($isEqual) {
+                return $this->constructorExpectations[$index];
+            }
+        }
+    }
+
     /**
      * @return array
      * @throws ReflectionException
@@ -109,6 +145,32 @@ class UnitMock
         });
 
         return $this;
+    }
+
+    /**
+     * Compare the mock to an actual instance.
+     *
+     * @param object $unit
+     * @return void
+     * @throws Mockery\Exception\NoMatchingExpectationException
+     */
+    public function compareTo(object $unit)
+    {
+        $expected = array_map(fn($args) => new $unit(...$args), $this->constructorExpectations);
+
+        $ref = new ReflectionClass($unit);
+        foreach ($ref->getProperties() as $property) {
+
+            $expectations = array_map(fn($instance) => $property->getValue($instance), $expected);
+
+            if (!in_array($property->getValue($unit), $expectations)) {
+                throw new Mockery\Exception\NoMatchingExpectationException(
+                    "Mismatch in \${$property->getName()} when running {$this->unit} \n\n--- Expected (one of)\n".
+                    print_r(join("\n", array_map(fn($instance) => $property->getValue($instance), $expected)), true).
+                    "\n\n+++Actual:\n".print_r($property->getValue($unit), true)."\n\n"
+                );
+            }
+        }
     }
 
     public function getMock(): MockInterface
