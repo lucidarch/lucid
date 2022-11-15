@@ -22,10 +22,10 @@ abstract class RouteServiceProvider extends BaseServiceProvider
      */
     public function loadRoutesFiles($router, $namespace, $pathApi = null, $pathWeb = null)
     {
-        if (is_file($pathApi)) {
+        if (is_string($pathApi) && is_file($pathApi)) {
             $this->mapApiRoutes($router, $namespace, $pathApi);
         }
-        if (is_file($pathWeb)) {
+        if (is_string($pahtWeb) && is_file($pathWeb)) {
             $this->mapWebRoutes($router, $namespace, $pathWeb);
         }
     }
