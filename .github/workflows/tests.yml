@@ -53,7 +53,9 @@ jobs:
           coverage: none
 
       - name: Install Laravel ${{ matrix.laravel }}
-        run: composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }}
+        run: |
+          composer config -g --no-plugins allow-plugins.kylekatarnls/update-helper true
+          composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }} --no-interaction
 
       - name: Require Lucid
         run: |
