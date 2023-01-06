@@ -61,7 +61,7 @@ class FeatureGenerator extends Generator
         );
     }
 
-    private function classname($feature)
+    private function classname(string $feature): string
     {
         $parts = explode(DS, $feature);
 

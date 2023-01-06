@@ -19,23 +19,29 @@ class OperationDeleteCommand extends SymfonyCommand
 
     protected string $description = 'Delete an existing Operation in a service';
 
-    /**
-     * The type of class being deleted.
-     */
-    protected string $type = 'Operation';
-
     public function handle(): void
     {
         try {
             $service = Str::service($this->argument('service'));
             $title = Str::operation($this->argument('operation'));
 
+            // Delete operation
             if (!$this->exists($operation = $this->findOperationPath($service, $title))) {
-                $this->error('Operation class '.$title.' cannot be found.');
+                $this->error("Operation class $title cannot be found.");
             } else {
                 $this->delete($operation);
 
-                $this->info('Operation class <comment>'.$title.'</comment> deleted successfully.');
+                $this->info("Operation class <comment>$title</comment> deleted successfully.");
+            }
+
+            // Delete operation tests
+            $testTitle = $title . 'Test';
+            if (!$this->exists($operation = $this->findOperationTestPath($service, $testTitle))) {
+                $this->error("Operation test class $testTitle cannot be found.");
+            } else {
+                $this->delete($operation);
+
+                $this->info("Operation test class <comment>$testTitle</comment> deleted successfully.");
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -48,10 +54,5 @@ class OperationDeleteCommand extends SymfonyCommand
             ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
             ['service', InputArgument::OPTIONAL, 'The service from which the operation should be deleted.'],
         ];
-    }
-
-    protected function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/operation.stub';
     }
 }

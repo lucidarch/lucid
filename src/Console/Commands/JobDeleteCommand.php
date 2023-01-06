@@ -19,19 +19,15 @@ class JobDeleteCommand extends SymfonyCommand
 
     protected string $description = 'Delete an existing Job in a domain';
 
-    /**
-     * The type of class being deleted.
-     */
-    protected string $type = 'Job';
-
     public function handle(): void
     {
         try {
             $domain = Str::studly($this->argument('domain'));
             $title = Str::job($this->argument('job'));
 
+            // Delete job
             if (!$this->exists($job = $this->findJobPath($domain, $title))) {
-                $this->error('Job class '.$title.' cannot be found.');
+                $this->error("Job class $title cannot be found.");
             } else {
                 $this->delete($job);
 
@@ -39,7 +35,17 @@ class JobDeleteCommand extends SymfonyCommand
                     $this->delete($this->findDomainPath($domain));
                 }
 
-                $this->info('Job class <comment>'.$title.'</comment> deleted successfully.');
+                $this->info("Job class <comment>$title</comment> deleted successfully.");
+            }
+
+            // Delete job tests
+            $testTitle = $title . 'Test';
+            if (!$this->exists($job = $this->findJobTestPath($domain, $testTitle))) {
+                $this->error("Job test class $testTitle cannot be found.");
+            } else {
+                $this->delete($job);
+
+                $this->info("Job test class <comment>$testTitle</comment> deleted successfully.");
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -52,10 +58,5 @@ class JobDeleteCommand extends SymfonyCommand
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
             ['domain', InputArgument::REQUIRED, 'The domain from which the job will be deleted.'],
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/job.stub';
     }
 }
