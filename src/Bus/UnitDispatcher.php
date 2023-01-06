@@ -25,14 +25,12 @@ trait UnitDispatcher
      * laravel function dispatchFromArray.
      * When the $arguments is an instance of Request
      * it will call dispatchFrom instead.
-     *
-     * @param mixed                         $unit
-     * @param array|\Illuminate\Http\Request $arguments
-     * @param array                          $extra
-     *
-     * @return mixed
      */
-    public function run($unit, $arguments = [], $extra = [])
+    public function run(
+        mixed $unit,
+        array|Request $arguments = [],
+        array $extra = []
+    ): mixed
     {
         if (is_object($unit) && !App::runningUnitTests()) {
             $result = $this->dispatch($unit);
@@ -75,14 +73,13 @@ trait UnitDispatcher
     /**
      * Run the given unit in the given queue.
      *
-     * @param string $unit
-     * @param array $arguments
-     * @param string|null $queue
-     *
-     * @return mixed
      * @throws ReflectionException
      */
-    public function runInQueue($unit, array $arguments = [], $queue = 'default')
+    public function runInQueue(
+        string $unit,
+        array $arguments = [],
+        ?string $queue = 'default'
+    ): mixed
     {
         // instantiate and queue the unit
         $reflection = new ReflectionClass($unit);

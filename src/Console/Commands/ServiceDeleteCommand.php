@@ -15,60 +15,23 @@ class ServiceDeleteCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The base namespace for this command.
-     *
-     * @var string
-     */
-    private $namespace;
+    protected string $name = 'delete:service';
 
-    /**
-     * The Services path.
-     *
-     * @var string
-     */
-    private $path;
+    protected string $description = 'Delete an existing Service';
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:service';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete an existing Service';
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/service.stub';
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         if ($this->isMicroservice()) {
-            return $this->error('This functionality is disabled in a Microservice');
+            $this->error('This functionality is disabled in a Microservice');
+            return;
         }
 
         try {
             $name = Str::service($this->argument('name'));
 
             if (!$this->exists($service = $this->findServicePath($name))) {
-                return $this->error('Service '.$name.' cannot be found.');
+                $this->error('Service '.$name.' cannot be found.');
+                return;
             }
 
             $this->delete($service);
@@ -77,14 +40,21 @@ class ServiceDeleteCommand extends SymfonyCommand
 
             $this->info('Please remove your registered service providers, if any.');
         } catch (\Exception $e) {
-            dd($e->getMessage(), $e->getFile(), $e->getLine());
+            $this->error($e->getMessage());
+            $this->error($e->getFile());
+            $this->error($e->getLine());
         }
     }
 
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The service name.'],
         ];
+    }
+
+    protected function getStub(): string
+    {
+        return __DIR__ . '/../Generators/stubs/service.stub';
     }
 }

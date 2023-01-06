@@ -16,32 +16,16 @@ class PolicyMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:policy';
+    protected string $name = 'make:policy';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a Policy.';
+    protected string $description = 'Create a Policy.';
 
     /**
      * The type of class being generated
-     * @var string
      */
-    protected $type = 'Policy';
+    protected string $type = 'Policy';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         $generator = new PolicyGenerator();
 
@@ -60,24 +44,14 @@ class PolicyMakeCommand extends SymfonyCommand
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/policy.stub';
     }

@@ -10,10 +10,7 @@ namespace Lucid\Generators;
  */
 trait DirectoriesGeneratorTrait
 {
-    /**
-     * @return array
-     */
-    private function generateDirectories()
+    private function generateDirectories(): array
     {
         $root = base_path();
 

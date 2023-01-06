@@ -16,35 +16,19 @@ class PolicyDeleteCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:policy';
+    protected string $name = 'delete:policy';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete an existing Policy.';
+    protected string $description = 'Delete an existing Policy.';
 
     /**
      * The type of class being generated
-     * @var string
      */
-    protected $type = 'Policy';
+    protected string $type = 'Policy';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
-            $policy = $this->parsePolicyName($this->argument('policy'));
+            $policy = Str::policy($this->argument('policy'));
 
             if ( ! $this->exists($path = $this->findPolicyPath($policy))) {
                 $this->error('Policy class ' . $policy . ' cannot be found.');
@@ -58,36 +42,15 @@ class PolicyDeleteCommand extends SymfonyCommand
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/policy.stub';
-    }
-
-    /**
-     * Parse the model name.
-     *
-     * @param string $name
-     * @return string
-     */
-    public function parsePolicyName($name)
-    {
-        return Str::policy($name);
     }
 }

@@ -13,13 +13,8 @@ trait ServesFeatures
 
     /**
      * Serve the given feature with the given arguments.
-     *
-     * @param string $feature
-     * @param array  $arguments
-     *
-     * @return mixed
      */
-    public function serve($feature, $arguments = [])
+    public function serve(string $feature, array $arguments = []): mixed
     {
         event(new FeatureStarted($feature, $arguments));
 

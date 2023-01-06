@@ -6,7 +6,7 @@ class MonolithGenerator extends Generator
 {
     use DirectoriesGeneratorTrait;
 
-    private $directories = [
+    private array $directories = [
         'app' => [
             'Data',
             'Domains',
@@ -17,7 +17,7 @@ class MonolithGenerator extends Generator
         ]
     ];
 
-    public function generate()
+    public function generate(): array
     {
         return $this->generateDirectories();
     }

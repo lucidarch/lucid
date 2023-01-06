@@ -15,26 +15,11 @@ class InitMicroCommand extends SymfonyCommand
     use Filesystem;
     use InitCommandTrait;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'init:micro';
+    protected string $name = 'init:micro';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Initialize Lucid Micro in current project.';
+    protected string $description = 'Initialize Lucid Micro in current project.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         $version = app()->version();
         $this->info("Initializing Lucid Micro for Laravel $version\n");
@@ -42,11 +27,9 @@ class InitMicroCommand extends SymfonyCommand
         $generator = new MicroGenerator();
         $paths = $generator->generate();
 
-        $this->comment("Created directories:");
+        $this->comment('Created directories:');
         $this->comment(join("\n", $paths));
 
         $this->welcome();
-
-        return 0;
     }
 }

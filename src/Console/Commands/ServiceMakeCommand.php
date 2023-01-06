@@ -15,50 +15,14 @@ class ServiceMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The base namespace for this command.
-     *
-     * @var string
-     */
-    private $namespace;
+    private string $namespace;
+    private string $path;
 
-    /**
-     * The Services path.
-     *
-     * @var string
-     */
-    private $path;
+    protected string $name = 'make:service';
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:service';
+    protected string $description = 'Create a new Service';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new Service';
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/service.stub';
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
             $name = $this->argument('name');
@@ -68,7 +32,6 @@ class ServiceMakeCommand extends SymfonyCommand
 
             $this->info('Service '.$service->name.' created successfully.'."\n");
 
-            $rootNamespace = $this->findRootNamespace();
             $serviceNamespace = $this->findServiceNamespace($service->name);
 
             $serviceProvider = $serviceNamespace.'\\Providers\\'.$service->name.'ServiceProvider';
@@ -83,10 +46,15 @@ class ServiceMakeCommand extends SymfonyCommand
         }
     }
 
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The service name.'],
         ];
+    }
+
+    protected function getStub(): string
+    {
+        return __DIR__ . '/../Generators/stubs/service.stub';
     }
 }

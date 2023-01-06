@@ -15,37 +15,20 @@ class JobDeleteCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:job';
+    protected string $name = 'delete:job';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete an existing Job in a domain';
+    protected string $description = 'Delete an existing Job in a domain';
 
     /**
      * The type of class being deleted.
-     *
-     * @var string
      */
-    protected $type = 'Job';
+    protected string $type = 'Job';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
             $domain = Str::studly($this->argument('domain'));
-            $title = $this->parseName($this->argument('job'));
+            $title = Str::job($this->argument('job'));
 
             if (!$this->exists($job = $this->findJobPath($domain, $title))) {
                 $this->error('Job class '.$title.' cannot be found.');
@@ -58,12 +41,12 @@ class JobDeleteCommand extends SymfonyCommand
 
                 $this->info('Job class <comment>'.$title.'</comment> deleted successfully.');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
@@ -71,27 +54,8 @@ class JobDeleteCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/job.stub';
-    }
-
-    /**
-     * Parse the job name.
-     *  remove the Job.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::job($name);
     }
 }

@@ -9,29 +9,13 @@
 
  class FeatureDescribeCommand extends Command
  {
-
      use Finder;
 
-     /**
-      * The console command name.
-      *
-      * @var string
-      */
-     protected $name = 'describe:feature';
+     protected string $name = 'describe:feature';
 
-     /**
-      * The console command description.
-      *
-      * @var string
-      */
-     protected $description = 'List the jobs of the specified feature in sequential order.';
+     protected string $description = 'List the jobs of the specified feature in sequential order.';
 
-     /**
-      * Execute the console command.
-      *
-      * @return bool|null
-      */
-     public function handle()
+     public function handle(): void
      {
          if ($feature = $this->findFeature($this->argument('feature'))) {
             $parser = new Parser();
@@ -47,19 +31,13 @@
                 $this->table(['', 'Job', 'Domain', 'Path'], $jobs);
             }
 
-            return true;
+            return;
         }
 
         throw new InvalidArgumentException('Feature with name "'.$this->argument('feature').'" not found.');
      }
 
-
-     /**
-      * Get the console command arguments.
-      *
-      * @return array
-      */
-     protected function getArguments()
+     protected function getArguments(): array
      {
          return [
              ['feature', InputArgument::REQUIRED, 'The feature name to list the jobs of.'],

@@ -6,7 +6,7 @@ use Lucid\Str;
 
 trait InitCommandTrait
 {
-    private function welcome($service = null)
+    private function welcome($service = null): void
     {
         $service = Str::service($service);
 
@@ -53,7 +53,7 @@ trait InitCommandTrait
 
         $this->info('');
 
-        $this->info('For more details, help yourself with the docs at https://docs.lucidarch.dev');
+        $this->info('For more details, help yourself with the docs at <href=https://docs.lucidarch.dev>https://docs.lucidarch.dev</>');
         $this->info('');
         $this->info('Remember to enjoy the journey.');
         $this->info('Cheers!');

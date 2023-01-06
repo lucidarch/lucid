@@ -27,7 +27,6 @@ fi
 examine "app/Providers"
 examine "app/Providers/RouteServiceProvider.php"
 examine "resources"
-examine "resources/lang"
 examine "resources/views"
 examine "resources/views/welcome.blade.php"
 lint "resources/views/welcome.blade.php"

@@ -8,7 +8,10 @@ use Lucid\Entities\Feature;
 
 class FeatureGenerator extends Generator
 {
-    public function generate($feature, $service, array $jobs = [])
+    /**
+     * @throws Exception
+     */
+    public function generate(string $feature, ?string $service, array $jobs = []): Feature
     {
         $feature = Str::feature($feature);
         $service = Str::service($service);
@@ -18,8 +21,6 @@ class FeatureGenerator extends Generator
 
         if ($this->exists($path)) {
             throw new Exception('Feature already exists!');
-
-            return false;
         }
 
         $namespace = $this->findFeatureNamespace($service, $feature);
@@ -39,7 +40,7 @@ class FeatureGenerator extends Generator
             }
         }
 
-        $content = str_replace(
+        $content = Str::replace(
             ['{{feature}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
             [$classname, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
             $content
@@ -70,10 +71,9 @@ class FeatureGenerator extends Generator
     /**
      * Generate the test file.
      *
-     * @param  string $feature
-     * @param  string $service
+     * @throws Exception
      */
-    private function generateTestFile($feature, $service)
+    private function generateTestFile(string $feature, ?string $service)
     {
     	$content = file_get_contents($this->getTestStub());
 
@@ -82,9 +82,9 @@ class FeatureGenerator extends Generator
         $featureNamespace = $this->findFeatureNamespace($service, $feature)."\\".$featureClass;
         $testClass = $featureClass.'Test';
 
-    	$content = str_replace(
+    	$content = Str::replace(
     		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
+    		[$namespace, $testClass, Str::snake(Str::replace(DS, '', $feature)), $featureNamespace],
     		$content
     	);
 
@@ -95,20 +95,16 @@ class FeatureGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/feature.stub';
     }
 
     /**
      * Get the test stub file for the generator.
-     *
-     * @return string
      */
-    private function getTestStub()
+    private function getTestStub(): string
     {
     	return __DIR__ . '/stubs/feature-test.stub';
     }

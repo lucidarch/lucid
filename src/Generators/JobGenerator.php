@@ -8,7 +8,10 @@ use Lucid\Entities\Job;
 
 class JobGenerator extends Generator
 {
-    public function generate($job, $domain, $isQueueable = false)
+    /**
+     * @throws Exception
+     */
+    public function generate(string $job, string $domain, bool $isQueueable = false): Job
     {
         $job = Str::job($job);
         $domain = Str::domain($domain);
@@ -25,7 +28,7 @@ class JobGenerator extends Generator
         $namespace = $this->findDomainJobsNamespace($domain);
 
         $content = file_get_contents($this->getStub($isQueueable));
-        $content = str_replace(
+        $content = Str::replace(
             ['{{job}}', '{{namespace}}', '{{unit_namespace}}'],
             [$job, $namespace, $this->findUnitNamespace()],
             $content
@@ -49,10 +52,9 @@ class JobGenerator extends Generator
     /**
      * Generate test file.
      *
-     * @param string $job
-     * @param string $domain
+     * @throws Exception
      */
-    private function generateTestFile($job, $domain)
+    private function generateTestFile(string $job, string $domain): void
     {
         $content = file_get_contents($this->getTestStub());
 
@@ -60,7 +62,7 @@ class JobGenerator extends Generator
         $jobNamespace = $this->findDomainJobsNamespace($domain)."\\$job";
         $testClass = $job.'Test';
 
-        $content = str_replace(
+        $content = Str::replace(
             ['{{namespace}}', '{{testclass}}', '{{job}}', '{{job_namespace}}'],
             [$namespace, $testClass, Str::snake($job), $jobNamespace],
             $content
@@ -73,10 +75,8 @@ class JobGenerator extends Generator
 
     /**
      * Create domain directory.
-     *
-     * @param string $domain
      */
-    private function createDomainDirectory($domain)
+    private function createDomainDirectory(string $domain)
     {
         $this->createDirectory($this->findDomainPath($domain).'/Jobs');
         $this->createDirectory($this->findDomainTestsPath($domain).'/Jobs');
@@ -84,26 +84,20 @@ class JobGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    public function getStub($isQueueable = false)
+    public function getStub(bool $isQueueable = false): string
     {
-        $stubName;
         if ($isQueueable) {
-            $stubName = '/stubs/job-queueable.stub';
+            return __DIR__ . '/stubs/job-queueable.stub';
         } else {
-            $stubName = '/stubs/job.stub';
+            return __DIR__ . '/stubs/job.stub';
         }
-        return __DIR__.$stubName;
     }
 
     /**
      * Get the test stub file for the generator.
-     *
-     * @return string
      */
-    public function getTestStub()
+    public function getTestStub(): string
     {
         return __DIR__ . '/stubs/job-test.stub';
     }

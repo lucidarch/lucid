@@ -16,35 +16,19 @@ class RequestDeleteCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:request';
+    protected string $name = 'delete:request';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete an existing Request.';
+    protected string $description = 'Delete an existing Request.';
 
     /**
      * The type of class being generated
-     * @var string
      */
-    protected $type = 'Request';
+    protected string $type = 'Request';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
-            $request = $this->parseRequestName($this->argument('request'));
+            $request = Str::request($this->argument('request'));
             $service = Str::service($this->argument('service'));
 
             if ( ! $this->exists($path = $this->findRequestPath($service, $request))) {
@@ -59,12 +43,7 @@ class RequestDeleteCommand extends SymfonyCommand
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['request', InputArgument::REQUIRED, 'The Request\'s name.'],
@@ -72,24 +51,8 @@ class RequestDeleteCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/request.stub';
-    }
-
-    /**
-     * Parse the model name.
-     *
-     * @param string $name
-     * @return string
-     */
-    public function parseRequestName($name)
-    {
-        return Str::request($name);
     }
 }

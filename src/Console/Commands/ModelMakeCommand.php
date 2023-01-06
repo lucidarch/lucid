@@ -16,32 +16,16 @@ class ModelMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:model';
+    protected string $name = 'make:model';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new Eloquent Model.';
+    protected string $description = 'Create a new Eloquent Model.';
 
     /**
      * The type of class being generated
-     * @var string
      */
-    protected $type = 'Model';
+    protected string $type = 'Model';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         $generator = new ModelGenerator();
 
@@ -60,12 +44,7 @@ class ModelMakeCommand extends SymfonyCommand
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['model', InputArgument::REQUIRED, 'The Model\'s name.']
@@ -74,10 +53,8 @@ class ModelMakeCommand extends SymfonyCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/model.stub';
     }

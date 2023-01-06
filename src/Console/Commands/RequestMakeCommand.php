@@ -16,32 +16,16 @@ class RequestMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:request';
+    protected string $name = 'make:request';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a Request in a domain.';
+    protected string $description = 'Create a Request in a domain.';
 
     /**
      * The type of class being generated
-     * @var string
      */
-    protected $type = 'Request';
+    protected string $type = 'Request';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         $generator = new RequestGenerator();
 
@@ -61,12 +45,7 @@ class RequestMakeCommand extends SymfonyCommand
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
+    public function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the class.'],
@@ -74,12 +53,7 @@ class RequestMakeCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/request.stub';
     }

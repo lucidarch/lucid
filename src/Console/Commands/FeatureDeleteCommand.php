@@ -15,37 +15,20 @@ class FeatureDeleteCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:feature';
+    protected string $name = 'delete:feature';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete an existing Feature in a service';
+    protected string $description = 'Delete an existing Feature in a service';
 
     /**
      * The type of class being deleted.
-     *
-     * @var string
      */
-    protected $type = 'Feature';
+    protected string $type = 'Feature';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
             $service = Str::service($this->argument('service'));
-            $title = $this->parseName($this->argument('feature'));
+            $title = Str::feature($this->argument('feature'));
 
             if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
                 $this->error('Feature class '.$title.' cannot be found.');
@@ -54,17 +37,12 @@ class FeatureDeleteCommand extends SymfonyCommand
 
                 $this->info('Feature class <comment>'.$title.'</comment> deleted successfully.');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
@@ -72,27 +50,8 @@ class FeatureDeleteCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/feature.stub';
-    }
-
-    /**
-     * Parse the feature name.
-     *  remove the Feature.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::feature($name);
     }
 }

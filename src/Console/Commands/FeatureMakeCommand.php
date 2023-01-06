@@ -16,38 +16,20 @@ class FeatureMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:feature';
+    protected string $name = 'make:feature';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new Feature in a service';
+    protected string $description = 'Create a new Feature in a service';
 
     /**
      * The type of class being generated.
-     *
-     * @var string
      */
-    protected $type = 'Feature';
+    protected string $type = 'Feature';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     * @throws \Exception
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
             $service = Str::studly($this->argument('service'));
-            $title = $this->parseName($this->argument('feature'));
+            $title = Str::feature($this->argument('feature'));
 
             $generator = new FeatureGenerator();
             $feature = $generator->generate($title, $service);
@@ -58,17 +40,12 @@ class FeatureMakeCommand extends SymfonyCommand
                 "\n".
                 'Find it at <comment>'.$feature->relativePath.'</comment>'."\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
@@ -76,27 +53,8 @@ class FeatureMakeCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/feature.stub';
-    }
-
-    /**
-     * Parse the feature name.
-     *  remove the Feature.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::feature($name);
     }
 }

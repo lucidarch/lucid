@@ -12,10 +12,8 @@ class MicroGenerator extends GeneratorAlias
 
     /**
      * The directories to be created.
-     *
-     * @var array
      */
-    private $directories = [
+    private array $directories = [
         'app' => [
             'Data',
             'Domains',
@@ -31,10 +29,8 @@ class MicroGenerator extends GeneratorAlias
 
     /**
      * Generate initial directory structure.
-     *
-     * @return array
      */
-    public function generate()
+    public function generate(): array
     {
         $created = $this->generateDirectories();
 
@@ -76,7 +72,7 @@ class MicroGenerator extends GeneratorAlias
         }
     }
 
-    private function testsuites()
+    private function testsuites(): string
     {
         return <<<XMLSUITE
     <testsuite name="Domains">
@@ -93,22 +89,19 @@ XMLSUITE;
 
     }
 
-    /**
-     * @return array
-     */
-    private function generateCustomDirectories()
+    private function generateCustomDirectories(): array
     {
         $root = base_path();
 
-        $created = [];
-        // rename or create tests/Features directory
         if ($this->exists("$root/tests/Feature")) {
-            $this->rename("$root/tests/Feature", "$root/tests/Features");
-        } else {
+            $this->delete("$root/tests/Feature");
+        }
+
+        if (!$this->exists("$root/tests/Features")) {
             $this->createDirectory("$root/tests/Features");
             $created[] = 'tests/Features';
         }
 
-        return $created;
+        return $created ?? [];
     }
 }

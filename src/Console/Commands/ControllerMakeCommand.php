@@ -5,7 +5,6 @@ namespace Lucid\Console\Commands;
 use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Lucid\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Lucid\Generators\ControllerGenerator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,33 +16,16 @@ class ControllerMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:controller';
+    protected string $name = 'make:controller';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new resource Controller class in a service';
+    protected string $description = 'Create a new resource Controller class in a service';
 
     /**
      * The type of class being generated.
-     *
-     * @var string
      */
-    protected $type = 'Controller';
+    protected string $type = 'Controller';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         $generator = new ControllerGenerator();
 
@@ -58,17 +40,12 @@ class ControllerMakeCommand extends SymfonyCommand
                 "\n".
                 'Find it at <comment>'.$controller.'</comment>'."\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['controller', InputArgument::REQUIRED, 'The controller\'s name.'],
@@ -76,38 +53,14 @@ class ControllerMakeCommand extends SymfonyCommand
         ];
     }
 
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['resource', null, InputOption::VALUE_NONE, 'Generate a resource controller class.'],
         ];
     }
 
-    /**
-     * Parse the feature name.
-     *  remove the Controller.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::studly(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
+    protected function getStub(): string
     {
         if ($this->option('plain')) {
             return __DIR__ . '/../Generators/stubs/controller.plain.stub';

@@ -2,6 +2,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Exception;
 use Lucid\Finder;
 use Lucid\Console\Command;
 use Illuminate\Support\Composer;
@@ -15,33 +16,19 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
     use Finder;
     use Command;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'src:name';
+    protected string $name = 'src:name';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Set the source directory namespace.';
+    protected string $description = 'Set the source directory namespace.';
 
     /**
      * The Composer class instance.
-     *
-     * @var \Illuminate\Support\Composer
      */
-    protected $composer;
+    protected Composer $composer;
 
     /**
      * The filesystem instance.
-     *
-     * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $files;
+    protected Filesystem $files;
 
     /**
      * Create a new key generator command.
@@ -69,7 +56,7 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
             $this->info('Lucid source directory namespace set!');
 
             $this->composer->dumpAutoloads();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
     }
@@ -77,7 +64,7 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
     /**
      * Set the namespace on the files in the app directory.
      */
-    protected function setAppDirectoryNamespace()
+    protected function setAppDirectoryNamespace(): void
     {
         $files = SymfonyFinder::create()
                             ->in(base_path())
@@ -93,9 +80,9 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
     /**
      * Replace the App namespace at the given path.
      *
-     * @param string $path
+     * @throws Exception
      */
-    protected function replaceNamespace($path)
+    protected function replaceNamespace(string $path): void
     {
         $search = [
             'namespace '.$this->findRootNamespace().';',
@@ -112,8 +99,10 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
 
     /**
      * Set the PSR-4 namespace in the Composer file.
+     *
+     * @throws Exception
      */
-    protected function setComposerNamespace()
+    protected function setComposerNamespace(): void
     {
         $this->replaceIn(
             $this->getComposerPath(), str_replace('\\', '\\\\', $this->findRootNamespace()).'\\\\', str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
@@ -122,8 +111,10 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
 
     /**
      * Set the namespace in the appropriate configuration files.
+     *
+     * @throws Exception
      */
-    protected function setAppConfigNamespaces()
+    protected function setAppConfigNamespaces(): void
     {
         $search = [
             $this->findRootNamespace().'\\Providers',
@@ -142,24 +133,19 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
 
     /**
      * Replace the given string in the given file.
-     *
-     * @param string       $path
-     * @param string|array $search
-     * @param string|array $replace
      */
-    protected function replaceIn($path, $search, $replace)
+    protected function replaceIn(
+        string $path,
+        string|array $search,
+        string|array $replace
+    ): void
     {
         if ($this->files->exists($path)) {
             $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
         }
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The source directory namespace.'],

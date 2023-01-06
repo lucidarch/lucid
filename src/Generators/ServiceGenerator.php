@@ -8,12 +8,7 @@ use Lucid\Str;
 
 class ServiceGenerator extends Generator
 {
-    /**
-     * The directories to be created under the service directory.
-     *
-     * @var array
-     */
-    protected $directories = [
+    protected array $directories = [
         'Console/',
         'database/',
         'database/factories/',
@@ -34,7 +29,12 @@ class ServiceGenerator extends Generator
         'Tests/Operations/',
     ];
 
-    public function generate($name)
+    /**
+     * Add the corresponding service provider for the created service.
+     *
+     * @throws Exception
+     */
+    public function generate(string $name): Service
     {
         $name = Str::service($name);
         $slug = Str::snake($name);
@@ -42,8 +42,6 @@ class ServiceGenerator extends Generator
 
         if ($this->exists($path)) {
             throw new Exception('Service already exists!');
-
-            return false;
         }
 
         // create service directory
@@ -61,7 +59,6 @@ class ServiceGenerator extends Generator
 
         return new Service(
             $name,
-            $slug,
             $path,
             $this->relativeFromReal($path)
         );
@@ -69,12 +66,8 @@ class ServiceGenerator extends Generator
 
     /**
      * Create the default directories at the given service path.
-     *
-     * @param  string $path
-     *
-     * @return void
      */
-    public function createServiceDirectories($path)
+    public function createServiceDirectories(string $path): void
     {
         foreach ($this->directories as $directory) {
             $this->createDirectory($path.'/'.$directory);
@@ -85,12 +78,13 @@ class ServiceGenerator extends Generator
     /**
      * Add the corresponding service provider for the created service.
      *
-     * @param string $name
-     * @param string $path
-     *
-     * @return bool
+     * @throws Exception
      */
-    public function addServiceProviders($name, $slug, $path)
+    public function addServiceProviders(
+        string $name,
+        string $slug,
+        string $path
+    ): void
     {
         $namespace = $this->findServiceNamespace($name).'\\Providers';
 
@@ -103,13 +97,13 @@ class ServiceGenerator extends Generator
 
     /**
      * Create the service provider that registers broadcast channels.
-     *
-     * @param $name
-     * @param $path
-     * @param $slug
-     * @param $namespace
      */
-    public function createBroadcastServiceProvider($name, $path, $slug, $namespace)
+    public function createBroadcastServiceProvider(
+        string $name,
+        string $path,
+        string $slug,
+        string $namespace
+    ): void
     {
         $content = file_get_contents(__DIR__ . "/stubs/broadcastserviceprovider.stub");
         $content = str_replace(
@@ -123,18 +117,15 @@ class ServiceGenerator extends Generator
 
     /**
      * Create the service provider that registers this service.
-     *
-     * @param  string $name
-     * @param  string $path
      */
-    public function createRegistrationServiceProvider($name, $path, $slug, $namespace)
+    public function createRegistrationServiceProvider(
+        string $name,
+        string $path,
+        string $slug,
+        string $namespace
+    ): void
     {
-        $stub = 'serviceprovider.stub';
-        if ((int) $this->laravelVersion() > 7) {
-            $stub = 'serviceprovider-8.stub';
-        }
-
-        $content = file_get_contents(__DIR__ . "/stubs/$stub");
+        $content = file_get_contents(__DIR__ . "/stubs/serviceprovider.stub");
         $content = str_replace(
             ['{{name}}', '{{slug}}', '{{namespace}}'],
             [$name, $slug, $namespace],
@@ -147,12 +138,14 @@ class ServiceGenerator extends Generator
     /**
      * Create the routes service provider file.
      *
-     * @param  string $name
-     * @param  string $path
-     * @param  string $slug
-     * @param  string $namespace
+     * @throws Exception
      */
-    public function createRouteServiceProvider($name, $path, $slug, $namespace)
+    public function createRouteServiceProvider(
+        string $name,
+        string $path,
+        string $slug,
+        string $namespace
+    ): void
     {
         $serviceNamespace = $this->findServiceNamespace($name);
         $controllers = $serviceNamespace.'\Http\Controllers';
@@ -170,12 +163,10 @@ class ServiceGenerator extends Generator
 
      /**
      * Add the routes files.
-     *
-     * @param string $name
-     * @param string $slug
-     * @param string $path
+      *
+      * @throws Exception
      */
-    public function addRoutesFiles($name, $slug, $path)
+    public function addRoutesFiles(string $name, string $slug, string $path): void
     {
         $controllers = 'src/Services/' . $name . '/Http/Controllers';
 
@@ -202,10 +193,8 @@ class ServiceGenerator extends Generator
 
     /**
      * Add the welcome view file.
-     *
-     * @param string $path
      */
-    public function addWelcomeViewFile($path)
+    public function addWelcomeViewFile(string $path): void
     {
         $this->createFile(
             $path.'/resources/views/welcome.blade.php',
@@ -215,10 +204,8 @@ class ServiceGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__.'/stubs/service.stub';
     }

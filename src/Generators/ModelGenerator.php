@@ -11,25 +11,21 @@ class ModelGenerator extends Generator
     /**
      * Generate the file.
      *
-     * @param $name
-     * @return Model|bool
      * @throws Exception
      */
-    public function generate($name)
+    public function generate(string $name): Model
     {
         $model = Str::model($name);
         $path = $this->findModelPath($model);
 
         if ($this->exists($path)) {
             throw new Exception('Model already exists');
-
-            return false;
         }
 
         $namespace = $this->findModelNamespace();
 
         $content = file_get_contents($this->getStub());
-        $content = str_replace(
+        $content = Str::replace(
             ['{{model}}', '{{namespace}}', '{{unit_namespace}}'],
             [$model, $namespace, $this->findUnitNamespace()],
             $content
@@ -49,15 +45,9 @@ class ModelGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    public function getStub()
+    public function getStub(): string
     {
-        if ($this->laravelVersion() > 7) {
-            return __DIR__ . '/../Generators/stubs/model-8.stub';
-        }
-
-        return __DIR__ . '/../Generators/stubs/model.stub';
+        return __DIR__ . '/../Generators/stubs/model-8.stub';
     }
 }

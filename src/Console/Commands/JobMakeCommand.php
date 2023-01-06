@@ -17,38 +17,21 @@ class JobMakeCommand extends SymfonyCommand
     use Command;
     use Filesystem;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:job {--Q|queue}';
+    protected string $name = 'make:job {--Q|queue}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new Job in a domain';
+    protected string $description = 'Create a new Job in a domain';
 
     /**
      * The type of class being generated.
-     *
-     * @var string
      */
-    protected $type = 'Job';
+    protected string $type = 'Job';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         $generator = new JobGenerator();
 
         $domain = Str::studly($this->argument('domain'));
-        $title = $this->parseName($this->argument('job'));
+        $title = Str::job($this->argument('job'));
         $isQueueable = $this->option('queue');
         try {
             $job = $generator->generate($title, $domain, $isQueueable);
@@ -59,12 +42,12 @@ class JobMakeCommand extends SymfonyCommand
                 "\n".
                 'Find it at <comment>'.$job->relativePath.'</comment>'."\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    public function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
@@ -72,34 +55,15 @@ class JobMakeCommand extends SymfonyCommand
         ];
     }
 
-    public function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['queue', 'Q', InputOption::VALUE_NONE, 'Whether a job is queueable or not.'],
         ];
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
+    public function getStub(): string
     {
         return __DIR__ . '/../Generators/stubs/job.stub';
-    }
-
-    /**
-     * Parse the job name.
-     *  remove the Job.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::job($name);
     }
 }

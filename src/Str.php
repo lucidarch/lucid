@@ -8,25 +8,56 @@ class Str
 {
     /**
      * Convert a value to studly caps case.
-     *
-     * @param  string  $value
-     * @return string
      */
-    public static function studly($value)
+    public static function studly(?string $value): string
     {
-        return LaravelStr::studly($value);
+        return LaravelStr::studly($value ?? '');
     }
 
     /**
      * Convert a string to snake case.
-     *
-     * @param  string  $value
-     * @param  string  $delimiter
-     * @return string
      */
-    public static function snake($value, $delimiter = '_')
+    public static function snake(string $value, string $delimiter = '_'): string
     {
         return LaravelStr::snake($value, $delimiter);
+    }
+
+    /**
+     * Replace last occurrence of string inside another string with specified string
+     */
+    public static function replaceLast(
+        string $search,
+        string $replace,
+        string $subject
+    ): string
+    {
+        return LaravelStr::replaceLast($search, $replace, $subject);
+    }
+
+    /**
+     * Force sending $subject as string to avoid warnings
+     */
+    public static function replace(
+        array|string $search,
+        array|string $replace,
+        string $subject
+    ): string
+    {
+        return str_replace($search, $replace, $subject);
+    }
+
+    public static function substr(
+        string $string,
+        int $offset
+    ): string
+    {
+        $substr = substr($string, $offset);
+
+        if ($substr === false) {
+            return '';
+        }
+
+        return $substr;
     }
 
     /**
@@ -34,13 +65,8 @@ class Str
      * excluding the given pattern.
      * 	i.e. the name: "CreateArticleFeature.php" with pattern '/Feature.php'
      * 		will result in "Create Article".
-     *
-     * @param string $name
-     * @param string $pattern
-     *
-     * @return string
      */
-    public static function realName($name, $pattern = '//')
+    public static function realName(string $name, string $pattern = '//'): string
     {
         $name = preg_replace($pattern, '', $name);
 
@@ -53,14 +79,10 @@ class Str
      * 	i.e. "Create Post Feature", "CreatePostFeature.php", "createPost", "createe"
      * 	and many other forms will be transformed to "CreatePostFeature" which is
      * 	the standard feature class name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function feature($name)
+    public static function feature(?string $name): string
     {
-        $parts = array_map(function($part) { return self::studly($part); }, explode("/", $name));
+        $parts = array_map(function($part) { return self::studly($part); }, explode("/", $name ?? ''));
         $feature  = self::studly(preg_replace('/Feature(\.php)?$/', '', array_pop($parts)).'Feature');
 
         $parts[] = $feature;
@@ -74,12 +96,8 @@ class Str
      * 	i.e. "Create Post Feature", "CreatePostJob.php", "createPost",
      * 	and many other forms will be transformed to "CreatePostJob" which is
      * 	the standard job class name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function job($name)
+    public static function job(string $name): string
     {
         return self::studly(preg_replace('/Job(\.php)?$/', '', $name).'Job');
     }
@@ -90,12 +108,8 @@ class Str
      *  i.e. "Create Post Operation", "CreatePostOperation.php", "createPost",
      *  and many other forms will be transformed to "CreatePostOperation" which is
      *  the standard operation class name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function operation($name)
+    public static function operation(string $name): string
     {
         return self::studly(preg_replace('/Operation(\.php)?$/', '', $name).'Operation');
     }
@@ -104,36 +118,24 @@ class Str
      * Get the given name formatted as a domain.
      *
      * Domain names are just CamelCase
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function domain($name)
+    public static function domain(string $name): string
     {
         return self::studly($name);
     }
 
     /**
      * Get the given name formatted as a service name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function service($name)
+    public static function service(?string $name): string
     {
-        return self::studly($name);
+        return self::studly($name ?? '');
     }
 
     /**
      * Get the given name formatted as a controller name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function controller($name)
+    public static function controller(string $name): string
     {
         return self::studly(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
     }
@@ -142,34 +144,24 @@ class Str
      * Get the given name formatted as a model.
      *
      * Model names are just CamelCase
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public static function model($name)
+    public static function model(string $name): string
     {
         return self::studly($name);
     }
 
     /**
      * Get the given name formatted as a policy.
-     *
-     * @param $name
-     * @return string
      */
-    public static function policy($name)
+    public static function policy(string $name): string
     {
         return self::studly(preg_replace('/Policy(\.php)?$/', '', $name) . 'Policy');
     }
 
     /**
      * Get the given name formatted as a request.
-     *
-     * @param $name
-     * @return string
      */
-    public static function request($name)
+    public static function request(string $name): string
     {
         return self::studly($name);
     }
