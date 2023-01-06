@@ -2,6 +2,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Entities\Feature;
 use Lucid\Finder;
 use Lucid\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,15 +20,21 @@ class FeaturesListCommand extends SymfonyCommand
     public function handle(): void
     {
         try {
-            foreach ($this->listFeatures($this->argument('service')) as $service => $features) {
-                $this->comment("\n$service\n");
-                $features = array_map(function($feature) {
-                    return [$feature->title, $feature->service->name, $feature->file, $feature->relativePath];
-                }, $features->all());
-                $this->table(['Feature', 'Service', 'File', 'Path'], $features);
-            }
+            $featuresList = $this->listFeatures($this->argument('service'));
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+            return;
+        }
+
+        foreach ($featuresList as $service => $features) {
+            $this->comment("\n$service\n");
+
+            $this->table(
+                ['Feature', 'Service', 'File', 'Path'],
+                array_map(function(Feature $feature) {
+                    return [$feature->title, $feature->service->name, $feature->file, $feature->relativePath];
+                }, $features->all())
+            );
         }
     }
 

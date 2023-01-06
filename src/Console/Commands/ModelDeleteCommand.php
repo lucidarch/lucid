@@ -20,22 +20,17 @@ class ModelDeleteCommand extends SymfonyCommand
 
     protected string $description = 'Delete an existing Eloquent Model.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Model';
-
     public function handle(): void
     {
-        try {
-            $model = Str::model($this->argument('model'));
+        $model = Str::model($this->argument('model'));
 
-            if ( ! $this->exists($path = $this->findModelPath($model))) {
-                $this->error('Model class ' . $model . ' cannot be found.');
+        try {
+            if (! $this->exists($path = $this->findModelPath($model))) {
+                $this->error("Model class $model cannot be found.");
             } else {
                 $this->delete($path);
 
-                $this->info('Model class <comment>' . $model . '</comment> deleted successfully.');
+                $this->info("Model class <comment>$model</comment> deleted successfully.");
             }
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -47,10 +42,5 @@ class ModelDeleteCommand extends SymfonyCommand
         return [
             ['model', InputArgument::REQUIRED, 'The Model\'s name.']
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/model.stub';
     }
 }

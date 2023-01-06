@@ -63,6 +63,8 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
 
     /**
      * Set the namespace on the files in the app directory.
+     *
+     * @throws Exception
      */
     protected function setAppDirectoryNamespace(): void
     {

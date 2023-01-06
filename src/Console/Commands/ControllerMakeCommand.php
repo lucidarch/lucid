@@ -20,11 +20,6 @@ class ControllerMakeCommand extends SymfonyCommand
 
     protected string $description = 'Create a new resource Controller class in a service';
 
-    /**
-     * The type of class being generated.
-     */
-    protected string $type = 'Controller';
-
     public function handle(): void
     {
         $generator = new ControllerGenerator();
@@ -35,10 +30,10 @@ class ControllerMakeCommand extends SymfonyCommand
         try {
             $controller = $generator->generate($name, $service, $this->option('resource'));
 
-            $this->info('Controller class created successfully.'.
-                "\n".
-                "\n".
-                'Find it at <comment>'.$controller.'</comment>'."\n"
+            $this->info(
+                'Controller class created successfully.'
+                . "\n\n"
+                . "Find it at <comment>$controller</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -58,14 +53,5 @@ class ControllerMakeCommand extends SymfonyCommand
         return [
             ['resource', null, InputOption::VALUE_NONE, 'Generate a resource controller class.'],
         ];
-    }
-
-    protected function getStub(): string
-    {
-        if ($this->option('plain')) {
-            return __DIR__ . '/../Generators/stubs/controller.plain.stub';
-        }
-
-        return __DIR__ . '/../Generators/stubs/controller.resource.stub';
     }
 }

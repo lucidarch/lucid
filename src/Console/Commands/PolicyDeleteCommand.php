@@ -20,22 +20,17 @@ class PolicyDeleteCommand extends SymfonyCommand
 
     protected string $description = 'Delete an existing Policy.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Policy';
-
     public function handle(): void
     {
-        try {
-            $policy = Str::policy($this->argument('policy'));
+        $policy = Str::policy($this->argument('policy'));
 
-            if ( ! $this->exists($path = $this->findPolicyPath($policy))) {
-                $this->error('Policy class ' . $policy . ' cannot be found.');
+        try {
+            if (! $this->exists($path = $this->findPolicyPath($policy))) {
+                $this->error("Policy class $policy cannot be found.");
             } else {
                 $this->delete($path);
 
-                $this->info('Policy class <comment>' . $policy . '</comment> deleted successfully.');
+                $this->info("Policy class <comment>$policy</comment> deleted successfully.");
             }
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -47,10 +42,5 @@ class PolicyDeleteCommand extends SymfonyCommand
         return [
             ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/policy.stub';
     }
 }

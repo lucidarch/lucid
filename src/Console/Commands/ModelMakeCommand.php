@@ -20,11 +20,6 @@ class ModelMakeCommand extends SymfonyCommand
 
     protected string $description = 'Create a new Eloquent Model.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Model';
-
     public function handle(): void
     {
         $generator = new ModelGenerator();
@@ -34,10 +29,10 @@ class ModelMakeCommand extends SymfonyCommand
         try {
             $model = $generator->generate($name);
 
-            $this->info('Model class created successfully.' .
-                "\n" .
-                "\n" .
-                'Find it at <comment>' . $model->relativePath . '</comment>' . "\n"
+            $this->info(
+                'Model class created successfully.'
+                . "\n\n"
+                . "Find it at <comment>$model->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -49,13 +44,5 @@ class ModelMakeCommand extends SymfonyCommand
         return [
             ['model', InputArgument::REQUIRED, 'The Model\'s name.']
         ];
-    }
-
-    /**
-     * Get the stub file for the generator.
-     */
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/model.stub';
     }
 }

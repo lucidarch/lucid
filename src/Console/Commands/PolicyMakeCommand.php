@@ -20,11 +20,6 @@ class PolicyMakeCommand extends SymfonyCommand
 
     protected string $description = 'Create a Policy.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Policy';
-
     public function handle(): void
     {
         $generator = new PolicyGenerator();
@@ -34,10 +29,10 @@ class PolicyMakeCommand extends SymfonyCommand
         try {
             $policy = $generator->generate($name);
 
-            $this->info('Policy class created successfully.' .
-                "\n" .
-                "\n" .
-                'Find it at <comment>' . $policy->relativePath . '</comment>' . "\n"
+            $this->info(
+                'Policy class created successfully.'
+                . "\n\n"
+                . "Find it at <comment>$policy->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -49,10 +44,5 @@ class PolicyMakeCommand extends SymfonyCommand
         return [
             ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/policy.stub';
     }
 }

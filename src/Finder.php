@@ -527,7 +527,7 @@ trait Finder
      * Get the list of features,
      * optionally withing a specified service.
      *
-     * @return array<Feature>
+     * @return array<Collection>
      *
      * @throws Exception
      */

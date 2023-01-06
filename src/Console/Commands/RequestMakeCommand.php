@@ -20,11 +20,6 @@ class RequestMakeCommand extends SymfonyCommand
 
     protected string $description = 'Create a Request in a domain.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Request';
-
     public function handle(): void
     {
         $generator = new RequestGenerator();
@@ -35,10 +30,10 @@ class RequestMakeCommand extends SymfonyCommand
         try {
             $request = $generator->generate($name, $service);
 
-            $this->info('Request class created successfully.' .
-                "\n" .
-                "\n" .
-                'Find it at <comment>' . $request->relativePath . '</comment>' . "\n"
+            $this->info(
+                'Request class created successfully.'
+                . "\n\n"
+                . "Find it at <comment>$request->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -51,10 +46,5 @@ class RequestMakeCommand extends SymfonyCommand
             ['name', InputArgument::REQUIRED, 'The name of the class.'],
             ['domain', InputArgument::REQUIRED, 'The Domain in which this request should be generated.'],
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/request.stub';
     }
 }

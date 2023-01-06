@@ -20,23 +20,18 @@ class RequestDeleteCommand extends SymfonyCommand
 
     protected string $description = 'Delete an existing Request.';
 
-    /**
-     * The type of class being generated
-     */
-    protected string $type = 'Request';
-
     public function handle(): void
     {
-        try {
-            $request = Str::request($this->argument('request'));
-            $service = Str::service($this->argument('service'));
+        $request = Str::request($this->argument('request'));
+        $service = Str::service($this->argument('service'));
 
-            if ( ! $this->exists($path = $this->findRequestPath($service, $request))) {
-                $this->error('Request class ' . $request . ' cannot be found.');
+        try {
+            if (! $this->exists($path = $this->findRequestPath($service, $request))) {
+                $this->error("Request class $request cannot be found.");
             } else {
                 $this->delete($path);
 
-                $this->info('Request class <comment>' . $request . '</comment> deleted successfully.');
+                $this->info("Request class <comment>$request</comment> deleted successfully.");
             }
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -49,10 +44,5 @@ class RequestDeleteCommand extends SymfonyCommand
             ['request', InputArgument::REQUIRED, 'The Request\'s name.'],
             ['service', InputArgument::REQUIRED, 'The Service\'s name.'],
         ];
-    }
-
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/request.stub';
     }
 }

@@ -24,10 +24,10 @@ class MigrationMakeCommand extends SymfonyCommand
 
         $path = $this->findMigrationPath(Str::service($service));
 
-        $output = shell_exec('php artisan make:migration '.$migration.' --path='.$path);
+        $output = shell_exec("php artisan make:migration $migration --path=$path");
 
         $this->info($output);
-        $this->info("\n".'Find it at <comment>'.$path.'</comment>'."\n");
+        $this->info("\n Find it at <comment>$path</comment> \n");
     }
 
     protected function getArguments(): array

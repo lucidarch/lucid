@@ -26,17 +26,17 @@ class ServiceDeleteCommand extends SymfonyCommand
             return;
         }
 
-        try {
-            $name = Str::service($this->argument('name'));
+        $name = Str::service($this->argument('name'));
 
+        try {
             if (!$this->exists($service = $this->findServicePath($name))) {
-                $this->error('Service '.$name.' cannot be found.');
+                $this->error("Service $name cannot be found.");
                 return;
             }
 
             $this->delete($service);
 
-            $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
+            $this->info("Service <comment>$name</comment> deleted successfully \n");
 
             $this->info('Please remove your registered service providers, if any.');
         } catch (\Exception $e) {
@@ -51,10 +51,5 @@ class ServiceDeleteCommand extends SymfonyCommand
         return [
             ['name', InputArgument::REQUIRED, 'The service name.'],
         ];
-    }
-
-    protected function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/service.stub';
     }
 }

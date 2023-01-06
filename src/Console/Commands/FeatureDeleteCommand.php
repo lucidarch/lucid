@@ -21,10 +21,10 @@ class FeatureDeleteCommand extends SymfonyCommand
 
     public function handle(): void
     {
-        try {
-            $service = Str::service($this->argument('service'));
-            $title = Str::feature($this->argument('feature'));
+        $service = Str::service($this->argument('service'));
+        $title = Str::feature($this->argument('feature'));
 
+        try {
             // Delete feature
             if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
                 $this->error("Feature class $title cannot be found.");

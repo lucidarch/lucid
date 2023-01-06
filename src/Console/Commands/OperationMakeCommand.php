@@ -21,11 +21,6 @@ class OperationMakeCommand extends SymfonyCommand
 
     protected string $description = 'Create a new Operation in a domain';
 
-    /**
-     * The type of class being generated.
-     */
-    protected string $type = 'Operation';
-
     public function handle(): void
     {
         $generator = new OperationGenerator();
@@ -33,14 +28,14 @@ class OperationMakeCommand extends SymfonyCommand
         $service = Str::studly($this->argument('service'));
         $title = Str::operation($this->argument('operation'));
         $isQueueable = $this->option('queue');
+
         try {
             $operation = $generator->generate($title, $service, $isQueueable);
 
             $this->info(
-                'Operation class '.$title.' created successfully.'.
-                "\n".
-                "\n".
-                'Find it at <comment>'.$operation->relativePath.'</comment>'."\n"
+                "Operation class $title created successfully."
+                . "\n\n"
+                . "Find it at <comment>$operation->relativePath</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -61,13 +56,5 @@ class OperationMakeCommand extends SymfonyCommand
         return [
             ['queue', 'Q', InputOption::VALUE_NONE, 'Whether a operation is queueable or not.'],
         ];
-    }
-
-    /**
-     * Get the stub file for the generator.
-     */
-    public function getStub(): string
-    {
-        return __DIR__ . '/../Generators/stubs/operation.stub';
     }
 }
