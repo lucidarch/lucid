@@ -18,6 +18,7 @@
         }
     ],
     "require": {
+        "php": ">=8.0",
         "ext-dom": "*",
         "mockery/mockery": "*",
         "symfony/console": "*",
