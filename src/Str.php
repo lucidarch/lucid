@@ -34,18 +34,6 @@ class Str
         return LaravelStr::replaceLast($search, $replace, $subject);
     }
 
-    /**
-     * Force sending $subject as string to avoid warnings
-     */
-    public static function replace(
-        array|string $search,
-        array|string $replace,
-        string $subject
-    ): string
-    {
-        return str_replace($search, $replace, $subject);
-    }
-
     public static function substr(
         string $string,
         int $offset

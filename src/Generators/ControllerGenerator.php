@@ -28,10 +28,10 @@ class ControllerGenerator extends Generator
         $namespace = $this->findControllerNamespace($service);
 
         $content = file_get_contents($this->getStub($resource));
-        $content = Str::replace(
+        $content = str_replace(
              ['{{controller}}', '{{namespace}}', '{{unit_namespace}}'],
              [$name, $namespace, $this->findUnitNamespace()],
-             $content
+             $content ?: ''
          );
 
         $this->createFile($path, $content);

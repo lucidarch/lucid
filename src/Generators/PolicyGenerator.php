@@ -27,10 +27,10 @@ class PolicyGenerator extends Generator
         $namespace = $this->findPolicyNamespace();
 
         $content = file_get_contents($this->getStub());
-        $content = Str::replace(
+        $content = str_replace(
             ['{{policy}}', '{{namespace}}'],
             [$policy, $namespace],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);

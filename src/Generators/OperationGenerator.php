@@ -33,10 +33,10 @@ class OperationGenerator extends Generator
 
         list($useJobs, $runJobs) = self::getUsesAndRunners($jobs);
 
-        $content = Str::replace(
+        $content = str_replace(
             ['{{operation}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
             [$operation, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -67,10 +67,10 @@ class OperationGenerator extends Generator
         $operationNamespace = $this->findOperationNamespace($service)."\\$operation";
         $testClass = $operation.'Test';
 
-        $content = Str::replace(
+        $content = str_replace(
             ['{{namespace}}', '{{testclass}}', '{{operation}}', '{{operation_namespace}}'],
             [$namespace, $testClass, Str::snake($operation), $operationNamespace],
-            $content
+            $content ?: ''
         );
 
         $path = $this->findOperationTestPath($service, $testClass);

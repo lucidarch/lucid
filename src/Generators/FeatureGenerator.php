@@ -40,10 +40,10 @@ class FeatureGenerator extends Generator
             }
         }
 
-        $content = Str::replace(
+        $content = str_replace(
             ['{{feature}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
             [$classname, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -82,10 +82,10 @@ class FeatureGenerator extends Generator
         $featureNamespace = $this->findFeatureNamespace($service, $feature)."\\".$featureClass;
         $testClass = $featureClass.'Test';
 
-    	$content = Str::replace(
+    	$content = str_replace(
     		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, Str::snake(Str::replace(DS, '', $feature)), $featureNamespace],
-    		$content
+    		[$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
+    		$content ?: ''
     	);
 
     	$path = $this->findFeatureTestPath($service, $feature.'Test');

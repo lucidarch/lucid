@@ -27,10 +27,10 @@ class RequestGenerator extends Generator
         $namespace = $this->findRequestsNamespace($domain);
 
         $content = file_get_contents($this->getStub());
-        $content = Str::replace(
+        $content = str_replace(
             ['{{request}}', '{{namespace}}'],
             [$request, $namespace],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);

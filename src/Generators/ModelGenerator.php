@@ -25,10 +25,10 @@ class ModelGenerator extends Generator
         $namespace = $this->findModelNamespace();
 
         $content = file_get_contents($this->getStub());
-        $content = Str::replace(
+        $content = str_replace(
             ['{{model}}', '{{namespace}}', '{{unit_namespace}}'],
             [$model, $namespace, $this->findUnitNamespace()],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);

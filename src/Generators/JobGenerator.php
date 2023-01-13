@@ -28,10 +28,10 @@ class JobGenerator extends Generator
         $namespace = $this->findDomainJobsNamespace($domain);
 
         $content = file_get_contents($this->getStub($isQueueable));
-        $content = Str::replace(
+        $content = str_replace(
             ['{{job}}', '{{namespace}}', '{{unit_namespace}}'],
             [$job, $namespace, $this->findUnitNamespace()],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -62,10 +62,10 @@ class JobGenerator extends Generator
         $jobNamespace = $this->findDomainJobsNamespace($domain)."\\$job";
         $testClass = $job.'Test';
 
-        $content = Str::replace(
+        $content = str_replace(
             ['{{namespace}}', '{{testclass}}', '{{job}}', '{{job_namespace}}'],
             [$namespace, $testClass, Str::snake($job), $jobNamespace],
-            $content
+            $content ?: ''
         );
 
         $path = $this->findJobTestPath($domain, $testClass);
