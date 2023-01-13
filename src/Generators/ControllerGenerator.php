@@ -10,7 +10,11 @@ class ControllerGenerator extends Generator
     /**
      * @throws Exception
      */
-    public function generate(string $name, ?string $service, bool $resource = false): string
+    public function generate(
+        string $name,
+        ?string $service,
+        bool $resource = false
+    ): string
     {
         $name = Str::controller($name);
         $service = Str::service($service);

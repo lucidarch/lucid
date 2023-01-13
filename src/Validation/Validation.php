@@ -17,7 +17,12 @@ class Validation
      *
      * @return \Illuminate\Validation\Validator
      */
-    public function make(array $data, array $rules, array $messages = [], array $customAttributes = [])
+    public function make(
+        array $data,
+        array $rules,
+        array $messages = [],
+        array $customAttributes = []
+    ): \Illuminate\Validation\Validator
     {
         return $this->getValidationFactory()->make($data, $rules, $messages, $customAttributes);
     }
@@ -27,7 +32,7 @@ class Validation
      *
      * @return \Illuminate\Validation\Factory
      */
-    public function getValidationFactory()
+    public function getValidationFactory(): \Illuminate\Validation\Factory
     {
         return app(\Illuminate\Contracts\Validation\Factory::class);
     }

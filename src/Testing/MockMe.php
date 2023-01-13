@@ -2,8 +2,6 @@
 
 namespace Lucid\Testing;
 
-use Mockery\Mock;
-
 trait MockMe
 {
     public static function mock(array $constructorExpectations = []): UnitMock

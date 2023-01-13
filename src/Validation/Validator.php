@@ -13,9 +13,9 @@ use Lucid\Exceptions\InvalidInputException;
  */
 class Validator
 {
-    protected $rules = [];
+    protected array $rules = [];
 
-    protected $validation;
+    protected Validation $validation;
 
     public function __construct(Validation $validation)
     {
@@ -33,7 +33,11 @@ class Validator
      *
      * @throws \Lucid\Exceptions\InvalidInputException
      */
-    public function validate(array $input, array $rules = [], array $messages = [])
+    public function validate(
+        array $input,
+        array $rules = [],
+        array $messages = []
+    ): bool
     {
         $validation = $this->validation($input, $rules, $messages);
 
@@ -54,7 +58,11 @@ class Validator
      *
      * @return \Illuminate\Validation\Validator
      */
-    public function validation(array $input, array $rules = [], array $messages = [])
+    public function validation(
+        array $input,
+        array $rules = [],
+        array $messages = []
+    ): \Illuminate\Validation\Validator
     {
         if (empty($rules)) {
             $rules = $this->rules;

@@ -7,10 +7,10 @@ use Illuminate\Routing\ResponseFactory;
 
 class RespondWithViewJob extends Job
 {
-    protected $status;
-    protected $data;
-    protected $headers;
-    protected $template;
+    protected array|string $template;
+    protected array $data;
+    protected int $status;
+    protected array $headers;
 
     public function __construct($template, $data = [], $status = 200, array $headers = [])
     {

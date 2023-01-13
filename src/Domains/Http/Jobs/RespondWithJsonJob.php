@@ -7,10 +7,10 @@ use Illuminate\Routing\ResponseFactory;
 
 class RespondWithJsonJob extends Job
 {
-    protected $status;
-    protected $content;
-    protected $headers;
-    protected $options;
+    protected mixed $content;
+    protected int $status;
+    protected array $headers;
+    protected int $options;
 
     public function __construct($content, $status = 200, array $headers = [], $options = 0)
     {

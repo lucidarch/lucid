@@ -13,36 +13,18 @@ class UnitMock
 {
     use Marshal;
 
-    /**
-     * @var string $unit
-     */
-    private $unit;
+    private string $unit;
 
-    /**
-     * @var array $constructorExpectations
-     */
-    private $constructorExpectations;
+    private array $constructorExpectations;
 
-    /**
-     * @var array $currentConstructorExpectations
-     */
-    private $currentConstructorExpectations;
+    private array $currentConstructorExpectations;
 
-    /**
-     * @var array $mocks
-     */
-    private $mocks;
+    private array $mocks;
 
-    /**
-     * @var MockInterface $currentMock
-     */
-    private $currentMock;
+    private ?MockInterface $currentMock = null;
 
     /**
      * UnitMock constructor.
-     *
-     * @param  string  $unit
-     * @param  array  $constructorExpectations
      */
     public function __construct(string $unit, array $constructorExpectations = [])
     {
@@ -50,13 +32,13 @@ class UnitMock
         $this->setConstructorExpectations($constructorExpectations);
     }
 
-    public function setConstructorExpectations(array $constructorExpectations)
+    public function setConstructorExpectations(array $constructorExpectations): void
     {
         $this->currentConstructorExpectations = $constructorExpectations;
         $this->constructorExpectations[] = $this->currentConstructorExpectations;
     }
 
-    public function getConstructorExpectations()
+    public function getConstructorExpectations(): array
     {
         return $this->constructorExpectations;
     }
@@ -69,7 +51,7 @@ class UnitMock
      * @return array|mixed|void
      * @throws ReflectionException
      */
-    public function getConstructorExpectationsForInstance($unit)
+    public function getConstructorExpectationsForInstance(string $unit)
     {
         foreach ($this->constructorExpectations as $index => $args) {
             $expected = new $unit(...$args);
@@ -93,7 +75,6 @@ class UnitMock
     }
 
     /**
-     * @return array
      * @throws ReflectionException
      * @throws Exception
      */
@@ -120,7 +101,6 @@ class UnitMock
     /**
      * Register unit mock for current constructor expectations.
      *
-     * @return $this
      * @throws ReflectionException
      * @throws Exception
      */
@@ -150,11 +130,9 @@ class UnitMock
     /**
      * Compare the mock to an actual instance.
      *
-     * @param object $unit
-     * @return void
      * @throws Mockery\Exception\NoMatchingExpectationException
      */
-    public function compareTo(object $unit)
+    public function compareTo(object $unit): void
     {
         $expected = array_map(fn($args) => new $unit(...$args), $this->constructorExpectations);
 
@@ -173,6 +151,11 @@ class UnitMock
         }
     }
 
+    /**
+     * Compare the mock to an actual instance.
+     *
+     * @throws ReflectionException
+     */
     public function getMock(): MockInterface
     {
         $this->registerMock();
@@ -180,12 +163,18 @@ class UnitMock
         return $this->currentMock;
     }
 
-    public function shouldBeDispatched()
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldBeDispatched(): void
     {
         $this->getMock()->shouldReceive('handle')->once();
     }
 
-    public function shouldNotBeDispatched()
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldNotBeDispatched(): void
     {
         if ($this->currentMock) {
             $this->getMock()->shouldNotReceive('handle');
@@ -198,24 +187,47 @@ class UnitMock
         }
     }
 
-    public function shouldReturn($value)
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldReturn(mixed $value): void
     {
-        $this->getMock()->shouldReceive('handle')->once()->andReturn($value);
+        $this
+            ->getMock()
+            ->shouldReceive('handle')
+            ->once()
+            ->andReturn($value);
     }
 
-    public function shouldReturnTrue()
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldReturnTrue(): void
     {
         $this->shouldReturn(true);
     }
 
-    public function shouldReturnFalse()
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldReturnFalse(): void
     {
         $this->shouldReturn(false);
     }
 
-    public function shouldThrow($exception, $message = '', $code = 0, Exception $previous = null)
+    /**
+     * @throws ReflectionException
+     */
+    public function shouldThrow(
+        mixed $exception,
+        string $message = '',
+        int $code = 0,
+        Exception $previous = null
+    ): void
     {
-        $this->getMock()->shouldReceive('handle')
+        $this
+            ->getMock()
+            ->shouldReceive('handle')
             ->once()
             ->andThrow($exception, $message, $code, $previous);
     }

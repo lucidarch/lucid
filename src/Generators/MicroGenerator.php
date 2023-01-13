@@ -32,9 +32,10 @@ class MicroGenerator extends GeneratorAlias
      */
     public function generate(): array
     {
-        $created = $this->generateDirectories();
-
-        $created = array_merge($created, $this->generateCustomDirectories());
+        $created = array_merge(
+            $this->generateDirectories(),
+            $this->generateCustomDirectories()
+        );
 
         $this->updatePHPUnitXML();
 

@@ -71,6 +71,8 @@
 
     /**
      * Parses the job class out of the given line of code.
+     *
+     * @throws \Exception
      */
     public function parseJobInLine(string $line, string $contents): ?Job
     {
