@@ -3,13 +3,13 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Finder;
-use Lucid\Console\Command;
-use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
+use Lucid\Console\Command;
+use Lucid\Finder;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class ChangeSourceNamespaceCommand extends SymfonyCommand
 {
@@ -140,8 +140,7 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
         string $path,
         string|array $search,
         string|array $replace
-    ): void
-    {
+    ): void {
         if ($this->files->exists($path)) {
             $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
         }

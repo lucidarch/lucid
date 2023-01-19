@@ -20,11 +20,10 @@ class Operation extends Entity
         string $relativePath,
         ?Service $service = null,
         string $content = ''
-    )
-    {
+    ) {
         $this->setAttributes([
             'title' => $title,
-            'className' => str_replace(' ', '', $title) . 'Operation',
+            'className' => str_replace(' ', '', $title).'Operation',
             'service' => $service,
             'file' => $file,
             'realPath' => $realPath,

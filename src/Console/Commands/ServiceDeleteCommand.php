@@ -2,12 +2,12 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class ServiceDeleteCommand extends SymfonyCommand
 {
@@ -23,14 +23,16 @@ class ServiceDeleteCommand extends SymfonyCommand
     {
         if ($this->isMicroservice()) {
             $this->error('This functionality is disabled in a Microservice');
+
             return;
         }
 
         $name = Str::service($this->argument('name'));
 
         try {
-            if (!$this->exists($service = $this->findServicePath($name))) {
+            if (! $this->exists($service = $this->findServicePath($name))) {
                 $this->error("Service $name cannot be found.");
+
                 return;
             }
 

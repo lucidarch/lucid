@@ -18,8 +18,7 @@ class Domain extends Entity
         string $namespace,
         string $path,
         string $relativePath
-    )
-    {
+    ) {
         $this->setAttributes([
             'name' => $name,
             'slug' => Str::studly($name),

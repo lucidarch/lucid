@@ -3,10 +3,10 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Generators\PolicyGenerator;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
+use Lucid\Generators\PolicyGenerator;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -31,8 +31,8 @@ class PolicyMakeCommand extends SymfonyCommand
 
             $this->info(
                 'Policy class created successfully.'
-                . "\n\n"
-                . "Find it at <comment>$policy->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$policy->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -42,7 +42,7 @@ class PolicyMakeCommand extends SymfonyCommand
     protected function getArguments(): array
     {
         return [
-            ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
+            ['policy', InputArgument::REQUIRED, 'The Policy\'s name.'],
         ];
     }
 }

@@ -19,8 +19,7 @@ class Policy extends Entity
         string $path,
         string $relativePath,
         string $content
-    )
-    {
+    ) {
         $this->setAttributes([
             'policy' => $title,
             'namespace' => $namespace,

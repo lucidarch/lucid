@@ -14,8 +14,7 @@ class ControllerGenerator extends Generator
         string $name,
         ?string $service,
         bool $resource = false
-    ): string
-    {
+    ): string {
         $name = Str::controller($name);
         $service = Str::service($service);
 
@@ -29,10 +28,10 @@ class ControllerGenerator extends Generator
 
         $content = file_get_contents($this->getStub($resource));
         $content = str_replace(
-             ['{{controller}}', '{{namespace}}', '{{unit_namespace}}'],
-             [$name, $namespace, $this->findUnitNamespace()],
-             $content ?: ''
-         );
+            ['{{controller}}', '{{namespace}}', '{{unit_namespace}}'],
+            [$name, $namespace, $this->findUnitNamespace()],
+            $content ?: ''
+        );
 
         $this->createFile($path, $content);
 
@@ -47,9 +46,9 @@ class ControllerGenerator extends Generator
     protected function getStub(bool $resource): string
     {
         if ($resource) {
-            return __DIR__ . '/stubs/controller.resource.stub';
+            return __DIR__.'/stubs/controller.resource.stub';
         }
 
-        return __DIR__ . '/stubs/controller.plain.stub';
+        return __DIR__.'/stubs/controller.plain.stub';
     }
 }

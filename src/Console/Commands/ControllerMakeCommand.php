@@ -2,13 +2,13 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputOption;
+use Lucid\Finder;
 use Lucid\Generators\ControllerGenerator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class ControllerMakeCommand extends SymfonyCommand
 {
@@ -32,8 +32,8 @@ class ControllerMakeCommand extends SymfonyCommand
 
             $this->info(
                 'Controller class created successfully.'
-                . "\n\n"
-                . "Find it at <comment>$controller</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$controller</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());

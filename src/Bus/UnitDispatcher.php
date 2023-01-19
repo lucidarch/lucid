@@ -3,17 +3,17 @@
 namespace Lucid\Bus;
 
 use App;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Lucid\Events\JobStarted;
+use Lucid\Events\OperationStarted;
 use Lucid\Testing\UnitMock;
 use Lucid\Testing\UnitMockRegistry;
-use ReflectionClass;
 use Lucid\Units\Job;
-use ReflectionException;
 use Lucid\Units\Operation;
-use Illuminate\Http\Request;
-use Lucid\Events\JobStarted;
-use Illuminate\Support\Collection;
-use Lucid\Events\OperationStarted;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use ReflectionClass;
+use ReflectionException;
 
 trait UnitDispatcher
 {
@@ -30,17 +30,16 @@ trait UnitDispatcher
         mixed $unit,
         array|Request $arguments = [],
         array $extra = []
-    ): mixed
-    {
-        if (is_object($unit) && !App::runningUnitTests()) {
+    ): mixed {
+        if (is_object($unit) && ! App::runningUnitTests()) {
             $result = $this->dispatch($unit);
         } elseif ($arguments instanceof Request) {
             $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
         } else {
-            if (!is_object($unit)) {
+            if (! is_object($unit)) {
                 $unit = $this->marshal($unit, new Collection(), $arguments);
 
-                // don't dispatch unit when in tests and have a mock for it.
+            // don't dispatch unit when in tests and have a mock for it.
             } elseif (App::runningUnitTests() && app(UnitMockRegistry::class)->has(get_class($unit))) {
                 /** @var UnitMock $mock */
                 $mock = app(UnitMockRegistry::class)->get(get_class($unit));
@@ -79,8 +78,7 @@ trait UnitDispatcher
         string $unit,
         array $arguments = [],
         ?string $queue = 'default'
-    ): mixed
-    {
+    ): mixed {
         // instantiate and queue the unit
         $reflection = new ReflectionClass($unit);
         $instance = $reflection->newInstanceArgs($arguments);

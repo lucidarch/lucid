@@ -2,8 +2,8 @@
 
 namespace Lucid\Bus;
 
-use Exception;
 use ArrayAccess;
+use Exception;
 use ReflectionParameter;
 
 trait Marshal
@@ -15,8 +15,7 @@ trait Marshal
         string $command,
         ArrayAccess $source,
         array $extras = []
-    ): mixed
-    {
+    ): mixed {
         $parameters = [];
 
         foreach ($source as $name => $parameter) {
@@ -38,8 +37,7 @@ trait Marshal
         ArrayAccess $source,
         ReflectionParameter $parameter,
         array $extras = []
-    ): mixed
-    {
+    ): mixed {
         if (array_key_exists($parameter->name, $extras)) {
             return $extras[$parameter->name];
         }

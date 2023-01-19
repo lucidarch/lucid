@@ -26,6 +26,9 @@
         "symfony/finder": "*",
         "symfony/process": "*"
     },
+    "require-dev": {
+        "laravel/pint": "^1.4"
+    },
     "autoload": {
         "psr-4": {
             "Lucid\\": "src/"
@@ -35,5 +38,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
 }

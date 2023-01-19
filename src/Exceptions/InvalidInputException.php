@@ -15,8 +15,7 @@ class InvalidInputException extends Exception
         mixed $message = '',
         int $code = 0,
         Exception $previous = null
-    )
-    {
+    ) {
         if ($message instanceof IlluminateValidator) {
             $message = $message->messages()->all();
         }

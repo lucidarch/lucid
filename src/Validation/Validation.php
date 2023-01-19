@@ -14,7 +14,6 @@ class Validation
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
-     *
      * @return \Illuminate\Validation\Validator
      */
     public function make(
@@ -22,8 +21,7 @@ class Validation
         array $rules,
         array $messages = [],
         array $customAttributes = []
-    ): \Illuminate\Validation\Validator
-    {
+    ): \Illuminate\Validation\Validator {
         return $this->getValidationFactory()->make($data, $rules, $messages, $customAttributes);
     }
 

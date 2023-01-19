@@ -3,10 +3,10 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Generators\ModelGenerator;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
+use Lucid\Generators\ModelGenerator;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -31,8 +31,8 @@ class ModelMakeCommand extends SymfonyCommand
 
             $this->info(
                 'Model class created successfully.'
-                . "\n\n"
-                . "Find it at <comment>$model->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$model->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -42,7 +42,7 @@ class ModelMakeCommand extends SymfonyCommand
     protected function getArguments(): array
     {
         return [
-            ['model', InputArgument::REQUIRED, 'The Model\'s name.']
+            ['model', InputArgument::REQUIRED, 'The Model\'s name.'],
         ];
     }
 }

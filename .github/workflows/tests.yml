@@ -20,7 +20,7 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         stability: [prefer-lowest, prefer-stable]
-        laravel: [9.x]
+        laravel: [9.x]  
 
     name: L${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
 

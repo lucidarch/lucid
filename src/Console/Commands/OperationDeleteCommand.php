@@ -2,12 +2,12 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class OperationDeleteCommand extends SymfonyCommand
 {
@@ -26,7 +26,7 @@ class OperationDeleteCommand extends SymfonyCommand
 
         try {
             // Delete operation
-            if (!$this->exists($operation = $this->findOperationPath($service, $title))) {
+            if (! $this->exists($operation = $this->findOperationPath($service, $title))) {
                 $this->error("Operation class $title cannot be found.");
             } else {
                 $this->delete($operation);
@@ -35,8 +35,8 @@ class OperationDeleteCommand extends SymfonyCommand
             }
 
             // Delete operation tests
-            $testTitle = $title . 'Test';
-            if (!$this->exists($operation = $this->findOperationTestPath($service, $testTitle))) {
+            $testTitle = $title.'Test';
+            if (! $this->exists($operation = $this->findOperationTestPath($service, $testTitle))) {
                 $this->error("Operation test class $testTitle cannot be found.");
             } else {
                 $this->delete($operation);

@@ -22,7 +22,7 @@ class UnitMockRegistry
 
     public function get(string $unit): ?UnitMock
     {
-        if (!$this->has($unit)) {
+        if (! $this->has($unit)) {
             return null;
         }
 

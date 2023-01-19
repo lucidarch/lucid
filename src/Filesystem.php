@@ -21,8 +21,7 @@ trait Filesystem
         string $path,
         string $contents = '',
         bool $lock = false
-    ): bool
-    {
+    ): bool {
         $this->createDirectory(dirname($path));
 
         return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
@@ -36,8 +35,7 @@ trait Filesystem
         int $mode = 0755,
         bool $recursive = true,
         bool $force = true
-    ): bool
-    {
+    ): bool {
         if ($force) {
             return @mkdir($path, $mode, $recursive);
         }

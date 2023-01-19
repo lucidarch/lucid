@@ -21,8 +21,7 @@ class Request extends Entity
         string $path,
         string $relativePath,
         string $content
-    )
-    {
+    ) {
         $this->setAttributes([
             'request' => $title,
             'domain' => $domain,

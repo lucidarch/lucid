@@ -2,13 +2,13 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Finder;
-use Lucid\Filesystem;
 use Lucid\Console\Command;
+use Lucid\Filesystem;
+use Lucid\Finder;
 use Lucid\Generators\MonolithGenerator;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class InitMonolithCommand extends SymfonyCommand
 {
@@ -30,7 +30,7 @@ class InitMonolithCommand extends SymfonyCommand
 
         $directories = (new MonolithGenerator())->generate();
         $this->comment('Created directories:');
-        $this->comment(join("\n", $directories));
+        $this->comment(implode("\n", $directories));
 
         // create service
         if ($service) {

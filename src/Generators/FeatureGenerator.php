@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Feature;
+use Lucid\Str;
 
 class FeatureGenerator extends Generator
 {
@@ -75,22 +75,22 @@ class FeatureGenerator extends Generator
      */
     private function generateTestFile(string $feature, ?string $service)
     {
-    	$content = file_get_contents($this->getTestStub());
+        $content = file_get_contents($this->getTestStub());
 
-    	$namespace = $this->findFeatureTestNamespace($service);
-    	$featureClass = $this->classname($feature);
-        $featureNamespace = $this->findFeatureNamespace($service, $feature)."\\".$featureClass;
+        $namespace = $this->findFeatureTestNamespace($service);
+        $featureClass = $this->classname($feature);
+        $featureNamespace = $this->findFeatureNamespace($service, $feature).'\\'.$featureClass;
         $testClass = $featureClass.'Test';
 
-    	$content = str_replace(
-    		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
-    		$content ?: ''
-    	);
+        $content = str_replace(
+            ['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
+            [$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
+            $content ?: ''
+        );
 
-    	$path = $this->findFeatureTestPath($service, $feature.'Test');
+        $path = $this->findFeatureTestPath($service, $feature.'Test');
 
-    	$this->createFile($path, $content);
+        $this->createFile($path, $content);
     }
 
     /**
@@ -98,7 +98,7 @@ class FeatureGenerator extends Generator
      */
     protected function getStub(): string
     {
-        return __DIR__ . '/stubs/feature.stub';
+        return __DIR__.'/stubs/feature.stub';
     }
 
     /**
@@ -106,6 +106,6 @@ class FeatureGenerator extends Generator
      */
     private function getTestStub(): string
     {
-    	return __DIR__ . '/stubs/feature-test.stub';
+        return __DIR__.'/stubs/feature-test.stub';
     }
 }

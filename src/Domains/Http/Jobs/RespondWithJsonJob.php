@@ -2,14 +2,17 @@
 
 namespace Lucid\Domains\Http\Jobs;
 
-use Lucid\Units\Job;
 use Illuminate\Routing\ResponseFactory;
+use Lucid\Units\Job;
 
 class RespondWithJsonJob extends Job
 {
     protected mixed $content;
+
     protected int $status;
+
     protected array $headers;
+
     protected int $options;
 
     public function __construct($content, $status = 200, array $headers = [], $options = 0)

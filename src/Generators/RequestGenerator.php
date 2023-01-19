@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Request;
+use Lucid\Str;
 
 class RequestGenerator extends Generator
 {
@@ -51,6 +51,6 @@ class RequestGenerator extends Generator
      */
     public function getStub(): string
     {
-        return __DIR__ . '/../Generators/stubs/request.stub';
+        return __DIR__.'/../Generators/stubs/request.stub';
     }
 }

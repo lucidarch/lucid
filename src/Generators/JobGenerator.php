@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Job;
+use Lucid\Str;
 
 class JobGenerator extends Generator
 {
@@ -88,9 +88,9 @@ class JobGenerator extends Generator
     public function getStub(bool $isQueueable = false): string
     {
         if ($isQueueable) {
-            return __DIR__ . '/stubs/job-queueable.stub';
+            return __DIR__.'/stubs/job-queueable.stub';
         } else {
-            return __DIR__ . '/stubs/job.stub';
+            return __DIR__.'/stubs/job.stub';
         }
     }
 
@@ -99,6 +99,6 @@ class JobGenerator extends Generator
      */
     public function getTestStub(): string
     {
-        return __DIR__ . '/stubs/job-test.stub';
+        return __DIR__.'/stubs/job-test.stub';
     }
 }

@@ -49,6 +49,7 @@ class UnitMock
      *
      * @param $unit
      * @return array|mixed|void
+     *
      * @throws ReflectionException
      */
     public function getConstructorExpectationsForInstance(string $unit)
@@ -118,8 +119,8 @@ class UnitMock
             }
 
             throw new Mockery\Exception\NoMatchingExpectationException(
-                "\n\nExpected one of the following arguments sets for {$this->unit}::__construct(): " .
-                print_r($this->constructorExpectations, true) . "\nGot: " .
+                "\n\nExpected one of the following arguments sets for {$this->unit}::__construct(): ".
+                print_r($this->constructorExpectations, true)."\nGot: ".
                 print_r($args, true)
             );
         });
@@ -134,17 +135,16 @@ class UnitMock
      */
     public function compareTo(object $unit): void
     {
-        $expected = array_map(fn($args) => new $unit(...$args), $this->constructorExpectations);
+        $expected = array_map(fn ($args) => new $unit(...$args), $this->constructorExpectations);
 
         $ref = new ReflectionClass($unit);
         foreach ($ref->getProperties() as $property) {
+            $expectations = array_map(fn ($instance) => $property->getValue($instance), $expected);
 
-            $expectations = array_map(fn($instance) => $property->getValue($instance), $expected);
-
-            if (!in_array($property->getValue($unit), $expectations)) {
+            if (! in_array($property->getValue($unit), $expectations)) {
                 throw new Mockery\Exception\NoMatchingExpectationException(
                     "Mismatch in \${$property->getName()} when running {$this->unit} \n\n--- Expected (one of)\n".
-                    print_r(join("\n", array_map(fn($instance) => $property->getValue($instance), $expected)), true).
+                    print_r(implode("\n", array_map(fn ($instance) => $property->getValue($instance), $expected)), true).
                     "\n\n+++Actual:\n".print_r($property->getValue($unit), true)."\n\n"
                 );
             }
@@ -223,8 +223,7 @@ class UnitMock
         string $message = '',
         int $code = 0,
         Exception $previous = null
-    ): void
-    {
+    ): void {
         $this
             ->getMock()
             ->shouldReceive('handle')

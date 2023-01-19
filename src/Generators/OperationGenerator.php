@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Operation;
+use Lucid\Str;
 
 class OperationGenerator extends Generator
 {
@@ -16,8 +16,7 @@ class OperationGenerator extends Generator
         ?string $service,
         bool $isQueueable = false,
         array $jobs = []
-    ): Operation
-    {
+    ): Operation {
         $operation = Str::operation($operation);
         $service = Str::service($service);
 
@@ -31,7 +30,7 @@ class OperationGenerator extends Generator
 
         $content = file_get_contents($this->getStub($isQueueable));
 
-        list($useJobs, $runJobs) = self::getUsesAndRunners($jobs);
+        [$useJobs, $runJobs] = self::getUsesAndRunners($jobs);
 
         $content = str_replace(
             ['{{operation}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
@@ -84,9 +83,9 @@ class OperationGenerator extends Generator
     protected function getStub(bool $isQueueable = false): string
     {
         if ($isQueueable) {
-            return __DIR__ . '/stubs/operation-queueable.stub';
+            return __DIR__.'/stubs/operation-queueable.stub';
         } else {
-            return __DIR__ . '/stubs/operation.stub';
+            return __DIR__.'/stubs/operation.stub';
         }
     }
 
@@ -95,14 +94,14 @@ class OperationGenerator extends Generator
      */
     private function getTestStub(): string
     {
-        return __DIR__ . '/stubs/operation-test.stub';
+        return __DIR__.'/stubs/operation-test.stub';
     }
 
     /**
      * Get de use to import the right class
      * Get de job run command
      */
-    static private function getUseAndJobRunCommand(string $job): array
+    private static function getUseAndJobRunCommand(string $job): array
     {
         $str = Str::replaceLast('\\', '#', $job);
         $explode = explode('#', $str);
@@ -116,13 +115,12 @@ class OperationGenerator extends Generator
     /**
      * Returns all users and all $this->run() generated
      */
-    static private function getUsesAndRunners(array $jobs): array
+    private static function getUsesAndRunners(array $jobs): array
     {
         $useJobs = '';
         $runJobs = '';
         foreach ($jobs as $index => $job) {
-
-            list($useLine, $runLine) = self::getUseAndJobRunCommand($job);
+            [$useLine, $runLine] = self::getUseAndJobRunCommand($job);
             $useJobs .= $useLine;
             $runJobs .= $runLine;
             // only add carriage returns when it's not the last job
@@ -130,8 +128,7 @@ class OperationGenerator extends Generator
                 $runJobs .= "\n\n";
             }
         }
+
         return [$useJobs, $runJobs];
     }
-
-
 }

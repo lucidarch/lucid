@@ -3,10 +3,10 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -40,7 +40,7 @@ class PolicyDeleteCommand extends SymfonyCommand
     public function getArguments(): array
     {
         return [
-            ['policy', InputArgument::REQUIRED, 'The Policy\'s name.']
+            ['policy', InputArgument::REQUIRED, 'The Policy\'s name.'],
         ];
     }
 }

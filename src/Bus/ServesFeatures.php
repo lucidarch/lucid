@@ -2,8 +2,8 @@
 
 namespace Lucid\Bus;
 
-use Illuminate\Support\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Collection;
 use Lucid\Events\FeatureStarted;
 
 trait ServesFeatures

@@ -2,8 +2,8 @@
 
 namespace Lucid\Generators;
 
-use Lucid\Finder;
 use Lucid\Filesystem;
+use Lucid\Finder;
 
 class Generator
 {

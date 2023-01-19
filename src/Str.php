@@ -29,16 +29,14 @@ class Str
         string $search,
         string $replace,
         string $subject
-    ): string
-    {
+    ): string {
         return LaravelStr::replaceLast($search, $replace, $subject);
     }
 
     public static function substr(
         string $string,
         int $offset
-    ): string
-    {
+    ): string {
         $substr = substr($string, $offset);
 
         if ($substr === false) {
@@ -70,12 +68,14 @@ class Str
      */
     public static function feature(?string $name): string
     {
-        $parts = array_map(function($part) { return self::studly($part); }, explode("/", $name ?? ''));
-        $feature  = self::studly(preg_replace('/Feature(\.php)?$/', '', array_pop($parts)).'Feature');
+        $parts = array_map(function ($part) {
+        return self::studly($part);
+        }, explode('/', $name ?? ''));
+        $feature = self::studly(preg_replace('/Feature(\.php)?$/', '', array_pop($parts)).'Feature');
 
         $parts[] = $feature;
 
-        return join(DS, $parts);
+        return implode(DS, $parts);
     }
 
     /**
@@ -143,7 +143,7 @@ class Str
      */
     public static function policy(string $name): string
     {
-        return self::studly(preg_replace('/Policy(\.php)?$/', '', $name) . 'Policy');
+        return self::studly(preg_replace('/Policy(\.php)?$/', '', $name).'Policy');
     }
 
     /**

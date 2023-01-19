@@ -2,9 +2,9 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
 use Lucid\Console\Command;
 use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 

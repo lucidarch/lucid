@@ -2,12 +2,12 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class JobDeleteCommand extends SymfonyCommand
 {
@@ -26,7 +26,7 @@ class JobDeleteCommand extends SymfonyCommand
             $title = Str::job($this->argument('job'));
 
             // Delete job
-            if (!$this->exists($job = $this->findJobPath($domain, $title))) {
+            if (! $this->exists($job = $this->findJobPath($domain, $title))) {
                 $this->error("Job class $title cannot be found.");
             } else {
                 $this->delete($job);
@@ -39,8 +39,8 @@ class JobDeleteCommand extends SymfonyCommand
             }
 
             // Delete job tests
-            $testTitle = $title . 'Test';
-            if (!$this->exists($job = $this->findJobTestPath($domain, $testTitle))) {
+            $testTitle = $title.'Test';
+            if (! $this->exists($job = $this->findJobTestPath($domain, $testTitle))) {
                 $this->error("Job test class $testTitle cannot be found.");
             } else {
                 $this->delete($job);

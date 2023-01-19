@@ -34,8 +34,8 @@ class OperationMakeCommand extends SymfonyCommand
 
             $this->info(
                 "Operation class $title created successfully."
-                . "\n\n"
-                . "Find it at <comment>$operation->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$operation->relativePath</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -47,7 +47,7 @@ class OperationMakeCommand extends SymfonyCommand
         return [
             ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
             ['service', InputArgument::OPTIONAL, 'The service in which the operation should be implemented.'],
-            ['jobs', InputArgument::IS_ARRAY, 'A list of Jobs Operation calls']
+            ['jobs', InputArgument::IS_ARRAY, 'A list of Jobs Operation calls'],
         ];
     }
 

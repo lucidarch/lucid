@@ -35,5 +35,4 @@ class Entity implements Arrayable
 
         return null;
     }
-
 }

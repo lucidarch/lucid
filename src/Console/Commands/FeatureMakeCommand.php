@@ -2,13 +2,13 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
+use Lucid\Finder;
 use Lucid\Generators\FeatureGenerator;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class FeatureMakeCommand extends SymfonyCommand
 {
@@ -31,8 +31,8 @@ class FeatureMakeCommand extends SymfonyCommand
 
             $this->info(
                 "Feature class $feature->title created successfully."
-                . "\n\n"
-                . "Find it at <comment>$feature->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$feature->relativePath</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());

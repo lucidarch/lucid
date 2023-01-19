@@ -2,8 +2,8 @@
 
 namespace Lucid\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseServiceProvider;
+use Illuminate\Routing\Router;
 
 abstract class RouteServiceProvider extends BaseServiceProvider
 {
@@ -17,8 +17,7 @@ abstract class RouteServiceProvider extends BaseServiceProvider
         string $namespace,
         ?string $pathApi = null,
         ?string $pathWeb = null
-    ): void
-    {
+    ): void {
         if (is_string($pathApi) && is_file($pathApi)) {
             $this->mapApiRoutes($router, $namespace, $pathApi);
         }
@@ -38,12 +37,11 @@ abstract class RouteServiceProvider extends BaseServiceProvider
         string $namespace,
         string $path,
         string $prefix = 'api'
-    ): void
-    {
+    ): void {
         $router->group([
             'middleware' => 'api',
-            'namespace'  => $namespace,
-            'prefix'     => $prefix // to allow to delete or change of api prefix
+            'namespace' => $namespace,
+            'prefix' => $prefix, // to allow to delete or change of api prefix
         ], function ($router) use ($path) {
             require $path;
         });
@@ -58,11 +56,10 @@ abstract class RouteServiceProvider extends BaseServiceProvider
         Router $router,
         string $namespace,
         string $path
-    ): void
-    {
+    ): void {
         $router->group([
             'middleware' => 'web',
-            'namespace'  => $namespace
+            'namespace' => $namespace,
         ], function ($router) use ($path) {
             require $path;
         });

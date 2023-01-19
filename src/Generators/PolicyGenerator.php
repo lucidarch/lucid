@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Policy;
+use Lucid\Str;
 
 class PolicyGenerator extends Generator
 {
@@ -58,6 +58,6 @@ class PolicyGenerator extends Generator
      */
     public function getStub(): string
     {
-        return __DIR__ . '/../Generators/stubs/policy.stub';
+        return __DIR__.'/../Generators/stubs/policy.stub';
     }
 }

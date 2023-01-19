@@ -19,8 +19,7 @@ class Model extends Entity
         string $path,
         string $relativePath,
         string $content
-    )
-    {
+    ) {
         $this->setAttributes([
             'model' => $title,
             'namespace' => $namespace,

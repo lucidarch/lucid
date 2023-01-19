@@ -2,12 +2,12 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class FeatureDeleteCommand extends SymfonyCommand
 {
@@ -26,7 +26,7 @@ class FeatureDeleteCommand extends SymfonyCommand
 
         try {
             // Delete feature
-            if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
+            if (! $this->exists($feature = $this->findFeaturePath($service, $title))) {
                 $this->error("Feature class $title cannot be found.");
             } else {
                 $this->delete($feature);
@@ -35,8 +35,8 @@ class FeatureDeleteCommand extends SymfonyCommand
             }
 
             // Delete feature tests
-            $testTitle = $title . 'Test';
-            if (!$this->exists($test = $this->findFeatureTestPath($service, $testTitle))) {
+            $testTitle = $title.'Test';
+            if (! $this->exists($test = $this->findFeatureTestPath($service, $testTitle))) {
                 $this->error("Feature test class $testTitle cannot be found.");
             } else {
                 $this->delete($test);

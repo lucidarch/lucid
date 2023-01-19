@@ -3,21 +3,20 @@
 namespace Lucid;
 
 use Exception;
-use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Lucid\Entities\Feature;
-use Lucid\Entities\Service;
+use InvalidArgumentException;
 use Lucid\Entities\Domain;
+use Lucid\Entities\Feature;
 use Lucid\Entities\Job;
+use Lucid\Entities\Service;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
-if (!defined('DS')) {
+if (! defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
 trait Finder
 {
-
     /**
      * Get the source directory name.
      */
@@ -31,7 +30,7 @@ trait Finder
      */
     public function isMicroservice(): bool
     {
-        return !file_exists(base_path().DS.$this->getSourceDirectoryName().DS.'Services');
+        return ! file_exists(base_path().DS.$this->getSourceDirectoryName().DS.'Services');
     }
 
     /**
@@ -42,7 +41,7 @@ trait Finder
     public function findNamespace(string $dir): string
     {
         // read composer.json file contents to determine the namespace
-        $composer = json_decode(file_get_contents(base_path(). DS .'composer.json'), true);
+        $composer = json_decode(file_get_contents(base_path().DS.'composer.json'), true);
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
@@ -54,6 +53,7 @@ trait Finder
 
         throw new Exception('App namespace not set in composer.json');
     }
+
     /**
      * @throws Exception
      */
@@ -79,7 +79,7 @@ trait Finder
     {
         $root = $this->findRootNamespace();
 
-        return (!$service) ? $root : "$root\\Services\\$service";
+        return (! $service) ? $root : "$root\\Services\\$service";
     }
 
     /**
@@ -95,7 +95,7 @@ trait Finder
      */
     public function findServicesRootPath(): string
     {
-        return $this->getSourceRoot(). DS .'Services';
+        return $this->getSourceRoot().DS.'Services';
     }
 
     /**
@@ -104,9 +104,9 @@ trait Finder
      */
     public function findServicePath(?string $service): string
     {
-        return (!$service)
+        return (! $service)
             ? $this->getSourceRoot()
-            : $this->findServicesRootPath(). DS . $service;
+            : $this->findServicesRootPath().DS.$service;
     }
 
     /**
@@ -115,9 +115,9 @@ trait Finder
      */
     public function findMigrationPath(?string $service): string
     {
-        return (!$service)
+        return (! $service)
             ? 'database/migrations'
-            : $this->relativeFromReal($this->findServicesRootPath(). DS . $service . "/database/migrations");
+            : $this->relativeFromReal($this->findServicesRootPath().DS.$service.'/database/migrations');
     }
 
     /**
@@ -125,7 +125,7 @@ trait Finder
      */
     public function findFeaturesRootPath(?string $service): string
     {
-        return $this->findServicePath($service). DS . 'Features';
+        return $this->findServicePath($service).DS.'Features';
     }
 
     /**
@@ -133,7 +133,7 @@ trait Finder
      */
     public function findFeaturePath(string $service, string $feature): string
     {
-        return $this->findFeaturesRootPath($service). DS . "$feature.php";
+        return $this->findFeaturesRootPath($service).DS."$feature.php";
     }
 
     /**
@@ -144,10 +144,10 @@ trait Finder
         $root = $this->findFeatureTestsRootPath();
 
         if ($service) {
-            $root .= DS . 'Services'. DS . $service;
+            $root .= DS.'Services'.DS.$service;
         }
 
-        return join(DS, [$root, "$test.php"]);
+        return implode(DS, [$root, "$test.php"]);
     }
 
     /**
@@ -157,7 +157,7 @@ trait Finder
      */
     public function findFeatureNamespace(?string $service, string $feature): string
     {
-        $dirs = join('\\', explode(DS, dirname($feature)));
+        $dirs = implode('\\', explode(DS, dirname($feature)));
 
         $base = $this->findServiceNamespace($service).'\\Features';
 
@@ -188,7 +188,7 @@ trait Finder
      */
     public function findOperationsRootPath(?string $service): string
     {
-        return $this->findServicePath($service). DS . 'Operations';
+        return $this->findServicePath($service).DS.'Operations';
     }
 
     /**
@@ -196,7 +196,7 @@ trait Finder
      */
     public function findOperationPath(?string $service, string $operation): string
     {
-        return $this->findOperationsRootPath($service) . DS . "$operation.php";
+        return $this->findOperationsRootPath($service).DS."$operation.php";
     }
 
     /**
@@ -207,10 +207,10 @@ trait Finder
         $root = $this->findUnitTestsRootPath();
 
         if ($service) {
-            $root .= DS . 'Services'. DS . $service;
+            $root .= DS.'Services'.DS.$service;
         }
 
-        return join(DS, [$root, 'Operations', "$test.php"]);
+        return implode(DS, [$root, 'Operations', "$test.php"]);
     }
 
     /**
@@ -236,7 +236,7 @@ trait Finder
             $namespace .= "\\Services\\$service";
         }
 
-        return $namespace . '\\Operations';
+        return $namespace.'\\Operations';
     }
 
     /**
@@ -244,7 +244,7 @@ trait Finder
      */
     public function findDomainsRootPath(): string
     {
-        return $this->getSourceRoot(). DS .'Domains';
+        return $this->getSourceRoot().DS.'Domains';
     }
 
     /**
@@ -252,7 +252,7 @@ trait Finder
      */
     public function findDomainPath(string $domain): string
     {
-        return $this->findDomainsRootPath(). DS . $domain;
+        return $this->findDomainsRootPath().DS.$domain;
     }
 
     /**
@@ -302,7 +302,7 @@ trait Finder
             $finder = new SymfonyFinder();
             $files = $finder
                 ->name('*Job.php')
-                ->in($path. DS .'Jobs')
+                ->in($path.DS.'Jobs')
                 ->files();
 
             $jobs[$domain->name] = new Collection();
@@ -361,7 +361,7 @@ trait Finder
      */
     public function findDomainJobsTestsNamespace(string $domain): string
     {
-        return $this->findUnitTestsRootNamespace() . "\\Domains\\$domain\\Jobs";
+        return $this->findUnitTestsRootNamespace()."\\Domains\\$domain\\Jobs";
     }
 
     /**
@@ -369,7 +369,7 @@ trait Finder
      */
     public function findDomainTestsPath(string $domain): string
     {
-        return $this->findUnitTestsRootPath() . DS . 'Domains' . DS . $domain;
+        return $this->findUnitTestsRootPath().DS.'Domains'.DS.$domain;
     }
 
     /**
@@ -377,7 +377,7 @@ trait Finder
      */
     public function findJobTestPath(string $domain, string $jobTest): string
     {
-        return $this->findDomainTestsPath($domain) . DS . 'Jobs' . DS . "$jobTest.php";
+        return $this->findDomainTestsPath($domain).DS.'Jobs'.DS."$jobTest.php";
     }
 
     /**
@@ -385,7 +385,7 @@ trait Finder
      */
     public function findControllerPath(?string $service, string $controller): string
     {
-        return $this->findServicePath($service).DS.join(DS, ['Http', 'Controllers', "$controller.php"]);
+        return $this->findServicePath($service).DS.implode(DS, ['Http', 'Controllers', "$controller.php"]);
     }
 
     /**
@@ -535,7 +535,7 @@ trait Finder
     {
         $services = $this->listServices();
 
-        if (!empty($serviceName)) {
+        if (! empty($serviceName)) {
             $services = $services->filter(function ($service) use ($serviceName) {
                 return $service->name === $serviceName || $service->slug === $serviceName;
             });
@@ -574,7 +574,7 @@ trait Finder
      */
     public function findModelPath(string $model): string
     {
-        return $this->getSourceDirectoryName(). DS .'Data'. DS . 'Models' . DS . "$model.php";
+        return $this->getSourceDirectoryName().DS.'Data'.DS.'Models'.DS."$model.php";
     }
 
     /**
@@ -598,7 +598,7 @@ trait Finder
      */
     public function findRequestsPath(string $domain): string
     {
-        return $this->findDomainPath($domain). DS . 'Requests';
+        return $this->findDomainPath($domain).DS.'Requests';
     }
 
     /**
@@ -606,7 +606,7 @@ trait Finder
      */
     public function findRequestPath(string $domain, string $request): string
     {
-        return $this->findRequestsPath($domain) . DS . $request.'.php';
+        return $this->findRequestsPath($domain).DS.$request.'.php';
     }
 
     /**
@@ -664,7 +664,7 @@ trait Finder
      */
     protected function getConfigPath(string $name): string
     {
-        return app()['path.config']. DS ."$name.php";
+        return app()['path.config'].DS."$name.php";
     }
 
     /**
@@ -672,7 +672,7 @@ trait Finder
      */
     protected function findUnitTestsRootPath(): string
     {
-        return base_path(). DS . 'tests' . DS . 'Unit';
+        return base_path().DS.'tests'.DS.'Unit';
     }
 
     /**
@@ -680,7 +680,7 @@ trait Finder
      */
     protected function findFeatureTestsRootPath(): string
     {
-        return base_path(). DS . 'tests' . DS . 'Feature';
+        return base_path().DS.'tests'.DS.'Feature';
     }
 
     /**

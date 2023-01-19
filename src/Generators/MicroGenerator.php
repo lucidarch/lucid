@@ -2,8 +2,8 @@
 
 namespace Lucid\Generators;
 
-use DOMXPath;
 use DOMDocument;
+use DOMXPath;
 use Lucid\Generators\Generator as GeneratorAlias;
 
 class MicroGenerator extends GeneratorAlias
@@ -24,7 +24,7 @@ class MicroGenerator extends GeneratorAlias
         'tests' => [
             'Domains',
             'Operations',
-        ]
+        ],
     ];
 
     /**
@@ -87,7 +87,6 @@ class MicroGenerator extends GeneratorAlias
         </testsuite>
 \t
 XMLSUITE;
-
     }
 
     private function generateCustomDirectories(): array
@@ -98,7 +97,7 @@ XMLSUITE;
             $this->delete("$root/tests/Feature");
         }
 
-        if (!$this->exists("$root/tests/Features")) {
+        if (! $this->exists("$root/tests/Features")) {
             $this->createDirectory("$root/tests/Features");
             $created[] = 'tests/Features';
         }

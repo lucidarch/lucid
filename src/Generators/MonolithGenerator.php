@@ -14,7 +14,7 @@ class MonolithGenerator extends Generator
             'Foundation',
             'Policies',
             'Data/Models',
-        ]
+        ],
     ];
 
     public function generate(): array

@@ -3,10 +3,10 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Generators\RequestGenerator;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
+use Lucid\Generators\RequestGenerator;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -32,8 +32,8 @@ class RequestMakeCommand extends SymfonyCommand
 
             $this->info(
                 'Request class created successfully.'
-                . "\n\n"
-                . "Find it at <comment>$request->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$request->relativePath</comment>\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());

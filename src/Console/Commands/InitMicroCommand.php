@@ -2,9 +2,9 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Finder;
-use Lucid\Filesystem;
 use Lucid\Console\Command;
+use Lucid\Filesystem;
+use Lucid\Finder;
 use Lucid\Generators\MicroGenerator;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
@@ -28,7 +28,7 @@ class InitMicroCommand extends SymfonyCommand
         $paths = $generator->generate();
 
         $this->comment('Created directories:');
-        $this->comment(join("\n", $paths));
+        $this->comment(implode("\n", $paths));
 
         $this->welcome();
     }

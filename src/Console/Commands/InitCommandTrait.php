@@ -21,7 +21,7 @@ trait InitCommandTrait
         if ($service) {
             $this->info("will generate <fg=cyan>app/Services/$service/Features/LoginUserFeature.php</>");
         } else {
-            $this->info("will generate <fg=cyan>app/Features/LoginUserFeature.php</>");
+            $this->info('will generate <fg=cyan>app/Features/LoginUserFeature.php</>');
         }
 
         $this->info('');

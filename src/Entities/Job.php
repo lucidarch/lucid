@@ -22,11 +22,10 @@ class Job extends Entity
         string $relativePath,
         ?Domain $domain = null,
         string $content = ''
-    )
-    {
+    ) {
         $this->setAttributes([
             'title' => $title,
-            'className' => str_replace(' ', '', $title) . 'Job',
+            'className' => str_replace(' ', '', $title).'Job',
             'namespace' => $namespace,
             'file' => $file,
             'realPath' => $path,

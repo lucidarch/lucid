@@ -2,12 +2,12 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Finder;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
+use Lucid\Finder;
 use Lucid\Generators\ServiceGenerator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class ServiceMakeCommand extends SymfonyCommand
 {
@@ -36,8 +36,8 @@ class ServiceMakeCommand extends SymfonyCommand
 
             $this->info(
                 'Activate it by adding '
-                . "<comment>$serviceProvider::class</comment>"
-                . "\nto <comment>'providers' in config/app.php</comment>\n"
+                ."<comment>$serviceProvider::class</comment>"
+                ."\nto <comment>'providers' in config/app.php</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage()."\n".$e->getFile().' at '.$e->getLine());

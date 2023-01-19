@@ -20,11 +20,10 @@ class Feature extends Entity
         string $relativePath,
         ?Service $service = null,
         string $content = ''
-    )
-    {
+    ) {
         $this->setAttributes([
             'title' => $title,
-            'className' => str_replace(' ', '', $title) . 'Feature',
+            'className' => str_replace(' ', '', $title).'Feature',
             'service' => $service,
             'file' => $file,
             'realPath' => $realPath,

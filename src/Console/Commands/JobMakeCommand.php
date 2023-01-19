@@ -34,8 +34,8 @@ class JobMakeCommand extends SymfonyCommand
 
             $this->info(
                 "Job class $title created successfully."
-                . "\n\n"
-                . "Find it at <comment>$job->relativePath</comment>\n"
+                ."\n\n"
+                ."Find it at <comment>$job->relativePath</comment>\n"
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());

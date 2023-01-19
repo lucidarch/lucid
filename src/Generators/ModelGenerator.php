@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Model;
+use Lucid\Str;
 
 class ModelGenerator extends Generator
 {
@@ -48,6 +48,6 @@ class ModelGenerator extends Generator
      */
     public function getStub(): string
     {
-        return __DIR__ . '/../Generators/stubs/model-8.stub';
+        return __DIR__.'/../Generators/stubs/model-8.stub';
     }
 }

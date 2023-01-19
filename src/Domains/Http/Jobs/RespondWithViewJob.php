@@ -2,14 +2,17 @@
 
 namespace Lucid\Domains\Http\Jobs;
 
-use Lucid\Units\Job;
 use Illuminate\Routing\ResponseFactory;
+use Lucid\Units\Job;
 
 class RespondWithViewJob extends Job
 {
     protected array|string $template;
+
     protected array $data;
+
     protected int $status;
+
     protected array $headers;
 
     public function __construct($template, $data = [], $status = 200, array $headers = [])
