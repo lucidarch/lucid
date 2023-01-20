@@ -2,49 +2,34 @@
 
 namespace Lucid\Console\Commands;
 
-use Exception;
-use Lucid\Console\Command;
-use Lucid\Filesystem;
-use Lucid\Finder;
+use Illuminate\Console\Command;
 use Lucid\Generators\RequestGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class RequestMakeCommand extends SymfonyCommand
+class RequestMakeCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    protected $signature = 'make:request
+                            {name : The name of the class.}
+                            {domain : The Domain in which this request should be generated.}
+                            ';
 
-    protected string $name = 'make:request';
-
-    protected string $description = 'Create a Request in a domain.';
+    protected $description = 'Create a Request in a domain.';
 
     public function handle(): void
     {
-        $generator = new RequestGenerator();
-
-        $name = $this->argument('name');
-        $service = $this->argument('domain');
-
         try {
-            $request = $generator->generate($name, $service);
+            $request = (new RequestGenerator())
+                ->generate(
+                    $this->argument('name'),
+                    $this->argument('domain')
+                );
 
             $this->info(
                 'Request class created successfully.'
                 ."\n\n"
                 ."Find it at <comment>$request->relativePath</comment>\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The name of the class.'],
-            ['domain', InputArgument::REQUIRED, 'The Domain in which this request should be generated.'],
-        ];
     }
 }

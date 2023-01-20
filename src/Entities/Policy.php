@@ -3,12 +3,12 @@
 namespace Lucid\Entities;
 
 /**
- * @property-read string policy
- * @property-read string namespace
- * @property-read string file
- * @property-read string path
- * @property-read string relativePath
- * @property-read string content
+ * @property-read string $policy
+ * @property-read string $namespace
+ * @property-read string $file
+ * @property-read string $path
+ * @property-read string $relativePath
+ * @property-read string $content
  */
 class Policy extends Entity
 {

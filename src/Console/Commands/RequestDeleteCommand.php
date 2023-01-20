@@ -2,30 +2,28 @@
 
 namespace Lucid\Console\Commands;
 
-use Exception;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class RequestDeleteCommand extends SymfonyCommand
+class RequestDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:request';
+    protected $signature = 'delete:request
+                            {request : The Request\'s name.}
+                            {service : The Service\'s name.}
+                            ';
 
-    protected string $description = 'Delete an existing Request.';
+    protected $description = 'Delete an existing Request.';
 
     public function handle(): void
     {
-        $request = Str::request($this->argument('request'));
-        $service = Str::service($this->argument('service'));
-
         try {
+            $request = Str::request($this->argument('request'));
+            $service = Str::service($this->argument('service'));
+
             if (! $this->exists($path = $this->findRequestPath($service, $request))) {
                 $this->error("Request class $request cannot be found.");
             } else {
@@ -33,16 +31,8 @@ class RequestDeleteCommand extends SymfonyCommand
 
                 $this->info("Request class <comment>$request</comment> deleted successfully.");
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['request', InputArgument::REQUIRED, 'The Request\'s name.'],
-            ['service', InputArgument::REQUIRED, 'The Service\'s name.'],
-        ];
     }
 }

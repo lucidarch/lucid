@@ -3,22 +3,21 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
+use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
-use Lucid\Console\Command;
 use Lucid\Finder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
-class ChangeSourceNamespaceCommand extends SymfonyCommand
+class ChangeSourceNamespaceCommand extends Command
 {
     use Finder;
-    use Command;
 
-    protected string $name = 'src:name';
+    protected $signature = 'src:name
+                            {name : The source directory namespace.}
+                            ';
 
-    protected string $description = 'Set the source directory namespace.';
+    protected $description = 'Set the source directory namespace.';
 
     /**
      * The Composer class instance.
@@ -144,12 +143,5 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
         if ($this->files->exists($path)) {
             $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The source directory namespace.'],
-        ];
     }
 }

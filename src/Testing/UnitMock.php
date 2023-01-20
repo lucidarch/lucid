@@ -19,9 +19,9 @@ class UnitMock
 
     private array $currentConstructorExpectations;
 
-    private array $mocks;
+    private array $mocks = [];
 
-    private ?MockInterface $currentMock = null;
+    private MockInterface|Mockery\LegacyMockInterface|null $currentMock = null;
 
     /**
      * UnitMock constructor.
@@ -47,12 +47,11 @@ class UnitMock
      * Returns constructor expectations array that matches the given $unit.
      * Empty array otherwise.
      *
-     * @param $unit
      * @return array|mixed|void
      *
      * @throws ReflectionException
      */
-    public function getConstructorExpectationsForInstance(string $unit)
+    public function getConstructorExpectationsForInstance(mixed $unit)
     {
         foreach ($this->constructorExpectations as $index => $args) {
             $expected = new $unit(...$args);
@@ -156,7 +155,7 @@ class UnitMock
      *
      * @throws ReflectionException
      */
-    public function getMock(): MockInterface
+    public function getMock(): MockInterface|Mockery\LegacyMockInterface
     {
         $this->registerMock();
 

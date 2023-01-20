@@ -2,22 +2,21 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class FeatureDeleteCommand extends SymfonyCommand
+class FeatureDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:feature';
+    protected $signature = 'delete:feature
+                            {feature : The feature\'s name.}
+                            {service? : The service in which the feature should be deleted.}
+                            ';
 
-    protected string $description = 'Delete an existing Feature in a service';
+    protected $description = 'Delete an existing Feature in a service';
 
     public function handle(): void
     {
@@ -46,13 +45,5 @@ class FeatureDeleteCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service from which the feature should be deleted.'],
-        ];
     }
 }

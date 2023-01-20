@@ -11,6 +11,5 @@ use Lucid\Bus\ServesFeatures;
  */
 class Controller extends BaseController
 {
-    use ValidatesRequests;
-    use ServesFeatures;
+    use ValidatesRequests, ServesFeatures;
 }

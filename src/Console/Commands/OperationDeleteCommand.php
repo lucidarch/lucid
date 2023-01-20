@@ -2,22 +2,21 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class OperationDeleteCommand extends SymfonyCommand
+class OperationDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:operation';
+    protected $signature = 'delete:operation
+                            {operation : The operation\'s name.}
+                            {service? : The service from which the operation should be deleted.}
+                            ';
 
-    protected string $description = 'Delete an existing Operation in a service';
+    protected $description = 'Delete an existing Operation in a service';
 
     public function handle(): void
     {
@@ -46,13 +45,5 @@ class OperationDeleteCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service from which the operation should be deleted.'],
-        ];
     }
 }

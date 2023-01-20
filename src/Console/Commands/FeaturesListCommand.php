@@ -2,20 +2,19 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Entities\Feature;
 use Lucid\Finder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class FeaturesListCommand extends SymfonyCommand
+class FeaturesListCommand extends Command
 {
     use Finder;
-    use Command;
 
-    protected string $name = 'list:features';
+    protected $signature = 'list:features
+                       {service? : The service to list the features of.}
+                       ';
 
-    protected string $description = 'List the features.';
+    protected $description = 'List the features.';
 
     public function handle(): void
     {
@@ -37,12 +36,5 @@ class FeaturesListCommand extends SymfonyCommand
                 }, $features->all())
             );
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['service', InputArgument::OPTIONAL, 'The service to list the features of.'],
-        ];
     }
 }

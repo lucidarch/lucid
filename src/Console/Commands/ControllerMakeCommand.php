@@ -2,33 +2,28 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
-use Lucid\Filesystem;
-use Lucid\Finder;
+use Illuminate\Console\Command;
 use Lucid\Generators\ControllerGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends SymfonyCommand
+class ControllerMakeCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    protected $signature = 'make:controller
+                            {controller : The controller\'s name.}
+                            {service? : The service in which the controller should be generated.}
+                            {--resource : Generate a resource controller class.}
+                            ';
 
-    protected string $name = 'make:controller';
-
-    protected string $description = 'Create a new resource Controller class in a service';
+    protected $description = 'Create a new resource Controller class in a service';
 
     public function handle(): void
     {
-        $generator = new ControllerGenerator();
-
-        $service = $this->argument('service');
-        $name = $this->argument('controller');
-
         try {
-            $controller = $generator->generate($name, $service, $this->option('resource'));
+            $controller = (new ControllerGenerator())
+                ->generate(
+                    $this->argument('controller'),
+                    $this->argument('service'),
+                    $this->option('resource')
+                );
 
             $this->info(
                 'Controller class created successfully.'
@@ -38,20 +33,5 @@ class ControllerMakeCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['controller', InputArgument::REQUIRED, 'The controller\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service in which the controller should be generated.'],
-        ];
-    }
-
-    protected function getOptions(): array
-    {
-        return [
-            ['resource', null, InputOption::VALUE_NONE, 'Generate a resource controller class.'],
-        ];
     }
 }

@@ -2,31 +2,25 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
-use Lucid\Filesystem;
+use Illuminate\Console\Command;
 use Lucid\Finder;
 use Lucid\Generators\ServiceGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class ServiceMakeCommand extends SymfonyCommand
+class ServiceMakeCommand extends Command
 {
     use Finder;
-    use Command;
-    use Filesystem;
 
-    protected string $name = 'make:service';
+    protected $signature = 'make:service
+                            {name : The service name.}
+                            ';
 
-    protected string $description = 'Create a new Service';
+    protected $description = 'Create a new Service';
 
     public function handle(): void
     {
-        $generator = new ServiceGenerator();
-
-        $name = $this->argument('name');
-
         try {
-            $service = $generator->generate($name);
+            $service = (new ServiceGenerator())
+                ->generate($this->argument('name'));
 
             $this->info("Service $service->name created successfully.\n");
 
@@ -42,12 +36,5 @@ class ServiceMakeCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage()."\n".$e->getFile().' at '.$e->getLine());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The service name.'],
-        ];
     }
 }

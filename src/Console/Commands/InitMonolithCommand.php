@@ -2,24 +2,18 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
-use Lucid\Filesystem;
-use Lucid\Finder;
+use Illuminate\Console\Command;
 use Lucid\Generators\MonolithGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 
-class InitMonolithCommand extends SymfonyCommand
+class InitMonolithCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
     use InitCommandTrait;
 
-    protected string $name = 'init:monolith';
+    protected $signature = 'init:monolith
+                       {service? : Your first service.}
+                       ';
 
-    protected string $description = 'Initialize Lucid Monolith in current project.';
+    protected $description = 'Initialize Lucid Monolith in current project.';
 
     public function handle(): void
     {
@@ -34,20 +28,10 @@ class InitMonolithCommand extends SymfonyCommand
 
         // create service
         if ($service) {
-            $this->getApplication()
-                ->find('make:service')
-                ->run(new ArrayInput(['name' => $service]), $this->output);
-
+            $this->call('make:service', ['name' => $service]);
             $this->ask('Once done, press Enter/Return to continue...');
         }
 
         $this->welcome($service);
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['service', InputArgument::OPTIONAL, 'Your first service.'],
-        ];
     }
 }

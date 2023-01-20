@@ -2,19 +2,17 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Entities\Service;
 use Lucid\Finder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
-class ServicesListCommand extends SymfonyCommand
+class ServicesListCommand extends Command
 {
     use Finder;
-    use Command;
 
-    protected string $name = 'list:services';
+    protected $signature = 'list:services';
 
-    protected string $description = 'List the services in this project.';
+    protected $description = 'List the services in this project.';
 
     public function handle(): void
     {

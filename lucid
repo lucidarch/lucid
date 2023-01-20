@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use Illuminate\Events\Dispatcher;
+
 if (file_exists('./vendor/autoload.php')) {
     require './vendor/autoload.php';
 } else if(file_exists(__DIR__.'/vendor/autoload.php')) {
@@ -41,7 +43,7 @@ $commands = [
     new Lucid\Console\Commands\OperationDeleteCommand(),
 ];
 
-$app = new Symfony\Component\Console\Application('Lucid', '1.0.0');
+$app = new Illuminate\Console\Application($laravel, new Dispatcher(), '1.0.0');
 array_walk($commands, [$app, 'add']);
 
 $app->run();

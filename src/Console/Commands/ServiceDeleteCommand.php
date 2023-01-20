@@ -2,22 +2,20 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class ServiceDeleteCommand extends SymfonyCommand
+class ServiceDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:service';
+    protected $signature = 'delete:service
+                            {name : The service name.}
+                            ';
 
-    protected string $description = 'Delete an existing Service';
+    protected $description = 'Delete an existing Service';
 
     public function handle(): void
     {
@@ -44,14 +42,7 @@ class ServiceDeleteCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage());
             $this->error($e->getFile());
-            $this->error($e->getLine());
+            $this->error((string) $e->getLine());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The service name.'],
-        ];
     }
 }

@@ -3,13 +3,13 @@
 namespace Lucid\Entities;
 
 /**
- * @property-read string title
- * @property-read string className
- * @property-read string service
- * @property-read string file
- * @property-read string realPath
- * @property-read string relativePath
- * @property-read string content
+ * @property-read string $title
+ * @property-read string $className
+ * @property-read Service $service
+ * @property-read string $file
+ * @property-read string $realPath
+ * @property-read string $relativePath
+ * @property-read string $content
  */
 class Feature extends Entity
 {

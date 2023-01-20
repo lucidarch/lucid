@@ -37,6 +37,7 @@ class Str
         string $string,
         int $offset
     ): string {
+        /** @var false|string $substr */
         $substr = substr($string, $offset);
 
         if ($substr === false) {
@@ -69,7 +70,7 @@ class Str
     public static function feature(?string $name): string
     {
         $parts = array_map(function ($part) {
-        return self::studly($part);
+            return self::studly($part);
         }, explode('/', $name ?? ''));
         $feature = self::studly(preg_replace('/Feature(\.php)?$/', '', array_pop($parts)).'Feature');
 

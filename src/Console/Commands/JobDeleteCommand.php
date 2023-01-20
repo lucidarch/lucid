@@ -2,22 +2,21 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class JobDeleteCommand extends SymfonyCommand
+class JobDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:job';
+    protected $signature = 'delete:job
+                            {job : The job\'s name.}
+                            {domain : The domain from which the job will be deleted.}
+                            ';
 
-    protected string $description = 'Delete an existing Job in a domain';
+    protected $description = 'Delete an existing Job in a domain';
 
     public function handle(): void
     {
@@ -50,13 +49,5 @@ class JobDeleteCommand extends SymfonyCommand
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['job', InputArgument::REQUIRED, 'The job\'s name.'],
-            ['domain', InputArgument::REQUIRED, 'The domain from which the job will be deleted.'],
-        ];
     }
 }

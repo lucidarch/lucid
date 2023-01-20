@@ -3,28 +3,26 @@
 namespace Lucid\Console\Commands;
 
 use Exception;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
 use Lucid\Str;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class ModelDeleteCommand extends SymfonyCommand
+class ModelDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    protected string $name = 'delete:model';
+    protected $signature = 'delete:model
+                            {model : The Model\'s name.}
+                            ';
 
-    protected string $description = 'Delete an existing Eloquent Model.';
+    protected $description = 'Delete an existing Eloquent Model.';
 
     public function handle(): void
     {
-        $model = Str::model($this->argument('model'));
-
         try {
+            $model = Str::model($this->argument('model'));
+
             if (! $this->exists($path = $this->findModelPath($model))) {
                 $this->error("Model class $model cannot be found.");
             } else {
@@ -35,12 +33,5 @@ class ModelDeleteCommand extends SymfonyCommand
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    public function getArguments(): array
-    {
-        return [
-            ['model', InputArgument::REQUIRED, 'The Model\'s name.'],
-        ];
     }
 }

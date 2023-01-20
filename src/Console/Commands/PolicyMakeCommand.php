@@ -2,47 +2,30 @@
 
 namespace Lucid\Console\Commands;
 
-use Exception;
-use Lucid\Console\Command;
-use Lucid\Filesystem;
-use Lucid\Finder;
+use Illuminate\Console\Command;
 use Lucid\Generators\PolicyGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class PolicyMakeCommand extends SymfonyCommand
+class PolicyMakeCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    protected $signature = 'make:policy
+                            {policy : The Policy\'s name.}
+                            ';
 
-    protected string $name = 'make:policy';
-
-    protected string $description = 'Create a Policy.';
+    protected $description = 'Create a Policy.';
 
     public function handle(): void
     {
-        $generator = new PolicyGenerator();
-
-        $name = $this->argument('policy');
-
         try {
-            $policy = $generator->generate($name);
+            $policy = (new PolicyGenerator())
+                ->generate($this->argument('policy'));
 
             $this->info(
                 'Policy class created successfully.'
                 ."\n\n"
                 ."Find it at <comment>$policy->relativePath</comment>\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['policy', InputArgument::REQUIRED, 'The Policy\'s name.'],
-        ];
     }
 }

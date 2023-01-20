@@ -3,14 +3,14 @@
 namespace Lucid\Entities;
 
 /**
- * @property-read string title
- * @property-read string className
- * @property-read string namespace
- * @property-read string file
- * @property-read string realPath
- * @property-read string relativePath
- * @property-read string domain
- * @property-read string content
+ * @property-read string $title
+ * @property-read string $className
+ * @property-read string $namespace
+ * @property-read string $file
+ * @property-read string $realPath
+ * @property-read string $relativePath
+ * @property-read string $domain
+ * @property-read string $content
  */
 class Job extends Entity
 {

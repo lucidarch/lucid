@@ -5,11 +5,11 @@ namespace Lucid\Entities;
 use Lucid\Str;
 
 /**
- * @property-read string name
- * @property-read string slug
- * @property-read string namespace
- * @property-read string realPath
- * @property-read string relativePath
+ * @property-read string $name
+ * @property-read string $slug
+ * @property-read string $namespace
+ * @property-read string $realPath
+ * @property-read string $relativePath
  */
 class Domain extends Entity
 {

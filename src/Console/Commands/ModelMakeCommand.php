@@ -2,47 +2,30 @@
 
 namespace Lucid\Console\Commands;
 
-use Exception;
-use Lucid\Console\Command;
-use Lucid\Filesystem;
-use Lucid\Finder;
+use Illuminate\Console\Command;
 use Lucid\Generators\ModelGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
-class ModelMakeCommand extends SymfonyCommand
+class ModelMakeCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    protected $signature = 'make:model
+                            {model : The Model\'s name.}
+                            ';
 
-    protected string $name = 'make:model';
-
-    protected string $description = 'Create a new Eloquent Model.';
+    protected $description = 'Create a new Eloquent Model.';
 
     public function handle(): void
     {
-        $generator = new ModelGenerator();
-
-        $name = $this->argument('model');
-
         try {
-            $model = $generator->generate($name);
+            $model = (new ModelGenerator())
+                ->generate($this->argument('model'));
 
             $this->info(
                 'Model class created successfully.'
                 ."\n\n"
                 ."Find it at <comment>$model->relativePath</comment>\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['model', InputArgument::REQUIRED, 'The Model\'s name.'],
-        ];
     }
 }

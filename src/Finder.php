@@ -305,6 +305,7 @@ trait Finder
                 ->in($path.DS.'Jobs')
                 ->files();
 
+            /** @phpstan-ignore-next-line */
             $jobs[$domain->name] = new Collection();
 
             foreach ($files as $file) {
@@ -319,6 +320,7 @@ trait Finder
                     file_get_contents($file->getRealPath())
                 );
 
+                /** @phpstan-ignore-next-line */
                 $jobs[$domain->name]->push($job);
             }
         }

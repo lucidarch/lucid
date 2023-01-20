@@ -4,6 +4,7 @@ namespace Lucid\Bus;
 
 use ArrayAccess;
 use Exception;
+use Illuminate\Http\Request;
 use ReflectionParameter;
 
 trait Marshal
@@ -13,7 +14,7 @@ trait Marshal
      */
     protected function marshal(
         string $command,
-        ArrayAccess $source,
+        iterable|Request $source,
         array $extras = []
     ): mixed {
         $parameters = [];
