@@ -4,6 +4,10 @@ namespace Lucid;
 
 use Illuminate\Support\Str as LaravelStr;
 
+if (! defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
 class Str
 {
     /**
@@ -50,7 +54,7 @@ class Str
     /**
      * Determine the real name of the given name,
      * excluding the given pattern.
-     * 	i.e. the name: "CreateArticleFeature.php" with pattern '/Feature.php'
+     * 	i.e. the name: "CreateArticleFeature.php" with pattern '/Feature.php/'
      * 		will result in "Create Article".
      */
     public static function realName(string $name, string $pattern = '//'): string
@@ -63,7 +67,7 @@ class Str
     /**
      * Get the given name formatted as a feature.
      *
-     * 	i.e. "Create Post Feature", "CreatePostFeature.php", "createPost", "createe"
+     * 	i.e. "Create Post Feature", "CreatePostFeature.php", "createPost", "create"
      * 	and many other forms will be transformed to "CreatePostFeature" which is
      * 	the standard feature class name.
      */
@@ -82,7 +86,7 @@ class Str
     /**
      * Get the given name formatted as a job.
      *
-     * 	i.e. "Create Post Feature", "CreatePostJob.php", "createPost",
+     * 	i.e. "Create Post", "CreatePostJob.php", "createPost",
      * 	and many other forms will be transformed to "CreatePostJob" which is
      * 	the standard job class name.
      */

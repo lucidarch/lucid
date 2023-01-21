@@ -10,9 +10,7 @@ on:
   pull_request:
     branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -20,7 +18,7 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         stability: [prefer-lowest, prefer-stable]
-        laravel: [9.x]  
+        laravel: [9.x]
 
     name: L${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
@@ -31,7 +29,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           tools: composer:v2
           coverage: none
 
@@ -54,3 +51,30 @@ jobs:
           cp $GITHUB_WORKSPACE/bin/test-commands.sh laravel-${{ matrix.laravel }}
           cd laravel-${{ matrix.laravel }}
           ./test-commands.sh
+
+  code_quality:
+    runs-on: ubuntu-latest
+
+    name: Code Quality
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test -v --ansi
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G
+
+      - name: Run Pest
+        run: ./vendor/bin/pest
