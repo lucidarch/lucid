@@ -27,7 +27,13 @@ fi
 examine "app/Providers"
 examine "app/Providers/RouteServiceProvider.php"
 examine "resources"
-examine "resources/lang"
+
+if [ $1 = "9.x" ]; then
+    examine "lang"
+elif [ $1 != "10.x" ]; then
+    examine "resources/lang"
+fi
+
 examine "resources/views"
 examine "resources/views/welcome.blade.php"
 lint "resources/views/welcome.blade.php"
