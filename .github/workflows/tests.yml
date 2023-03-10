@@ -18,26 +18,60 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.0.21, 7.1, 7.2, 7.3, 7.4, 8.0]
+        php: [7.0.21, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2]
         stability: [prefer-lowest, prefer-stable]
-        laravel: [5.5, 6.x, 7.x, 8.x]
+        laravel: [5.5, 6.x, 7.x, 8.x, 9.x, 10.x]
         exclude:
           - laravel: 5.5
             php: 8.0
+          - laravel: 5.5
+            php: 8.1
+          - laravel: 5.5
+            php: 8.2
           - laravel: 6.x
             php: 7.0.21
           - laravel: 6.x
             php: 7.1
+          - laravel: 6.x
+            php: 8.1
+          - laravel: 6.x
+            php: 8.2
           - laravel: 7.x
             php: 7.0.21
           - laravel: 7.x
             php: 7.1
+          - laravel: 7.x
+            php: 8.1
+          - laravel: 7.x
+            php: 8.2
           - laravel: 8.x
             php: 7.0.21
           - laravel: 8.x
             php: 7.1
           - laravel: 8.x
             php: 7.2
+          - laravel: 9.x
+            php: 7.0.21
+          - laravel: 9.x
+            php: 7.1
+          - laravel: 9.x
+            php: 7.2
+          - laravel: 9.x
+            php: 7.3
+          - laravel: 9.x
+            php: 7.4
+          - laravel: 10.x
+            php: 7.0.21
+          - laravel: 10.x
+            php: 7.1
+          - laravel: 10.x
+            php: 7.2
+          - laravel: 10.x
+            php: 7.3
+          - laravel: 10.x
+            php: 7.4
+          - laravel: 10.x
+            php: 8.0
 
     name: L${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
@@ -70,4 +104,4 @@ jobs:
           chmod +x $GITHUB_WORKSPACE/bin/test-commands.sh
           cp $GITHUB_WORKSPACE/bin/test-commands.sh laravel-${{ matrix.laravel }}
           cd laravel-${{ matrix.laravel }}
-          ./test-commands.sh
+          ./test-commands.sh ${{ matrix.laravel }}
