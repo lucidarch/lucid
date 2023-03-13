@@ -35,9 +35,9 @@ trait UnitDispatcher
     public function run($unit, $arguments = [], $extra = [])
     {
         if (is_object($unit) && !App::runningUnitTests()) {
-            $result = $this->dispatch($unit);
+            $result = $this->dispatchSync($unit);
         } elseif ($arguments instanceof Request) {
-            $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
+            $result = $this->dispatchSync($this->marshal($unit, $arguments, $extra));
         } else {
             if (!is_object($unit)) {
                 $unit = $this->marshal($unit, new Collection(), $arguments);
@@ -58,7 +58,7 @@ trait UnitDispatcher
                 );
             }
 
-            $result = $this->dispatch($unit);
+            $result = $this->dispatchSync($unit);
         }
 
         if ($unit instanceof Operation) {
