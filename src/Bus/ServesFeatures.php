@@ -2,6 +2,7 @@
 
 namespace Lucid\Bus;
 
+use App;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Lucid\Events\FeatureStarted;
