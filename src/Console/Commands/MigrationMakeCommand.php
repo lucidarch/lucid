@@ -2,58 +2,31 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Illuminate\Support\Facades\Artisan;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Finder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Str;
 
-class MigrationMakeCommand extends SymfonyCommand
+class MigrationMakeCommand extends Command
 {
     use Finder;
-    use Command;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:migration';
+    protected $signature = 'make:migration
+                            {migration : The migration\'s name.}
+                            {service? : The service in which the migration should be generated.}
+                            ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Create a new Migration class in a service';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): void
     {
-        $service = $this->argument('service');
-        $migration = $this->argument('migration');
+        $path = $this
+            ->findMigrationPath(Str::service($this->argument('service')));
 
-        $path = $this->findMigrationPath(Str::service($service));
+        $this->call('make:migration', [
+            'name' => $this->argument('migration'),
+            '--path' => $path,
+        ]);
 
-        $output = shell_exec('php artisan make:migration '.$migration.' --path='.$path);
-
-        $this->info($output);
-        $this->info("\n".'Find it at <comment>'.$path.'</comment>'."\n");
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['migration', InputArgument::REQUIRED, 'The migration\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service in which the migration should be generated.'],
-        ];
+        $this->info("\n Find it at <comment>$path</comment> \n");
     }
 }

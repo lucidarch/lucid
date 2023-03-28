@@ -3,12 +3,15 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Feature;
+use Lucid\Str;
 
 class FeatureGenerator extends Generator
 {
-    public function generate($feature, $service, array $jobs = [])
+    /**
+     * @throws Exception
+     */
+    public function generate(string $feature, ?string $service, array $jobs = []): Feature
     {
         $feature = Str::feature($feature);
         $service = Str::service($service);
@@ -18,8 +21,6 @@ class FeatureGenerator extends Generator
 
         if ($this->exists($path)) {
             throw new Exception('Feature already exists!');
-
-            return false;
         }
 
         $namespace = $this->findFeatureNamespace($service, $feature);
@@ -42,7 +43,7 @@ class FeatureGenerator extends Generator
         $content = str_replace(
             ['{{feature}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
             [$classname, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -60,7 +61,7 @@ class FeatureGenerator extends Generator
         );
     }
 
-    private function classname($feature)
+    private function classname(string $feature): string
     {
         $parts = explode(DS, $feature);
 
@@ -70,46 +71,41 @@ class FeatureGenerator extends Generator
     /**
      * Generate the test file.
      *
-     * @param  string $feature
-     * @param  string $service
+     * @throws Exception
      */
-    private function generateTestFile($feature, $service)
+    private function generateTestFile(string $feature, ?string $service)
     {
-    	$content = file_get_contents($this->getTestStub());
+        $content = file_get_contents($this->getTestStub());
 
-    	$namespace = $this->findFeatureTestNamespace($service);
-    	$featureClass = $this->classname($feature);
-        $featureNamespace = $this->findFeatureNamespace($service, $feature)."\\".$featureClass;
+        $namespace = $this->findFeatureTestNamespace($service);
+        $featureClass = $this->classname($feature);
+        $featureNamespace = $this->findFeatureNamespace($service, $feature).'\\'.$featureClass;
         $testClass = $featureClass.'Test';
 
-    	$content = str_replace(
-    		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
-    		[$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
-    		$content
-    	);
+        $content = str_replace(
+            ['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
+            [$namespace, $testClass, Str::snake(str_replace(DS, '', $feature)), $featureNamespace],
+            $content ?: ''
+        );
 
-    	$path = $this->findFeatureTestPath($service, $feature.'Test');
+        $path = $this->findFeatureTestPath($service, $feature.'Test');
 
-    	$this->createFile($path, $content);
+        $this->createFile($path, $content);
     }
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
-        return __DIR__ . '/stubs/feature.stub';
+        return __DIR__.'/stubs/feature.stub';
     }
 
     /**
      * Get the test stub file for the generator.
-     *
-     * @return string
      */
-    private function getTestStub()
+    private function getTestStub(): string
     {
-    	return __DIR__ . '/stubs/feature-test.stub';
+        return __DIR__.'/stubs/feature-test.stub';
     }
 }

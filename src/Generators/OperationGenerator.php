@@ -3,13 +3,20 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Operation;
+use Lucid\Str;
 
 class OperationGenerator extends Generator
 {
-    public function generate($operation, $service, $isQueueable = false, array $jobs = [])
-    {
+    /**
+     * @throws Exception
+     */
+    public function generate(
+        string $operation,
+        ?string $service,
+        bool $isQueueable = false,
+        array $jobs = []
+    ): Operation {
         $operation = Str::operation($operation);
         $service = Str::service($service);
 
@@ -17,20 +24,18 @@ class OperationGenerator extends Generator
 
         if ($this->exists($path)) {
             throw new Exception('Operation already exists!');
-
-            return false;
         }
 
         $namespace = $this->findOperationNamespace($service);
 
         $content = file_get_contents($this->getStub($isQueueable));
 
-        list($useJobs, $runJobs) = self::getUsesAndRunners($jobs);
+        [$useJobs, $runJobs] = self::getUsesAndRunners($jobs);
 
         $content = str_replace(
             ['{{operation}}', '{{namespace}}', '{{unit_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
             [$operation, $namespace, $this->findUnitNamespace(), $useJobs, $runJobs],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -51,10 +56,9 @@ class OperationGenerator extends Generator
     /**
      * Generate the test file.
      *
-     * @param string $operation
-     * @param string $service
+     * @throws Exception
      */
-    private function generateTestFile($operation, $service)
+    private function generateTestFile(string $operation, ?string $service): void
     {
         $content = file_get_contents($this->getTestStub());
 
@@ -65,7 +69,7 @@ class OperationGenerator extends Generator
         $content = str_replace(
             ['{{namespace}}', '{{testclass}}', '{{operation}}', '{{operation_namespace}}'],
             [$namespace, $testClass, Str::snake($operation), $operationNamespace],
-            $content
+            $content ?: ''
         );
 
         $path = $this->findOperationTestPath($service, $testClass);
@@ -75,59 +79,48 @@ class OperationGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub($isQueueable = false)
+    protected function getStub(bool $isQueueable = false): string
     {
-        $stubName;
         if ($isQueueable) {
-            $stubName = '/stubs/operation-queueable.stub';
+            return __DIR__.'/stubs/operation-queueable.stub';
         } else {
-            $stubName = '/stubs/operation.stub';
+            return __DIR__.'/stubs/operation.stub';
         }
-        return __DIR__.$stubName;
     }
 
     /**
      * Get the test stub file for the generator.
-     *
-     * @return string
      */
-    private function getTestStub()
+    private function getTestStub(): string
     {
-        return __DIR__ . '/stubs/operation-test.stub';
+        return __DIR__.'/stubs/operation-test.stub';
     }
 
     /**
      * Get de use to import the right class
      * Get de job run command
-     * @param $job
-     * @return array
      */
-    static private function getUseAndJobRunCommand($job)
+    private static function getUseAndJobRunCommand(string $job): array
     {
-        $str = str_replace_last('\\','#', $job);
+        $str = Str::replaceLast('\\', '#', $job);
         $explode = explode('#', $str);
 
         $use = 'use '.$explode[0].'\\'.$explode['1'].";\n";
         $runJobs = "\t\t".'$this->run('.$explode['1'].'::class);';
 
-        return array($use, $runJobs);
+        return [$use, $runJobs];
     }
 
     /**
      * Returns all users and all $this->run() generated
-     * @param $jobs
-     * @return array
      */
-    static private function getUsesAndRunners($jobs)
+    private static function getUsesAndRunners(array $jobs): array
     {
         $useJobs = '';
         $runJobs = '';
         foreach ($jobs as $index => $job) {
-
-            list($useLine, $runLine) = self::getUseAndJobRunCommand($job);
+            [$useLine, $runLine] = self::getUseAndJobRunCommand($job);
             $useJobs .= $useLine;
             $runJobs .= $runLine;
             // only add carriage returns when it's not the last job
@@ -135,8 +128,7 @@ class OperationGenerator extends Generator
                 $runJobs .= "\n\n";
             }
         }
-        return array($useJobs, $runJobs);
+
+        return [$useJobs, $runJobs];
     }
-
-
 }

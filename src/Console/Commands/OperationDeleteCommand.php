@@ -2,97 +2,48 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Lucid\Finder;
+use Lucid\Str;
 
-class OperationDeleteCommand extends SymfonyCommand
+class OperationDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:operation';
+    protected $signature = 'delete:operation
+                            {operation : The operation\'s name.}
+                            {service? : The service from which the operation should be deleted.}
+                            ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Delete an existing Operation in a service';
 
-    /**
-     * The type of class being deleted.
-     *
-     * @var string
-     */
-    protected $type = 'Operation';
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
-        try {
-            $service = Str::service($this->argument('service'));
-            $title = $this->parseName($this->argument('operation'));
+        $service = Str::service($this->argument('service'));
+        $title = Str::operation($this->argument('operation'));
 
-            if (!$this->exists($operation = $this->findOperationPath($service, $title))) {
-                $this->error('Operation class '.$title.' cannot be found.');
+        try {
+            // Delete operation
+            if (! $this->exists($operation = $this->findOperationPath($service, $title))) {
+                $this->error("Operation class $title cannot be found.");
             } else {
                 $this->delete($operation);
 
-                $this->info('Operation class <comment>'.$title.'</comment> deleted successfully.');
+                $this->info("Operation class <comment>$title</comment> deleted successfully.");
             }
-        } catch (Exception $e) {
+
+            // Delete operation tests
+            $testTitle = $title.'Test';
+            if (! $this->exists($operation = $this->findOperationTestPath($service, $testTitle))) {
+                $this->error("Operation test class $testTitle cannot be found.");
+            } else {
+                $this->delete($operation);
+
+                $this->info("Operation test class <comment>$testTitle</comment> deleted successfully.");
+            }
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service from which the operation should be deleted.'],
-        ];
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/operation.stub';
-    }
-
-    /**
-     * Parse the operation name.
-     *  remove the Operation.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::operation($name);
     }
 }

@@ -2,89 +2,47 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Lucid\Finder;
+use Lucid\Str;
 
-class ServiceDeleteCommand extends SymfonyCommand
+class ServiceDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    /**
-     * The base namespace for this command.
-     *
-     * @var string
-     */
-    private $namespace;
+    protected $signature = 'delete:service
+                            {name : The service name.}
+                            ';
 
-    /**
-     * The Services path.
-     *
-     * @var string
-     */
-    private $path;
-
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:service';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Delete an existing Service';
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/service.stub';
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         if ($this->isMicroservice()) {
-            return $this->error('This functionality is disabled in a Microservice');
+            $this->error('This functionality is disabled in a Microservice');
+
+            return;
         }
 
-        try {
-            $name = Str::service($this->argument('name'));
+        $name = Str::service($this->argument('name'));
 
-            if (!$this->exists($service = $this->findServicePath($name))) {
-                return $this->error('Service '.$name.' cannot be found.');
+        try {
+            if (! $this->exists($service = $this->findServicePath($name))) {
+                $this->error("Service $name cannot be found.");
+
+                return;
             }
 
             $this->delete($service);
 
-            $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
+            $this->info("Service <comment>$name</comment> deleted successfully \n");
 
             $this->info('Please remove your registered service providers, if any.');
         } catch (\Exception $e) {
-            dd($e->getMessage(), $e->getFile(), $e->getLine());
+            $this->error($e->getMessage());
+            $this->error($e->getFile());
+            $this->error((string) $e->getLine());
         }
-    }
-
-    public function getArguments()
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The service name.'],
-        ];
     }
 }

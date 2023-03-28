@@ -2,51 +2,27 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Finder;
-use Lucid\Filesystem;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Generators\MicroGenerator;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
-class InitMicroCommand extends SymfonyCommand
+class InitMicroCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
     use InitCommandTrait;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'init:micro';
+    protected $signature = 'init:micro';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Initialize Lucid Micro in current project.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         $version = app()->version();
         $this->info("Initializing Lucid Micro for Laravel $version\n");
 
-        $generator = new MicroGenerator();
-        $paths = $generator->generate();
+        $paths = (new MicroGenerator())->generate();
 
-        $this->comment("Created directories:");
-        $this->comment(join("\n", $paths));
+        $this->comment('Created directories:');
+        $this->comment(implode("\n", $paths));
 
         $this->welcome();
-
-        return 0;
     }
 }

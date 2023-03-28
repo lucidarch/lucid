@@ -2,12 +2,23 @@
 
 namespace Lucid\Entities;
 
-use Illuminate\Support\Str;
+use Lucid\Str;
 
+/**
+ * @property-read string $name
+ * @property-read string $slug
+ * @property-read string $namespace
+ * @property-read string $realPath
+ * @property-read string $relativePath
+ */
 class Domain extends Entity
 {
-    public function __construct($name, $namespace, $path, $relativePath)
-    {
+    public function __construct(
+        string $name,
+        string $namespace,
+        string $path,
+        string $relativePath
+    ) {
         $this->setAttributes([
             'name' => $name,
             'slug' => Str::studly($name),

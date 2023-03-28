@@ -2,7 +2,6 @@
 
 namespace Lucid\Validation;
 
-use Lucid\Validation\Validation;
 use Lucid\Exceptions\InvalidInputException;
 
 /**
@@ -13,9 +12,9 @@ use Lucid\Exceptions\InvalidInputException;
  */
 class Validator
 {
-    protected $rules = [];
+    protected array $rules = [];
 
-    protected $validation;
+    protected Validation $validation;
 
     public function __construct(Validation $validation)
     {
@@ -25,16 +24,18 @@ class Validator
     /**
      * Validate the given input.
      *
-     * @param array $input The input to validate
-     * @param array $rules Specify custom rules (will override class rules)
-     * @param array $messages Specify custom messages (will override class messages)
-     *
+     * @param  array  $input The input to validate
+     * @param  array  $rules Specify custom rules (will override class rules)
+     * @param  array  $messages Specify custom messages (will override class messages)
      * @return bool
      *
      * @throws \Lucid\Exceptions\InvalidInputException
      */
-    public function validate(array $input, array $rules = [], array $messages = [])
-    {
+    public function validate(
+        array $input,
+        array $rules = [],
+        array $messages = []
+    ): bool {
         $validation = $this->validation($input, $rules, $messages);
 
         if ($validation->fails()) {
@@ -48,14 +49,16 @@ class Validator
      * Get a validation instance out of the given input and optionatlly rules
      * by default the $rules property will be used.
      *
-     * @param array $input
-     * @param array $rules
-     * @param array $messages
-     *
+     * @param  array  $input
+     * @param  array  $rules
+     * @param  array  $messages
      * @return \Illuminate\Validation\Validator
      */
-    public function validation(array $input, array $rules = [], array $messages = [])
-    {
+    public function validation(
+        array $input,
+        array $rules = [],
+        array $messages = []
+    ): \Illuminate\Validation\Validator {
         if (empty($rules)) {
             $rules = $this->rules;
         }

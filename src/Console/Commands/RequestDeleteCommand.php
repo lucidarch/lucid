@@ -2,94 +2,37 @@
 
 namespace Lucid\Console\Commands;
 
-use Exception;
-use Lucid\Str;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Str;
 
-class RequestDeleteCommand extends SymfonyCommand
+class RequestDeleteCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'delete:request';
+    protected $signature = 'delete:request
+                            {request : The Request\'s name.}
+                            {service : The Service\'s name.}
+                            ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Delete an existing Request.';
 
-    /**
-     * The type of class being generated
-     * @var string
-     */
-    protected $type = 'Request';
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
-            $request = $this->parseRequestName($this->argument('request'));
+            $request = Str::request($this->argument('request'));
             $service = Str::service($this->argument('service'));
 
-            if ( ! $this->exists($path = $this->findRequestPath($service, $request))) {
-                $this->error('Request class ' . $request . ' cannot be found.');
+            if (! $this->exists($path = $this->findRequestPath($service, $request))) {
+                $this->error("Request class $request cannot be found.");
             } else {
                 $this->delete($path);
 
-                $this->info('Request class <comment>' . $request . '</comment> deleted successfully.');
+                $this->info("Request class <comment>$request</comment> deleted successfully.");
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    public function getArguments()
-    {
-        return [
-            ['request', InputArgument::REQUIRED, 'The Request\'s name.'],
-            ['service', InputArgument::REQUIRED, 'The Service\'s name.'],
-        ];
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    public function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/request.stub';
-    }
-
-    /**
-     * Parse the model name.
-     *
-     * @param string $name
-     * @return string
-     */
-    public function parseRequestName($name)
-    {
-        return Str::request($name);
     }
 }

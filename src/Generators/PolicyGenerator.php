@@ -1,30 +1,25 @@
 <?php
 
-
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Policy;
+use Lucid\Str;
 
 class PolicyGenerator extends Generator
 {
     /**
      * Generate the file.
      *
-     * @param $name
-     * @return Policy|bool
      * @throws Exception
      */
-    public function generate($name)
+    public function generate(string $name): Policy
     {
         $policy = Str::policy($name);
         $path = $this->findPolicyPath($policy);
 
         if ($this->exists($path)) {
             throw new Exception('Policy already exists');
-
-            return false;
         }
 
         $this->createPolicyDirectory();
@@ -35,7 +30,7 @@ class PolicyGenerator extends Generator
         $content = str_replace(
             ['{{policy}}', '{{namespace}}'],
             [$policy, $namespace],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -53,18 +48,16 @@ class PolicyGenerator extends Generator
     /**
      * Create Policies directory.
      */
-    public function createPolicyDirectory()
+    public function createPolicyDirectory(): void
     {
         $this->createDirectory($this->findPoliciesPath());
     }
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    public function getStub()
+    public function getStub(): string
     {
-        return __DIR__ . '/../Generators/stubs/policy.stub';
+        return __DIR__.'/../Generators/stubs/policy.stub';
     }
 }

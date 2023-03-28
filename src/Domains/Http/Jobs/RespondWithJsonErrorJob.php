@@ -2,11 +2,19 @@
 
 namespace Lucid\Domains\Http\Jobs;
 
-use Lucid\Units\Job;
 use Illuminate\Routing\ResponseFactory;
+use Lucid\Units\Job;
 
 class RespondWithJsonErrorJob extends Job
 {
+    protected array $content;
+
+    protected int $status;
+
+    protected array $headers;
+
+    protected int $options;
+
     public function __construct($message = 'An error occurred', $code = 400, $status = 400, $headers = [], $options = 0)
     {
         $this->content = [

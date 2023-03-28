@@ -19,7 +19,7 @@ Lucid Architecture's GitHub issue trackers are not intended to provide help or s
 
 ## Core Development Discussion
 
-You may propose new features or improvements of existing Lucid Architecture behaviour in the [Lucid Discussins](https://github.com/lucidarch/lucid/discussions).
+You may propose new features or improvements of existing Lucid Architecture behaviour in the [Lucid Discussions](https://github.com/lucidarch/lucid/discussions).
 If you propose a new feature, please be willing to implement at least some of the code that would be needed to complete the feature, or collaborate on active ideation in the meantime.
 
 Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Lucid Slack workspace](https://lucid-slack.herokuapp.com/).

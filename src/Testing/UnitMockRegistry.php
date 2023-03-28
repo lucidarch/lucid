@@ -4,10 +4,7 @@ namespace Lucid\Testing;
 
 class UnitMockRegistry
 {
-    /**
-     * @var array
-     */
-    private $mocks = [];
+    private array $mocks = [];
 
     public function __construct()
     {
@@ -25,17 +22,19 @@ class UnitMockRegistry
 
     public function get(string $unit): ?UnitMock
     {
-        if (!$this->has($unit)) return null;
+        if (! $this->has($unit)) {
+            return null;
+        }
 
         return $this->mocks[$unit];
     }
 
-    public function register(string $unit, UnitMock $mock)
+    public function register(string $unit, UnitMock $mock): void
     {
         $this->mocks[$unit] = $mock;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->mocks);
     }

@@ -1,24 +1,19 @@
 <?php
 
-
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Request;
+use Lucid\Str;
 
 class RequestGenerator extends Generator
 {
     /**
      * Generate the file.
      *
-     * @param string $name
-     * @param string $domain
-     *
-     * @return Request|bool
      * @throws Exception
      */
-    public function generate($name, $domain)
+    public function generate(string $name, string $domain): Request
     {
         $request = Str::request($name);
         $domain = Str::domain($domain);
@@ -35,7 +30,7 @@ class RequestGenerator extends Generator
         $content = str_replace(
             ['{{request}}', '{{namespace}}'],
             [$request, $namespace],
-            $content
+            $content ?: ''
         );
 
         $this->createFile($path, $content);
@@ -53,11 +48,9 @@ class RequestGenerator extends Generator
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    public function getStub()
+    public function getStub(): string
     {
-        return __DIR__ . '/../Generators/stubs/request.stub';
+        return __DIR__.'/../Generators/stubs/request.stub';
     }
 }

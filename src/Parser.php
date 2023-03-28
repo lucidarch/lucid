@@ -1,28 +1,25 @@
 <?php
 
- namespace Lucid;
+namespace Lucid;
 
- use Lucid\Finder;
- use Lucid\Entities\Job;
- use Lucid\Entities\Domain;
- use Lucid\Entities\Feature;
+use Lucid\Entities\Domain;
+use Lucid\Entities\Feature;
+use Lucid\Entities\Job;
 
- class Parser
+class Parser
 {
     use Finder;
 
     const SYNTAX_STRING = 'string';
+
     const SYNTAX_KEYWORD = 'keyword';
+
     const SYNTAX_INSTANTIATION = 'init';
 
     /**
      * Get the list of jobs for the given feature.
-     *
-     * @param  \Lucid\Console\ComponentsFeature $feature
-     *
-     * @return array
      */
-    public function parseFeatureJobs(Feature $feature)
+    public function parseFeatureJobs(Feature $feature): array
     {
         $contents = file_get_contents($feature->realPath);
 
@@ -31,7 +28,7 @@
         $jobs = [];
         foreach ($body as $line) {
             $job = $this->parseJobInLine($line, $contents);
-            if (!empty($job)) {
+            if ($job !== null) {
                 $jobs[] = $job;
             }
         }
@@ -39,7 +36,7 @@
         return $jobs;
     }
 
-    public function parseFunctionBody($contents, $function)
+    public function parseFunctionBody($contents, $function): string
     {
         // $pattern = "/function\s$function\([a-zA-Z0-9_\$\s,]+\)?". // match "function handle(...)"
         //     '[\n\s]?[\t\s]*'. // regardless of the indentation preceding the {
@@ -51,7 +48,7 @@
         //      '('.                                  # (1 start)
         //           '{'.                             # opening brace
         //           '('.                             # (2 start)
-        /*                '(?>'.*/                      # atomic grouping (for its non-capturing purpose only)
+        /*                '(?>'.*/                      // atomic grouping (for its non-capturing purpose only)
         //                     '" [^"]*+ "'.          # double quoted strings
         //                  '|  \' [^\']*+ \''.       # single quoted strings
         //                  '|  // .* $'.             # a comment block starting with //
@@ -68,7 +65,6 @@
         //           '}'.                             # closing brace
         //      ')~';                                  # (1 end)
 
-
         preg_match($pattern, $contents, $match);
 
         return $match[1];
@@ -77,12 +73,9 @@
     /**
      * Parses the job class out of the given line of code.
      *
-     * @param  string $line
-     * @param  string $contents
-     *
-     * @return string
+     * @throws \Exception
      */
-    public function parseJobInLine($line, $contents)
+    public function parseJobInLine(string $line, string $contents): ?Job
     {
         $line = trim($line);
         // match the line that potentially has the job,
@@ -91,12 +84,14 @@
 
         // we won't do anything if no job has been matched.
         if (empty($match)) {
-            return '';
+            return null;
         }
 
         $match = $match[1];
         // prepare for parsing
         $match = $this->filterJobMatch($match);
+
+        $name = $namespace = '';
 
         /*
         * determine syntax style and afterwards detect how the job
@@ -117,19 +112,19 @@
         * 		Instantiation with an imported class using a `use` statement
         * 		passing parameters to the construction of the instance.
         * 	- new ImportedClass
-        * 		Instantiation without parameters nor parantheses.
+        * 		Instantiation without parameters nor parentheses.
         */
         switch ($this->jobSyntaxStyle($match)) {
             case self::SYNTAX_STRING:
-                list($name, $namespace) = $this->parseStringJobSyntax($match, $contents);
+                [$name, $namespace] = $this->parseStringJobSyntax($match, $contents);
                 break;
 
             case self::SYNTAX_KEYWORD:
-                list($name, $namespace) = $this->parseKeywordJobSyntax($match, $contents);
+                [$name, $namespace] = $this->parseKeywordJobSyntax($match, $contents);
                 break;
 
             case self::SYNTAX_INSTANTIATION:
-                list($name, $namespace) = $this->parseInitJobSyntax($match, $contents);
+                [$name, $namespace] = $this->parseInitJobSyntax($match, $contents);
                 break;
         }
 
@@ -144,7 +139,7 @@
 
         $path = $this->findJobPath($domainName, $name);
 
-        $job = new Job(
+        return new Job(
             $name,
             $namespace,
             basename($path),
@@ -152,38 +147,28 @@
             $this->relativeFromReal($path),
             $domain
         );
-
-        return $job;
     }
 
     /**
      * Parse the given job class written in the string syntax: 'Some\Domain\Job'
-     *
-     * @param  string $match
-     * @param  string $contents
-     *
-     * @return string
      */
-    private function parseStringJobSyntax($match, $contents)
+    private function parseStringJobSyntax(string $match, string $contents): array
     {
         $slash = strrpos($match, '\\');
         if ($slash !== false) {
-            $name = str_replace('\\', '', substr($match, $slash));
+            $name = str_replace('\\', '', Str::substr($match, $slash));
             $namespace = '\\'.preg_replace('/^\\\/', '', $match);
+
+            return [$name, $namespace];
         }
 
-        return [$name, $namespace];
+        return ['', ''];
     }
 
     /**
      * Parse the given job class written in the ::class keyword syntax:	SomeJob::class
-     *
-     * @param  string $match
-     * @param  string $contents
-     *
-     * @return string
      */
-    private function parseKeywordJobSyntax($match, $contents)
+    private function parseKeywordJobSyntax(string $match, string $contents): array
     {
         // is it of the form \Full\Name\Space::class?
         // (using full namespace in-line)
@@ -193,7 +178,7 @@
         if ($slash !== false) {
             $namespace = str_replace('::class', '', $match);
             // remove the ::class and the \ prefix
-            $name = str_replace(['\\', '::class'], '', substr($namespace, $slash));
+            $name = str_replace(['\\', '::class'], '', Str::substr($namespace, $slash));
         } else {
             // nope it's just Space::class, we will figure
             // out the namespace from a "use" statement.
@@ -208,13 +193,8 @@
 
     /**
      * Parse the given job class written in the ini syntax:	new SomeJob()
-     *
-     * @param  string $match
-     * @param  string $contents
-     *
-     * @return string
      */
-    private function parseInitJobSyntax($match, $contents)
+    private function parseInitJobSyntax(string $match, string $contents): array
     {
         // remove the 'new ' from the beginning.
         $match = str_replace('new ', '', $match);
@@ -230,9 +210,9 @@
         if ($slash !== false) {
             $namespace = $name;
             // prefix with a \ if not found.
-            $name = str_replace('\\', '', substr($namespace, $slash));
+            $name = str_replace('\\', '', Str::substr($namespace, $slash));
         } else {
-            // we don't have the full namespace so we will figure it out
+            // we don't have the full namespace, so we will figure it out
             // from the 'use' statements that we have in the file.
             preg_match("/use\s(.*$name)/", $contents, $namespace);
             $namespace = '\\'.preg_replace('/^\\\/', '', $namespace[1]);
@@ -243,34 +223,18 @@
 
     /**
      * Get the domain for the given job's namespace.
-     *
-     * @param  string $namespace
-     *
-     * @return string
      */
-    private function domainForJob($namespace)
+    private function domainForJob(string $namespace): string
     {
         preg_match('/Domains\\\([^\\\]*)\\\Jobs/', $namespace, $domain);
 
-        return (!empty($domain)) ? $domain[1] : '';
+        return (! empty($domain)) ? $domain[1] : '';
     }
-
-        // if (strpos($match, '::class') !== false) {
-        //
-        // } elseif(strpos($match, 'new ') !== false) {
-        //
-        // } else {
-        //
-        // }
 
     /**
      * Filter the matched line in preparation for parsing.
-     *
-     * @param  string $match The matched job line.
-     *
-     * @return string
      */
-    private function filterJobMatch($match)
+    private function filterJobMatch(string $match): string
     {
         // we don't want any quotes
         return str_replace(['"', "'"], '', $match);
@@ -283,16 +247,12 @@
      * 	- Using the 'TheJob::class' keyword
      * 	- Using instantiation: new TheJob(...)
      * 	- Using a string with the full namespace: '\Domain\TheJob'
-     *
-     * @param  string $match
-     *
-     * @return string
      */
-    private function jobSyntaxStyle($match)
+    private function jobSyntaxStyle(string $match): string
     {
-        if (strpos($match, '::class') !== false) {
+        if (str_contains($match, '::class')) {
             $style = self::SYNTAX_KEYWORD;
-        } elseif(strpos($match, 'new ') !== false) {
+        } elseif (str_contains($match, 'new ')) {
             $style = self::SYNTAX_INSTANTIATION;
         } else {
             $style = self::SYNTAX_STRING;

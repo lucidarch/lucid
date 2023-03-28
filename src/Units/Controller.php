@@ -2,15 +2,14 @@
 
 namespace Lucid\Units;
 
-use Lucid\Bus\ServesFeatures;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Lucid\Bus\ServesFeatures;
 
 /**
  * Base controller.
  */
 class Controller extends BaseController
 {
-    use ValidatesRequests;
-    use ServesFeatures;
+    use ValidatesRequests, ServesFeatures;
 }

@@ -2,101 +2,39 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
-use Lucid\Console\Command;
+use Illuminate\Console\Command;
 use Lucid\Filesystem;
+use Lucid\Finder;
 use Lucid\Generators\FeatureGenerator;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Lucid\Str;
 
-class FeatureMakeCommand extends SymfonyCommand
+class FeatureMakeCommand extends Command
 {
-    use Finder;
-    use Command;
-    use Filesystem;
+    use Filesystem, Finder;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'make:feature';
+    protected $signature = 'make:feature
+                            {feature : The feature\'s name.}
+                            {service? : The service in which the feature should be implemented.}
+                            ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Create a new Feature in a service';
 
-    /**
-     * The type of class being generated.
-     *
-     * @var string
-     */
-    protected $type = 'Feature';
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     * @throws \Exception
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
-            $service = Str::studly($this->argument('service'));
-            $title = $this->parseName($this->argument('feature'));
-
-            $generator = new FeatureGenerator();
-            $feature = $generator->generate($title, $service);
+            $feature = (new FeatureGenerator())
+                ->generate(
+                    Str::studly($this->argument('feature')),
+                    Str::studly($this->argument('service'))
+                );
 
             $this->info(
-                'Feature class '.$feature->title.' created successfully.'.
-                "\n".
-                "\n".
-                'Find it at <comment>'.$feature->relativePath.'</comment>'."\n"
+                "Feature class $feature->title created successfully."
+                ."\n\n"
+                ."Find it at <comment>$feature->relativePath</comment>\n"
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
-            ['service', InputArgument::OPTIONAL, 'The service in which the feature should be implemented.'],
-        ];
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__ . '/../Generators/stubs/feature.stub';
-    }
-
-    /**
-     * Parse the feature name.
-     *  remove the Feature.php suffix if found
-     *  we're adding it ourselves.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseName($name)
-    {
-        return Str::feature($name);
     }
 }

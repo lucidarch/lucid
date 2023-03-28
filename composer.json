@@ -18,6 +18,7 @@
         }
     ],
     "require": {
+        "php": ">=8.0",
         "ext-dom": "*",
         "mockery/mockery": "*",
         "symfony/console": "*",
@@ -25,13 +26,22 @@
         "symfony/finder": "*",
         "symfony/process": "*"
     },
+    "require-dev": {
+        "laravel/pint": "^1.4",
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^1.22"
+    },
     "autoload": {
         "psr-4": {
             "Lucid\\": "src/"
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

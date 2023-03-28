@@ -2,55 +2,39 @@
 
 namespace Lucid\Console\Commands;
 
+use Illuminate\Console\Command;
+use Lucid\Entities\Feature;
 use Lucid\Finder;
-use Lucid\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
-class FeaturesListCommand extends SymfonyCommand
+class FeaturesListCommand extends Command
 {
     use Finder;
-    use Command;
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'list:features';
+    protected $signature = 'list:features
+                       {service? : The service to list the features of.}
+                       ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'List the features.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): void
     {
-        foreach ($this->listFeatures($this->argument('service')) as $service => $features) {
-            $this->comment("\n$service\n");
-            $features = array_map(function($feature) {
-                return [$feature->title, $feature->service->name, $feature->file, $feature->relativePath];
-            }, $features->all());
-            $this->table(['Feature', 'Service', 'File', 'Path'], $features);
-        }
-    }
+        try {
+            $featuresList = $this->listFeatures($this->argument('service'));
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['service', InputArgument::OPTIONAL, 'The service to list the features of.'],
-        ];
+            return;
+        }
+
+        foreach ($featuresList as $service => $features) {
+            $this->comment("\n$service\n");
+
+            $this->table(
+                ['Feature', 'Service', 'File', 'Path'],
+                array_map(function (Feature $feature) {
+                    return [$feature->title, $feature->service->name, $feature->file, $feature->relativePath];
+                }, $features->all())
+            );
+        }
     }
 }

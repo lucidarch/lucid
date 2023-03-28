@@ -1,0 +1,24 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - src
+
+    # Level 0 is the lowest, 8 is the highest
+    level: 5
+
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: false
+    polluteScopeWithLoopInitialAssignments: false
+    polluteScopeWithAlwaysIterableForeach: false
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkUninitializedProperties: true
+
+    parallel:
+        processTimeout: 300.00
+
+    ignoreErrors:
+        - '/Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage\:\:once\(\)/'

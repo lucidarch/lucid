@@ -27,7 +27,6 @@ fi
 examine "app/Providers"
 examine "app/Providers/RouteServiceProvider.php"
 examine "resources"
-examine "resources/lang"
 examine "resources/views"
 examine "resources/views/welcome.blade.php"
 lint "resources/views/welcome.blade.php"
@@ -147,6 +146,7 @@ lint "tests/Unit/Services/Harbour/Operations/TwistOperationTest.php"
 ## --- TEARDOWN ---
 
 ./vendor/bin/lucid delete:feature trade
+./vendor/bin/lucid delete:feature finance/wallet/pay
 ./vendor/bin/lucid delete:job submitTradeRequest shipping
 ./vendor/bin/lucid delete:job sail boat
 ./vendor/bin/lucid delete:model bridge
@@ -156,6 +156,7 @@ lint "tests/Unit/Services/Harbour/Operations/TwistOperationTest.php"
 rm app/Http/Controllers/TradeController.php
 
 ./vendor/bin/lucid delete:feature trade harbour
+./vendor/bin/lucid delete:feature port/yacht/park harbour
 ./vendor/bin/lucid delete:operation spin harbour
 ./vendor/bin/lucid delete:operation twist harbour
 rm app/Services/Harbour/Http/Controllers/TradeController.php

@@ -2,13 +2,10 @@
 
 namespace {{namespace}};
 
-use Lang;
-use View;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use {{namespace}}\RouteServiceProvider;
-use {{namespace}}\BroadcastServiceProvider;
 use Illuminate\Translation\TranslationServiceProvider;
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
 class {{name}}ServiceProvider extends ServiceProvider
 {
@@ -29,9 +26,6 @@ class {{name}}ServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom([
             realpath(__DIR__ . '/../database/migrations')
         ]);
-
-        $this->app->make(EloquentFactory::class)
-            ->load(realpath(__DIR__ . '/../database/factories'));
     }
 
     /**
