@@ -72,6 +72,49 @@ trait UnitDispatcher
         return $result;
     }
 
+    public function runAsync($unit, $arguments = [], array $extra = []): void
+    {
+        /**
+         * This method explicitly uses dispatch to push the unit on queue.
+         * Nothing will be returned, since Laravel 10 dispatched jobs do not return result.
+         */
+
+        if (is_object($unit) && !App::runningUnitTests()) {
+            $this->dispatch($unit);
+        } elseif ($arguments instanceof Request) {
+            $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
+        } else {
+            if (!is_object($unit)) {
+                $unit = $this->marshal($unit, new Collection(), $arguments);
+
+                // don't $this->dispatch() unit when in tests and have a mock for it.
+            } elseif (App::runningUnitTests() && app(UnitMockRegistry::class)->has(get_class($unit))) {
+                /** @var UnitMock $mock */
+                $mock = app(UnitMockRegistry::class)->get(get_class($unit));
+                $mock->compareTo($unit);
+
+                // Reaching this step confirms that the expected mock is similar to the passed instance, so we
+                // get the unit's mock counterpart to be $this->dispatch()ed. Otherwise, the previous step would
+                // throw an exception when the mock doesn't match the passed instance.
+                $unit = $this->marshal(
+                    get_class($unit),
+                    new Collection(),
+                    $mock->getConstructorExpectationsForInstance($unit)
+                );
+            }
+
+            $result = $this->dispatch($unit);
+        }
+
+        if ($unit instanceof Operation) {
+            event(new OperationStarted(get_class($unit), $arguments));
+        }
+
+        if ($unit instanceof Job) {
+            event(new JobStarted(get_class($unit), $arguments));
+        }
+    }
+
     /**
      * Run the given unit in the given queue.
      *
