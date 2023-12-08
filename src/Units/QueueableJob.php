@@ -2,11 +2,11 @@
 
 namespace Lucid\Units;
 
-use Lucid\Units\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * An abstract Job that can be managed with a queue
@@ -14,7 +14,5 @@ use Illuminate\Bus\Queueable;
  */
 class QueueableJob extends Job implements ShouldQueue
 {
-    use SerializesModels;
-    use InteractsWithQueue;
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 }

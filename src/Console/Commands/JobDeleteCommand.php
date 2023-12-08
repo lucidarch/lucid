@@ -2,18 +2,19 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Str;
-use Lucid\Finder;
+use Exception;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Finder;
+use Lucid\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class JobDeleteCommand extends SymfonyCommand
 {
-    use Finder;
     use Command;
     use Filesystem;
+    use Finder;
 
     /**
      * The console command name.
@@ -47,7 +48,7 @@ class JobDeleteCommand extends SymfonyCommand
             $domain = Str::studly($this->argument('domain'));
             $title = $this->parseName($this->argument('job'));
 
-            if (!$this->exists($job = $this->findJobPath($domain, $title))) {
+            if (! $this->exists($job = $this->findJobPath($domain, $title))) {
                 $this->error('Job class '.$title.' cannot be found.');
             } else {
                 $this->delete($job);
@@ -78,7 +79,7 @@ class JobDeleteCommand extends SymfonyCommand
      */
     public function getStub()
     {
-        return __DIR__ . '/../Generators/stubs/job.stub';
+        return __DIR__.'/../Generators/stubs/job.stub';
     }
 
     /**
@@ -86,8 +87,7 @@ class JobDeleteCommand extends SymfonyCommand
      *  remove the Job.php suffix if found
      *  we're adding it ourselves.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function parseName($name)

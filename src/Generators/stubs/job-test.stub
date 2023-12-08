@@ -5,9 +5,9 @@ namespace {{namespace}};
 use Tests\TestCase;
 use {{job_namespace}};
 
-class {{testclass}} extends TestCase
+class {{test_class}} extends TestCase
 {
-    public function test_{{job}}()
+    public function test_{{job_name}}()
     {
         $this->markTestIncomplete();
     }

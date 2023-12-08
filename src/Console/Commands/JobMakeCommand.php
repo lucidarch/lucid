@@ -2,6 +2,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Exception;
 use Lucid\Console\Command;
 use Lucid\Filesystem;
 use Lucid\Finder;
@@ -13,9 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 class JobMakeCommand extends SymfonyCommand
 {
-    use Finder;
     use Command;
     use Filesystem;
+    use Finder;
 
     /**
      * The console command name.
@@ -86,7 +87,7 @@ class JobMakeCommand extends SymfonyCommand
      */
     public function getStub()
     {
-        return __DIR__ . '/../Generators/stubs/job.stub';
+        return __DIR__.'/../Generators/stubs/job.stub';
     }
 
     /**
@@ -94,8 +95,7 @@ class JobMakeCommand extends SymfonyCommand
      *  remove the Job.php suffix if found
      *  we're adding it ourselves.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function parseName($name)

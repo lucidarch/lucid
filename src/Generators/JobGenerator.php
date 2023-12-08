@@ -3,8 +3,8 @@
 namespace Lucid\Generators;
 
 use Exception;
-use Lucid\Str;
 use Lucid\Entities\Job;
+use Lucid\Str;
 
 class JobGenerator extends Generator
 {
@@ -26,7 +26,7 @@ class JobGenerator extends Generator
 
         $content = file_get_contents($this->getStub($isQueueable));
         $content = str_replace(
-            ['{{job}}', '{{namespace}}', '{{unit_namespace}}'],
+            ['{{job_name}}', '{{namespace}}', '{{unit_namespace}}'],
             [$job, $namespace, $this->findUnitNamespace()],
             $content
         );
@@ -49,8 +49,8 @@ class JobGenerator extends Generator
     /**
      * Generate test file.
      *
-     * @param string $job
-     * @param string $domain
+     * @param  string  $job
+     * @param  string  $domain
      */
     private function generateTestFile($job, $domain)
     {
@@ -61,7 +61,7 @@ class JobGenerator extends Generator
         $testClass = $job.'Test';
 
         $content = str_replace(
-            ['{{namespace}}', '{{testclass}}', '{{job}}', '{{job_namespace}}'],
+            ['{{namespace}}', '{{test_class}}', '{{job_name}}', '{{job_namespace}}'],
             [$namespace, $testClass, Str::snake($job), $jobNamespace],
             $content
         );
@@ -74,7 +74,7 @@ class JobGenerator extends Generator
     /**
      * Create domain directory.
      *
-     * @param string $domain
+     * @param  string  $domain
      */
     private function createDomainDirectory($domain)
     {
@@ -89,12 +89,12 @@ class JobGenerator extends Generator
      */
     public function getStub($isQueueable = false)
     {
-        $stubName;
         if ($isQueueable) {
             $stubName = '/stubs/job-queueable.stub';
         } else {
             $stubName = '/stubs/job.stub';
         }
+
         return __DIR__.$stubName;
     }
 
@@ -105,6 +105,6 @@ class JobGenerator extends Generator
      */
     public function getTestStub()
     {
-        return __DIR__ . '/stubs/job-test.stub';
+        return __DIR__.'/stubs/job-test.stub';
     }
 }

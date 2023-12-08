@@ -4,7 +4,7 @@ namespace {{namespace}};
 
 use {{unit_namespace}}\QueueableJob;
 
-class {{job}} extends QueueableJob
+class {{job_name}} extends QueueableJob
 {
     /**
      * Create a new job instance.
