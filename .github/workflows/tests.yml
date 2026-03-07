@@ -34,6 +34,7 @@ jobs:
 
       - name: Install Laravel ${{ matrix.laravel }}
         run: |
+          composer config -g audit.block-insecure false
           composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }} --no-interaction --no-audit
 
       - name: Require Lucid
