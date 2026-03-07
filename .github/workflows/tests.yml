@@ -34,13 +34,13 @@ jobs:
 
       - name: Install Laravel ${{ matrix.laravel }}
         run: |
-          composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }} --no-interaction
+          composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }} --no-interaction --no-audit
 
       - name: Require Lucid
         run: |
           cd laravel-${{ matrix.laravel }}
           composer config repositories.lucid '{"type": "path", "url": "$GITHUB_WORKSPACE", "options": {"symlink": true}}'
-          composer require lucidarch/lucid:@dev
+          composer require lucidarch/lucid:@dev --no-audit
 
       - name: Run Tests
         run: |
