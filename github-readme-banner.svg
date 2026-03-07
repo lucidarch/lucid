@@ -1,0 +1,23 @@
+
+<svg width="1400" height="400" viewBox="0 0 1400 400" xmlns="http://www.w3.org/2000/svg">
+<rect width="1400" height="400" fill="#0B0B12"/>
+<g transform="translate(80,60) scale(1.3)">
+
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+<linearGradient id="grad" x1="32" y1="20" x2="224" y2="212" gradientUnits="userSpaceOnUse">
+<stop offset="0%" stop-color="#F49AC2"/>
+<stop offset="35%" stop-color="#B84DFF"/>
+<stop offset="70%" stop-color="#7C3AED"/>
+<stop offset="100%" stop-color="#2E1065"/>
+</linearGradient>
+</defs>
+
+<rect x="32" y="20" width="56" height="56" rx="10" fill="url(#grad)"/><rect x="100" y="20" width="56" height="56" rx="10" fill="url(#grad)"/><rect x="32" y="88" width="56" height="124" rx="10" fill="url(#grad)"/><rect x="100" y="88" width="56" height="56" rx="10" fill="url(#grad)"/><rect x="168" y="88" width="56" height="56" rx="10" fill="url(#grad)"/><rect x="100" y="156" width="56" height="56" rx="10" fill="url(#grad)"/><rect x="168" y="156" width="56" height="56" rx="10" fill="url(#grad)"/>
+</svg>
+
+</g>
+<text x="420" y="210" font-family="Space Grotesk, sans-serif" font-size="120" font-weight="300" fill="#FFFFFF">lucid</text>
+<text x="420" y="280" font-family="Space Grotesk, sans-serif" font-size="50" letter-spacing="6" fill="#FFFFFF">architecture</text>
+</svg>
