@@ -53,7 +53,7 @@ trait InitCommandTrait
 
         $this->info('');
 
-        $this->info('For more details, help yourself with the docs at https://docs.lucidarch.dev');
+        $this->info('For more details, help yourself with the docs at https://docs.lucidarch.site');
         $this->info('');
         $this->info('Remember to enjoy the journey.');
         $this->info('Cheers!');

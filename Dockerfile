@@ -1,4 +1,4 @@
-FROM php:8.0-alpine
+FROM php:8.2-alpine
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && pecl install xdebug \

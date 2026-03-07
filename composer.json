@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "keywords": ["architecture", "lucid", "laravel"],
-    "homepage": "https://lucidarch.dev",
+    "homepage": "https://lucidarch.site",
     "bin": ["lucid"],
     "support": {
         "source": "https://github.com/lucidarch/lucid",
@@ -18,12 +18,15 @@
         }
     ],
     "require": {
+        "php": "^8.1",
         "ext-dom": "*",
-        "mockery/mockery": "*",
-        "symfony/console": "*",
-        "symfony/filesystem": "*",
-        "symfony/finder": "*",
-        "symfony/process": "*"
+        "symfony/console": "^5.4|^6.0|^7.0",
+        "symfony/filesystem": "^5.4|^6.0|^7.0",
+        "symfony/finder": "^5.4|^6.0|^7.0",
+        "symfony/process": "^5.4|^6.0|^7.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.5"
     },
     "autoload": {
         "psr-4": {
@@ -33,6 +36,5 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "stable"
 }

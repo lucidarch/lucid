@@ -16,17 +16,16 @@ abstract class RouteServiceProvider extends BaseServiceProvider
 
     /**
      * @param $router
-     * @param $namespace
      * @param $pathApi
      * @param $pathWeb
      */
-    public function loadRoutesFiles($router, $namespace, $pathApi = null, $pathWeb = null)
+    public function loadRoutesFiles($router, $pathApi = null, $pathWeb = null)
     {
         if (is_string($pathApi) && is_file($pathApi)) {
-            $this->mapApiRoutes($router, $namespace, $pathApi);
+            $this->mapApiRoutes($router, $pathApi);
         }
         if (is_string($pathWeb) && is_file($pathWeb)) {
-            $this->mapWebRoutes($router, $namespace, $pathWeb);
+            $this->mapWebRoutes($router, $pathWeb);
         }
     }
 
@@ -36,18 +35,16 @@ abstract class RouteServiceProvider extends BaseServiceProvider
      * These routes are typically stateless.
      *
      * @param $router
-     * @param $namespace
      * @param $path
      * @param $prefix
      *
      * @return void
      */
-    protected function mapApiRoutes($router, $namespace, $path, $prefix='api')
+    protected function mapApiRoutes($router, $path, $prefix = 'api')
     {
         $router->group([
             'middleware' => 'api',
-            'namespace'  => $namespace,
-            'prefix'     => $prefix // to allow the delete or change of api prefix
+            'prefix'     => $prefix,
         ], function ($router) use ($path) {
             require $path;
         });
@@ -59,16 +56,14 @@ abstract class RouteServiceProvider extends BaseServiceProvider
      * These routes all receive session state, CSRF protection, etc.
      *
      * @param $router
-     * @param $namespace
      * @param $path
      *
      * @return void
      */
-    protected function mapWebRoutes($router, $namespace, $path)
+    protected function mapWebRoutes($router, $path)
     {
         $router->group([
             'middleware' => 'web',
-            'namespace'  => $namespace
         ], function ($router) use ($path) {
             require $path;
         });

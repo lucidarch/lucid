@@ -5,7 +5,7 @@ namespace Lucid\Console;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 trait Command
 {
@@ -31,11 +31,11 @@ trait Command
             ->setDescription($this->description);
 
         foreach ($this->getArguments() as $arguments) {
-            call_user_func_array([$this, 'addArgument'], $arguments);
+            $this->addArgument(...$arguments);
         }
 
         foreach ($this->getOptions() as $options) {
-            call_user_func_array([$this, 'addOption'], $options);
+            $this->addOption(...$options);
         }
     }
 
@@ -65,7 +65,7 @@ trait Command
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
@@ -152,16 +152,16 @@ trait Command
      * Ask the user the given question.
      *
      * @param string $question
+     * @param mixed  $default
      *
      * @return string
      */
-    public function ask($question, $default = false)
+    public function ask($question, $default = null)
     {
-        $question = '<comment>'.$question.'</comment> ';
+        $helper = $this->getHelperSet()->get('question');
+        $q = new Question('<comment>' . $question . '</comment> ', $default);
 
-        $confirmation = new ConfirmationQuestion($question, false);
-
-        return $this->getHelperSet()->get('question')->ask($this->input, $this->output, $confirmation);
+        return $helper->ask($this->input, $this->output, $q);
     }
 
     /**
@@ -173,8 +173,10 @@ trait Command
      */
     public function secret($question)
     {
-        $question = '<comment>'.$question.'</comment> ';
+        $helper = $this->getHelperSet()->get('question');
+        $q = new Question('<comment>' . $question . '</comment> ');
+        $q->setHidden(true)->setHiddenFallback(false);
 
-        return $this->getHelperSet()->get('dialog')->askHiddenResponse($this->output, $question, false);
+        return $helper->ask($this->input, $this->output, $q);
     }
 }

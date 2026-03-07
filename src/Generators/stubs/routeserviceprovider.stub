@@ -14,10 +14,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $namespace = '{{controllers_namespace}}';
         $pathApi = __DIR__.'/../routes/api.php';
         $pathWeb = __DIR__.'/../routes/web.php';
 
-        $this->loadRoutesFiles($router, $namespace, $pathApi, $pathWeb);
+        $this->loadRoutesFiles($router, $pathApi, $pathWeb);
     }
 }

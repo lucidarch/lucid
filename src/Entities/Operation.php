@@ -4,7 +4,7 @@ namespace Lucid\Entities;
 
 class Operation extends Entity
 {
-    public function __construct($title, $file, $realPath, $relativePath, Service $service = null, $content = '')
+    public function __construct($title, $file, $realPath, $relativePath, ?Service $service = null, $content = '')
     {
         $className = str_replace(' ', '', $title).'Operation';
 

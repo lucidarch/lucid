@@ -1,48 +1,28 @@
-# This is a basic workflow to help you get started with Actions
-
 name: tests
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the main branch
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        php: [7.0.21, 7.1, 7.2, 7.3, 7.4, 8.0]
+        php: [8.1, 8.2, 8.3, 8.4]
         stability: [prefer-lowest, prefer-stable]
-        laravel: [5.5, 6.x, 7.x, 8.x]
+        laravel: [9.x, 10.x, 11.x]
         exclude:
-          - laravel: 5.5
-            php: 8.0
-          - laravel: 6.x
-            php: 7.0.21
-          - laravel: 6.x
-            php: 7.1
-          - laravel: 7.x
-            php: 7.0.21
-          - laravel: 7.x
-            php: 7.1
-          - laravel: 8.x
-            php: 7.0.21
-          - laravel: 8.x
-            php: 7.1
-          - laravel: 8.x
-            php: 7.2
+          - laravel: 11.x
+            php: 8.1
 
     name: L${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -54,16 +34,13 @@ jobs:
 
       - name: Install Laravel ${{ matrix.laravel }}
         run: |
-          composer config -g --no-plugins allow-plugins.kylekatarnls/update-helper true
           composer create-project --prefer-dist laravel/laravel=${{ matrix.laravel }} laravel-${{ matrix.laravel }} --no-interaction
 
       - name: Require Lucid
         run: |
           cd laravel-${{ matrix.laravel }}
-          composer config prefer-stable false
-          composer config minimum-stability dev
           composer config repositories.lucid '{"type": "path", "url": "$GITHUB_WORKSPACE", "options": {"symlink": true}}'
-          composer require lucidarch/lucid
+          composer require lucidarch/lucid:@dev
 
       - name: Run Tests
         run: |

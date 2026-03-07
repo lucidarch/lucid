@@ -14,7 +14,7 @@ class Str
      */
     public static function studly($value)
     {
-        return LaravelStr::studly($value);
+        return LaravelStr::studly((string) $value);
     }
 
     /**
@@ -26,7 +26,7 @@ class Str
      */
     public static function snake($value, $delimiter = '_')
     {
-        return LaravelStr::snake($value, $delimiter);
+        return LaravelStr::snake((string) $value, $delimiter);
     }
 
     /**

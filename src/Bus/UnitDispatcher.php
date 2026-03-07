@@ -2,7 +2,7 @@
 
 namespace Lucid\Bus;
 
-use App;
+use Illuminate\Support\Facades\App;
 use Lucid\Testing\UnitMock;
 use Lucid\Testing\UnitMockRegistry;
 use ReflectionClass;

@@ -1,18 +1,20 @@
-<p align="center"><a href="https://lucidarch.dev" target="_blank"><img src="https://raw.githubusercontent.com/lucidarch/artwork/main/logo.jpg" width="400"></a></p>
+<p align="center"><a href="https://lucidarch.site" target="_blank"><img src="https://raw.githubusercontent.com/lucidarch/artwork/main/logo.jpg" width="400"></a></p>
 
 <p align="center" style="margin-left: -20px">
-    <a href="https://docs.lucidarch.dev"><img src="http://img.shields.io/badge/read_the-docs-2196f3.svg" alt="Documentation"></a>
-    <a href="https://lucid-slack.herokuapp.com"><img src="https://lucid-slack.herokuapp.com/badge.svg" alt="Slack Chat"/></a>
-    <a href="https://github.com/lucidarch/lucid/actions?query=workflow%3Atests"><img src="https://github.com/lucidarch/lucid/workflows/tests/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/lucidarch/lucid"><img src="https://img.shields.io/packagist/v/lucidarch/lucid" alt="Latest Stable Version"></a>
+    <a href="https://docs.lucidarch.site"><img src="http://img.shields.io/badge/read_the-docs-blue" alt="Documentation"></a>
+    <a href="https://discord.gg/j5xBhTa7"><img src="https://img.shields.io/discord/1041986899939700787?label=Discord&logo=discord" alt="Discord"/></a>
+    <a href="https://github.com/lucidarch/lucid/actions?query=workflow%3Atests"><img src="https://img.shields.io/github/actions/workflow/status/lucidarch/lucid/tests" alt="Build Status"></a>
+    <a href="https://packagist.org/packages/lucidarch/lucid"><img src="https://img.shields.io/packagist/v/lucidarch/lucid?label=composer&logo=composer&style=for-the-badge" alt="Latest Stable Version"></a>
     <a href="https://github.com/lucidarch/lucid/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/lucidarch/lucid" alt="License"></a>
 </p>
 
 ---
 
-- Website: https://lucidarch.dev
-- Documentation: https://docs.lucidarch.dev
+- Install: https://docs.lucidarch.site/installation
+- Website: https://lucidarch.site
+- Documentation: https://docs.lucidarch.site
 - Social: we share updates & interesting content from the web
+    - Discord: [Lucid](https://discord.gg/j5xBhTa7)
     - Twitter: [@lucid_arch](https://twitter.com/lucid_arch) & [#lucidarch](https://twitter.com/search?q=%23lucidarch)
     - Reddit: [/r/lucidarch](https://www.reddit.com/r/lucidarch/)
 
@@ -21,7 +23,7 @@
   * [About Lucid](#about-lucid)
   * [Concept](#concept)
     * [Table of Contents](#table-of-contents)
-  * [Position](#position)
+  * [Placement](#placement-in-laravel)
   * [The Stack](#the-stack)
     * [Framework](#framework)
     * [Foundation](#foundation)
@@ -82,7 +84,7 @@ If you prefer a video, watch the announcement at Laracon EU 2016:
 
 ### Table of Contents
 
-- [Position](#position)
+- [Placement in Laravel](#placement-in-laravel)
 - [The Stack](#the-stack)
     - [Framework](#framework)
     - [Foundation](#foundation)
@@ -96,12 +98,12 @@ If you prefer a video, watch the announcement at Laracon EU 2016:
     - [Boundaries](#boundaries)
     - [Multitenancy](#multitenancy)
 
-## Position
+## Placement in Laravel
 
 In a typical MVC application, Lucid will be the bond between the application's entrypoints and the units that do the work,
 securing code form meandring in drastic directions:
 
-![Lucid MVC Position](https://raw.githubusercontent.com/lucidarch/artwork/main/material/concept/mvc-position.png)
+![Lucid MVC Placement](https://raw.githubusercontent.com/lucidarch/artwork/main/material/concept/mvc-position.png)
 
 ## The Stack
 
@@ -146,7 +148,7 @@ app/Domains/GitHub
         └── LoginWithGitHubJobTest
 ```
 
-[documentation](https://docs.lucidarch.dev/domains/) contains more details on working with domains.
+[documentation](https://docs.lucidarch.site/domains/) contains more details on working with domains.
 
 ### Services
 
@@ -194,7 +196,7 @@ app/Services/Forum
     └── web
 </pre>
 
-[documentation](https://docs.lucidarch.dev/services/) has more examples of services and their contents.
+[documentation](https://docs.lucidarch.site/services/) has more examples of services and their contents.
 
 ### Features
 
@@ -225,7 +227,7 @@ class AddRecipeFeature extends Feature
 }
 ```
 
-[documentation](https://docs.lucidarch.dev/features/) about features expands on how to serve them as classes from anywhere.
+[documentation](https://docs.lucidarch.site/features/) about features expands on how to serve them as classes from anywhere.
 
 ### Operations
 
@@ -274,7 +276,7 @@ class NotifySubscribersOperation extends Operation
 }
 ```
 
-[documentation](https://docs.lucidarch.dev/operations/) goes over this simple yet powerful concept.
+[documentation](https://docs.lucidarch.site/operations/) goes over this simple yet powerful concept.
 
 ### Data
 
@@ -341,7 +343,7 @@ The Lucid Architecture source code is on GitHub as [lucidarch/lucid](https://git
 Lucid Architecture's GitHub issue trackers are not intended to provide help or support. Instead, use one of the following channels:
 
 - [Discussions](https://github.com/lucidarch/lucid/discussions) is where most conversations takes place
-- For a chat hit us on our official [Slack workspace](https://lucid-slack.herokuapp.com/) in the `#support` channel
+- For a chat hit us on our official [Discord](https://discord.gg/j5xBhTa7) in the `#support` channel
 - If you prefer StackOverflow to post your questions you may use [#lucidarch](https://stackoverflow.com/questions/tagged/lucidarch) to tag them
 
 ## Core Development Discussion
@@ -349,8 +351,8 @@ Lucid Architecture's GitHub issue trackers are not intended to provide help or s
 You may propose new features or improvements of existing Lucid Architecture behaviour in the [Lucid Discussins](https://github.com/lucidarch/lucid/discussions).
 If you propose a new feature, please be willing to implement at least some of the code that would be needed to complete the feature, or collaborate on active ideation in the meantime.
 
-Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Lucid Slack workspace](https://lucid-slack.herokuapp.com/).
-Abed Halawi, the maintainer of Lucid, is typically present in the channel on weekdays from 8am-5pm EEST (Eastern European Summer Time), and sporadically present in the channel at other times.
+Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Lucid Discord](https://discord.gg/j5xBhTa7).
+Abed Halawi (@mulkave), the maintainer of Lucid, is typically present in the channel on weekdays from 8am-5pm EEST (Eastern European Summer Time), and sporadically present in the channel at other times.
 
 ## Which Branch? And How To Contribute
 

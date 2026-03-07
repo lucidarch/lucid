@@ -4,7 +4,7 @@ namespace Lucid\Entities;
 
 class Job extends Entity
 {
-    public function __construct($title, $namespace, $file, $path, $relativePath, Domain $domain = null, $content = '')
+    public function __construct($title, $namespace, $file, $path, $relativePath, ?Domain $domain = null, $content = '')
     {
         $className = str_replace(' ', '', $title).'Job';
         $this->setAttributes([
