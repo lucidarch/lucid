@@ -26,30 +26,39 @@ trait UnitDispatcher
      * When the $arguments is an instance of Request
      * it will call dispatchFrom instead.
      *
-     * @param mixed                         $unit
+     * @param mixed $unit
      * @param array|\Illuminate\Http\Request $arguments
-     * @param array                          $extra
+     * @param array $extra
      *
      * @return mixed
      */
     public function run($unit, $arguments = [], $extra = [])
     {
+
+        /**
+         * Laravel change the behaviour of the dispatch after the release of 10.0.0 and we have to explictly handle this run method
+         * https://github.com/laravel/framework/commit/5f61fd1af0fa0b37a8888637578459eae21faeb
+         * @author Nay Thu Khant (naythukhant644@gmail.com)
+         *
+         */
+        $method = App::version() >= "10.0.0" ? "dispatchSync" : "dispatch";
+
         if (is_object($unit) && !App::runningUnitTests()) {
-            $result = $this->dispatch($unit);
+            $result = $this->{$method}($unit);
         } elseif ($arguments instanceof Request) {
-            $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
+            $result = $this->{$method}($this->marshal($unit, $arguments, $extra));
         } else {
             if (!is_object($unit)) {
                 $unit = $this->marshal($unit, new Collection(), $arguments);
 
-                // don't dispatch unit when in tests and have a mock for it.
+                // don't $this->dispatch() unit when in tests and have a mock for it.
             } elseif (App::runningUnitTests() && app(UnitMockRegistry::class)->has(get_class($unit))) {
                 /** @var UnitMock $mock */
                 $mock = app(UnitMockRegistry::class)->get(get_class($unit));
                 $mock->compareTo($unit);
 
                 // Reaching this step confirms that the expected mock is similar to the passed instance, so we
-                // get the unit's mock counterpart to be dispatched. Otherwise, the previous step would
+                // get the unit's mock counterpart to be $this->dispatch()ed. Otherwise, the previous step would
                 // throw an exception when the mock doesn't match the passed instance.
                 $unit = $this->marshal(
                     get_class($unit),
@@ -58,7 +67,7 @@ trait UnitDispatcher
                 );
             }
 
-            $result = $this->dispatch($unit);
+            $result = $this->{$method}($unit);
         }
 
         if ($unit instanceof Operation) {
@@ -87,7 +96,7 @@ trait UnitDispatcher
         // instantiate and queue the unit
         $reflection = new ReflectionClass($unit);
         $instance = $reflection->newInstanceArgs($arguments);
-        $instance->onQueue((string) $queue);
+        $instance->onQueue((string)$queue);
 
         return $this->dispatch($instance);
     }
