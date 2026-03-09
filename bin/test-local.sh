@@ -27,7 +27,7 @@ fi
 if [[ $# -gt 0 ]]; then
     VERSIONS=($@)
 else
-    VERSIONS=(9.x 10.x 11.x)
+    VERSIONS=(9.x 10.x 11.x 12.x)
 fi
 
 # Safe removal: only removes a direct laravel-* child of TESTBENCH_DIR

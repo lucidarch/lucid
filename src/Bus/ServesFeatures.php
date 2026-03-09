@@ -23,6 +23,6 @@ trait ServesFeatures
     {
         event(new FeatureStarted($feature, $arguments));
 
-        return $this->dispatch($this->marshal($feature, new Collection(), $arguments));
+        return $this->dispatchSync($this->marshal($feature, new Collection(), $arguments));
     }
 }
