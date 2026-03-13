@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Lucid\Events\JobStarted;
 use Illuminate\Support\Collection;
 use Lucid\Events\OperationStarted;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 trait UnitDispatcher
@@ -35,9 +36,9 @@ trait UnitDispatcher
     public function run($unit, $arguments = [], $extra = [])
     {
         if (is_object($unit) && !App::runningUnitTests()) {
-            $result = $this->dispatch($unit);
+            $result = $this->dispatchUnit($unit);
         } elseif ($arguments instanceof Request) {
-            $result = $this->dispatch($this->marshal($unit, $arguments, $extra));
+            $result = $this->dispatchUnit($this->marshal($unit, $arguments, $extra));
         } else {
             if (!is_object($unit)) {
                 $unit = $this->marshal($unit, new Collection(), $arguments);
@@ -58,7 +59,7 @@ trait UnitDispatcher
                 );
             }
 
-            $result = $this->dispatch($unit);
+            $result = $this->dispatchUnit($unit);
         }
 
         if ($unit instanceof Operation) {
@@ -70,6 +71,23 @@ trait UnitDispatcher
         }
 
         return $result;
+    }
+
+    /**
+     * Dispatch a unit synchronously unless it explicitly implements ShouldQueue.
+     * In Laravel 12, dispatch() returns PendingDispatch for all jobs, so non-queueable
+     * units must be dispatched via dispatchSync() to run inline.
+     *
+     * @param mixed $unit
+     * @return mixed
+     */
+    protected function dispatchUnit($unit): mixed
+    {
+        if ($unit instanceof ShouldQueue) {
+            return $this->dispatch($unit);
+        }
+
+        return $this->dispatchSync($unit);
     }
 
     /**
