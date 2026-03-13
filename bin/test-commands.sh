@@ -128,6 +128,89 @@ lint "app/Policies/FlyPolicy.php"
 # Run PHPUnit tests
 ./vendor/bin/phpunit
 
+## --- Regression: dispatch must return actual values, not PendingDispatch (issue #58) ---
+
+mkdir -p app/Domains/Dispatch/Jobs
+
+cat > app/Domains/Dispatch/Jobs/ReturnValueJob.php << 'PHPEOF'
+<?php
+namespace App\Domains\Dispatch\Jobs;
+
+use Lucid\Units\Job;
+
+class ReturnValueJob extends Job
+{
+    public function handle(): string
+    {
+        return 'job_executed';
+    }
+}
+PHPEOF
+
+cat > app/Features/DispatchReturnFeature.php << 'PHPEOF'
+<?php
+namespace App\Features;
+
+use Lucid\Units\Feature;
+use App\Domains\Dispatch\Jobs\ReturnValueJob;
+
+class DispatchReturnFeature extends Feature
+{
+    public function handle(): string
+    {
+        return $this->run(new ReturnValueJob());
+    }
+}
+PHPEOF
+
+cat > tests/Feature/DispatchRegressionTest.php << 'PHPEOF'
+<?php
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Features\DispatchReturnFeature;
+use Illuminate\Foundation\Bus\PendingDispatch;
+use Lucid\Bus\ServesFeatures;
+
+/**
+ * Regression test for https://github.com/lucidarch/lucid/issues/58
+ *
+ * In Laravel 12, dispatch() returns PendingDispatch for all jobs. serve() and run()
+ * must return the actual job/feature result, not a PendingDispatch instance.
+ */
+class DispatchRegressionTest extends TestCase
+{
+    use ServesFeatures;
+
+    public function test_serve_returns_feature_result_not_pending_dispatch(): void
+    {
+        $result = $this->serve(DispatchReturnFeature::class);
+
+        $this->assertNotInstanceOf(PendingDispatch::class, $result);
+        $this->assertEquals('job_executed', $result);
+    }
+
+    public function test_run_inside_feature_returns_job_result_not_pending_dispatch(): void
+    {
+        $feature = new DispatchReturnFeature();
+        $result = $feature->handle();
+
+        $this->assertNotInstanceOf(PendingDispatch::class, $result);
+        $this->assertEquals('job_executed', $result);
+    }
+}
+PHPEOF
+
+lint "app/Domains/Dispatch/Jobs/ReturnValueJob.php"
+lint "app/Features/DispatchReturnFeature.php"
+lint "tests/Feature/DispatchRegressionTest.php"
+
+./vendor/bin/phpunit tests/Feature/DispatchRegressionTest.php
+
+rm -rf app/Domains/Dispatch
+rm app/Features/DispatchReturnFeature.php
+rm tests/Feature/DispatchRegressionTest.php
+
 echo "\nMicro tests PASSED!\n"
 
 ## --- Monolith ---
