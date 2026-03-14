@@ -1,4 +1,4 @@
-<p align="center"><a href="https://lucidarch.site" target="_blank"><img src="https://raw.githubusercontent.com/lucidarch/lucid/main/github-readme-banner.svg" alt="Lucid Architecture" width="700"></a></p>
+<p align="center"><a href="https://lucidarch.site" target="_blank"><img src="github-readme-banner.svg" alt="Lucid Architecture"></a></p>
 
 <p align="center" style="margin-left: -20px">
     <a href="https://docs.lucidarch.site"><img src="http://img.shields.io/badge/read_the-docs-blue" alt="Documentation"></a>
